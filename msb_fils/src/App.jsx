@@ -14,6 +14,21 @@ import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import Factures from "./pages/Factures";
 import Settings from "./pages/Settings";
+import ClientCreate from "./pages/ClientCreate";
+
+import { createClient } from "@supabase/supabase-js";
+
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+    },
+  }
+);
 
 function App() {
   const [count, setCount] = useState(0)
@@ -44,6 +59,11 @@ function App() {
         <Route
           path="parametres"
           element={<Settings />}
+        />
+
+        <Route
+          path="clientCreate"
+          element={<ClientCreate />}
         />
 
       </Route>
