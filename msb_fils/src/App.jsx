@@ -17,19 +17,6 @@ import Settings from "./pages/Settings";
 import ClientCreate from "./pages/ClientCreate";
 import ClientEdit from "./pages/ClientEdit";
 
-import { createClient } from "@supabase/supabase-js";
-
-export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
-  }
-);
 
 function App() {
   const [count, setCount] = useState(0)
