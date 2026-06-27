@@ -3,7 +3,9 @@ import {
  Users,
  FileText,
  Settings,
- UserPlus
+ UserPlus,
+ UserPen,
+ UserRoundX
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -25,7 +27,13 @@ const Client = {
 
 function Clients() {
 
+    // List clients
     const [clientsList, setClientList] = useState([]);
+
+    // Client selectionner
+    const [client, setClient] = useState(Client);
+
+    const tableClients = "clients";
 
     // s'exécute une seule fois au chargement
     useEffect(() => {
@@ -45,77 +53,91 @@ function Clients() {
 
     async function getAllClients(){
 
-    const table = "clients";
+        const { data } = await supabase
+            .from(tableClients)
+            .select("*");
 
-    const { data } = await supabase
-        .from(table)
-        .select("*");
+        if (!data) return alert("Aucun clients");
 
-    if (!data) return alert("Aucun clients");
+        setClientList(data);
+    }
+    
 
-    setClientList(data);
+    async function DeleteClient(Client){
+
+        await supabase
+          .from(tableClients)
+          .delete()
+          .eq("id", Client.id);
+
+        // Mettre à jour la liste des clients après la suppression
+        await getAllClients();
+        setClient(null);
     }
 
     return (
         <div>
 
-            <section className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3 ">
-                <div className="bg-white rounded-lg shadow-md p-4">
-                    <NavLink to="/clientCreate" className="flex items-center justify-center gap-2 text-blue-500 hover:text-blue-700">
-                        <UserPlus size={20}/>
-                        Nouveau client
-                    </NavLink>
-                </div>
-            
+            <section>
+                <div>  
+                    <NavLink to="/clientCreate">
+                        <button className="profile"><UserPlus size={20}/>  Nouveau client</button>
+                    </NavLink>                        
+                </div>            
             </section>
-
 
             <h2>Liste des clients</h2>
 
-            <table>
+            <div className="table-container">
+                <table>
+                    <thead className="headerTable">
 
-                <thead className="headerTable">
+                    <tr>
+                        <th className="ligneClient">Nom</th>
+                        <th>Prénom</th>
+                        <th>Société</th>
+                        <th>Téléphone</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
 
-                <tr>
-                    <th className="ligneClient">Nom</th>
-                    <th>Prénom</th>
-                    <th>Société</th>
-                    <th>Téléphone</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                </tr>
-
-                </thead>
+                    </thead>
 
 
-                <tbody>
+                    <tbody>
 
-                {clientsList.map((client, index) => (
+                    {clientsList.map((client, index) => (
 
-                    <tr key={index}>
+                        <tr key={index}>
 
-                    <td>{client.nom}</td>
+                        <td>{client.nom}</td>
 
-                    <td>{client.prenom}</td>
+                        <td>{client.prenom}</td>
 
-                    <td>{client.societe}</td>
+                        <td>{client.societe}</td>
 
-                    <td>{client.telephone}</td>
+                        <td>{client.telephone}</td>
 
-                    <td>{client.email}</td>
+                        <td>{client.email}</td>
 
-                    <td> <button> Modifier  </button> <button className="suppButton"> Supprimer  </button></td>
+                        <td>
+                            <NavLink to={`/clients/modifier/${client.id}`}>
+                                <button className="profile"><UserPen size={20} /> Modifier</button>
+                            </NavLink>
+                             
+                             <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /> Supprimer  </button>
+                        </td>
 
                     </tr>
 
-                ))
-                }
-
+                    ))
+                    }
 
                 </tbody>
+                </table>
+            </div>
 
-
-            </table>
+            
 
         
             

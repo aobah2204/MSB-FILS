@@ -7,22 +7,22 @@ function ClientCreate(e) {
 
 const [client,setClient] = useState({
 
- nom:"",
- prenom:"",
- societe:"",
- telephone:"",
- adresse:"",
- email:""
+    nom:"",
+    prenom:"",
+    societe:"",
+    telephone:"",
+    adresse:"",
+    email:""
 
 });
 
 
 function handleChange(e){
 
-setClient({
- ...client,
- [e.target.name]: e.target.value
-});
+    setClient({
+    ...client,
+    [e.target.name]: e.target.value
+    });
 
 }
 
@@ -30,141 +30,105 @@ setClient({
 
 async function handleSubmit(e){
 
-e.preventDefault();
+    e.preventDefault();
 
 
-console.log(client);
+    console.log(client);
 
 
-const table = "clients";
+    const table = "clients";
 
-const { error } = await supabase.from(table).insert(client);
+    const { error } = await supabase.from(table).insert(client);
 
-if(!error){
-    alert("Client enregistré");
-}else{
-    alert("Client non enregistré");
-}
+    if(!error){
+        alert("Client enregistré");
+    }else{
+        alert("Client non enregistré");
+    }
 
 }
 
 
 
 return (
+    <div className="client-page">
 
-<div className="client-page">
+        <h1>
+        Inscription Client
+        </h1>
 
+        <form 
+        className="client-form"
+        onSubmit={handleSubmit}
+        >
+            <label>
+                Nom
+            </label>
 
-<h1>
-Inscription Client
-</h1>
+            <input
+                name="nom"
+                value={client.nom}
+                onChange={handleChange}
+            />
 
+            <label>
+                Prénom
+            </label>
 
-<form 
-className="client-form"
-onSubmit={handleSubmit}
->
+            <input
+                name="prenom"
+                value={client.prenom}
+                onChange={handleChange}
+            />
 
+            <label>
+            Nom société
+            </label>
 
-<div className="row">
+            <input
+            name="societe"
+            value={client.societe}
+            onChange={handleChange}
+            />
 
+            <label>
+            Téléphone
+            </label>
 
-<div>
-<label>
-Nom
-</label>
+            <input
+            name="telephone"
+            value={client.telephone}
+            onChange={handleChange}
+            />
 
-<input
-name="nom"
-value={client.nom}
-onChange={handleChange}
-/>
+            <label>
+            Adresse
+            </label>
 
-</div>
+            <textarea
+            name="adresse"
+            value={client.adresse}
+            onChange={handleChange}
+            />
 
+            <label>
+            Email
+            </label>
 
+            <input
+            type="email"
+            name="email"
+            value={client.email}
+            onChange={handleChange}
+            />
 
-<div>
+            <button>
+            Créer le client
+            </button>
+        </form>
 
-<label>
-Prénom
-</label>
-
-<input
-name="prenom"
-value={client.prenom}
-onChange={handleChange}
-/>
-
-</div>
-
-
-</div>
-
-
-
-<label>
-Nom société
-</label>
-
-<input
-name="societe"
-value={client.societe}
-onChange={handleChange}
-/>
-
-
-
-<label>
-Téléphone
-</label>
-
-<input
-name="telephone"
-value={client.telephone}
-onChange={handleChange}
-/>
-
-
-
-<label>
-Adresse
-</label>
-
-<textarea
-name="adresse"
-value={client.adresse}
-onChange={handleChange}
-/>
-
-
-
-<label>
-Email
-</label>
-
-<input
-type="email"
-name="email"
-value={client.email}
-onChange={handleChange}
-/>
-
-
-
-<button>
-Créer le client
-</button>
-
-
-</form>
-
-
-</div>
-
-)
-
-}
+    </div>
+)}
 
 
 export default ClientCreate;

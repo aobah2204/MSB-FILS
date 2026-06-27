@@ -15,6 +15,7 @@ import Clients from "./pages/Clients";
 import Factures from "./pages/Factures";
 import Settings from "./pages/Settings";
 import ClientCreate from "./pages/ClientCreate";
+import ClientEdit from "./pages/ClientEdit";
 
 import { createClient } from "@supabase/supabase-js";
 
@@ -64,6 +65,11 @@ function App() {
         <Route
           path="clientCreate"
           element={<ClientCreate />}
+        />
+
+        <Route
+          path="clients/modifier/:id"
+          element={<ClientEdit />}
         />
 
       </Route>

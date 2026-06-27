@@ -4,57 +4,61 @@ import {
  LayoutDashboard,
  Users,
  FileText,
- Settings
+ Settings,
+ UserPlus
 } from "lucide-react";
 
 
 import "./Sidebar.css";
 
 
-function Sidebar(){
+function Sidebar({open,closeMenu}){
 
 
 return (
 
-<aside className="sidebar">
+    <aside
+    className={`sidebar ${open ? "open" : ""}`}
+    onClick={closeMenu}
+    >
 
 
-<div className="logo">
-MSB FILS
-</div>
+    <div className="logo">
+    MSB FILS
+    </div>
 
 
-<nav>
+    <nav>
+
+        <NavLink to="/">
+            <LayoutDashboard /> Dashboard
+        </NavLink>
 
 
-<NavLink to="/">
-<LayoutDashboard size={20}/>
-Situation
-</NavLink>
+        <NavLink to="/clients">
+            <Users /> Clients
+        </NavLink>
 
 
-<NavLink to="/clients">
-<Users size={20}/>
-Clients
-</NavLink>
+        <NavLink to="/clientcreate">
+            <UserPlus /> Nouveau client
+        </NavLink>
 
 
-<NavLink to="/factures">
-<FileText size={20}/>
-Factures
-</NavLink>
+        <NavLink to="/factures">
+            <FileText /> Factures
+        </NavLink>
 
 
-<NavLink to="/parametres">
-<Settings size={20}/>
-Paramètres
-</NavLink>
+        <NavLink to="/parametres">
+            <Settings /> Paramètres
+        </NavLink>
 
 
-</nav>
+    </nav>
 
 
-</aside>
+    </aside>
 
 )
 

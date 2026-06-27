@@ -2,26 +2,163 @@
 
 height:70px;
 
-background:rgb(63, 48, 194);
+background:rgb(112, 112, 184);
 
 display:flex;
+
 align-items:center;
+
 justify-content:space-between;
 
 padding:0 30px;
 
-box-shadow:0 2px 8px #ddd;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+position:sticky;
+
+top:0;
+
+z-index:100;
+
 
 }
+
+
+
+.header-title h2{
+
+margin:0;
+
+font-size:22px;
+
+padding: left 10%;
+
+}
+
+
+
+.header-actions{
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+}
+
+
+
+.notification{
+
+font-size:22px;
+
+cursor:pointer;
+
+}
+
 
 
 .profile{
 
 background:#2563eb;
+
 color:white;
 
-padding:10px 20px;
+padding:10px 18px;
+
+border-radius:25px;
+
+white-space:nowrap;
+
+}
+
+
+
+
+
+/* tablette */
+
+@media(max-width:900px){
+
+
+.header{
+
+padding:0 20px;
+
+}
+
+
+
+.header-title h2{
+
+font-size:18px;
+
+}
+
+
+}
+
+
+
+
+
+/* mobile */
+
+@media(max-width:600px){
+
+
+.header{
+
+height:60px;
+
+padding-left:70px;
+
+}
+
+
+
+.header-title h2{
+
+font-size:16px;
+
+}
+
+
+
+.notification{
+
+display:none;
+
+}
+
+
+
+.profile{
+
+padding:8px 12px;
 
 border-radius:20px;
+
+}
+
+
+
+.profile-name{
+
+display:none;
+
+}
+
+
+
+.profile::after{
+
+content:"👤";
+
+font-size:18px;
+
+}
+
 
 }

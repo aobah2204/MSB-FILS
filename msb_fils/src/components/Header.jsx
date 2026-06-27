@@ -1,18 +1,40 @@
 import "./Header.css";
 
+
 function Header(){
 
 return (
 
 <header className="header">
 
-    <h2>
-      Tableau de bord
-    </h2>
-
 
     <div className="profile">
-      Admin
+
+        <h2>
+            Tableau de bord
+        </h2>
+
+    </div>
+
+
+
+    <div className="header-actions">
+
+
+        <div className="notification">
+        🔔
+        </div>
+
+
+        <div className="profile">
+
+            <span className="profile-name">
+            Admin
+            </span>
+
+        </div>
+
+
     </div>
 
 
@@ -21,5 +43,6 @@ return (
 )
 
 }
+
 
 export default Header;
