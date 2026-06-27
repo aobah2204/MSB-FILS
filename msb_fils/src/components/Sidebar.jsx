@@ -39,12 +39,7 @@ return (
 
         <NavLink to="/clients">
             <Users /> Clients
-        </NavLink>
-
-
-        <NavLink to="/clientcreate">
-            <UserPlus /> Nouveau client
-        </NavLink>
+        </NavLink>       
 
 
         <NavLink to="/factures">
@@ -59,12 +54,7 @@ return (
         <NavLink to="/produits">
             <Package size={20}/>
             Produits
-        </NavLink>
-
-        <NavLink to="/produits/nouveau">
-            <Package size={20}/>
-            Nouveau produit
-        </NavLink>
+        </NavLink>        
 
         <NavLink to="/parametres">
             <Settings /> Paramètres

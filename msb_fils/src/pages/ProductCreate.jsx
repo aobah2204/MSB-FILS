@@ -72,6 +72,8 @@ async function handleSubmit(e){
     }else{
         alert("Produit non enregistré");
     }
+
+    
 }
 
 
