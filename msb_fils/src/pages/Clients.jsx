@@ -122,10 +122,10 @@ function Clients() {
 
                         <td>
                             <NavLink to={`/clients/modifier/${client.id}`}>
-                                <button className="profile"><UserPen size={20} /> Modifier</button>
+                                <button className="profile"><UserPen size={20} /></button>
                             </NavLink>
                              
-                             <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /> Supprimer  </button>
+                             <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /></button>
                         </td>
 
                     </tr>

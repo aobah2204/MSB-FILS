@@ -16,6 +16,7 @@ import Factures from "./pages/Factures";
 import Settings from "./pages/Settings";
 import ClientCreate from "./pages/ClientCreate";
 import ClientEdit from "./pages/ClientEdit";
+import CA from "./pages/CA";
 
 
 function App() {
@@ -57,6 +58,11 @@ function App() {
         <Route
           path="clients/modifier/:id"
           element={<ClientEdit />}
+        />
+
+        <Route 
+          path="ca"
+          element={<CA />}
         />
 
       </Route>

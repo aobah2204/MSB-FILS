@@ -5,7 +5,8 @@ import {
  Users,
  FileText,
  Settings,
- UserPlus
+ UserPlus,
+ HandCoins
 } from "lucide-react";
 
 
@@ -49,6 +50,9 @@ return (
             <FileText /> Factures
         </NavLink>
 
+        <NavLink to="/ca">
+            <HandCoins /> CA
+        </NavLink>
 
         <NavLink to="/parametres">
             <Settings /> Paramètres
