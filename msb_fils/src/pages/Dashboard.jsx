@@ -33,7 +33,7 @@ return (
 
     <div className="cards">
 
-        <NavLink to="/clients" className="card-link">
+        <NavLink to="/clients" className="card">
             <div className="card">
                 <h3>Clients</h3>
                 <p>{NbreClient}</p>
@@ -41,14 +41,14 @@ return (
         </NavLink>
         
 
-        <NavLink to="/factures" className="card-link">
+        <NavLink to="/factures" className="card">
             <div className="card">
                 <h3>Factures</h3>
                 <p>0</p>
             </div>
         </NavLink>
 
-        <NavLink to="/ca" className="card-link">
+        <NavLink to="/ca" className="card">
             <div className="card">
                 <h3>CA</h3>
                 <p>45 000 000 000 FG</p>
