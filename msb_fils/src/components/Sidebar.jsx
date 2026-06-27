@@ -6,7 +6,8 @@ import {
  FileText,
  Settings,
  UserPlus,
- HandCoins
+ HandCoins,
+ Package
 } from "lucide-react";
 
 
@@ -32,7 +33,7 @@ return (
     <nav>
 
         <NavLink to="/">
-            <LayoutDashboard /> Dashboard
+            <LayoutDashboard /> Accueil
         </NavLink>
 
 
@@ -51,7 +52,18 @@ return (
         </NavLink>
 
         <NavLink to="/ca">
-            <HandCoins /> CA
+            <HandCoins /> Chiffre d'Affaire
+        </NavLink>
+
+
+        <NavLink to="/produits">
+            <Package size={20}/>
+            Produits
+        </NavLink>
+
+        <NavLink to="/produits/nouveau">
+            <Package size={20}/>
+            Nouveau produit
         </NavLink>
 
         <NavLink to="/parametres">

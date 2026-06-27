@@ -1,0 +1,165 @@
+import {
+ LayoutDashboard,
+ Users,
+ FileText,
+ Settings,
+ UserPlus,
+ UserPen,
+ UserRoundX
+} from "lucide-react";
+
+import { NavLink } from "react-router-dom";
+import { supabase } from "../supabase.js";
+import { useState, useEffect } from 'react'
+import "../CSS/Products.css";
+
+const Product = {
+    reference:"",
+    nom:"",
+    categorie:"",
+    description:"",
+    marque:"",
+    unite:"",
+
+    prixAchat:"",
+    prixVente:"",
+    tva:"20",
+
+    stock:"",
+    stockMin:"",
+
+    poids:"",
+    longueur:"",
+    largeur:"",
+    hauteur:"",
+
+    codeBarre:"",
+    actif:true
+}
+
+function Products() {
+
+    // List Produits
+    const [productsList, setProductList] = useState([]);
+
+    // Produit selectionner
+    const [product, setProduct] = useState(Product);
+
+    const tableProduct = "products";
+
+    // s'exécute une seule fois au chargement
+    useEffect(() => {
+
+        chargerProducts();
+
+    }, []);
+
+    async function chargerProducts() {
+
+        try {
+            await getAllProducts();
+        } catch (error) {
+            console.error("Erreur lors du chargement des produits :", error);
+        }
+    }
+
+    async function getAllProducts(){
+
+        const { data } = await supabase
+            .from(tableProduct)
+            .select("*");
+
+        if (!data) return alert("Aucun produits");
+
+        setProductList(data);
+    }
+    
+
+    async function DeleteProduct(Product){
+
+        await supabase
+          .from(tableProduct)
+          .delete()
+          .eq("id", Product.id);
+
+        // Mettre à jour la liste des Products après la suppression
+        await getAllProducts();
+        setProduct(null);
+    }
+
+
+    return (
+        <div>
+
+            <section>
+                <div>  
+                    <NavLink to="/produits/nouveau">
+                        <button className="profile"><UserPlus size={20}/>  Nouveau Produit</button>
+                    </NavLink>                        
+                </div>            
+            </section>
+
+            <h2>Liste des Produits</h2>
+
+            <div className="table-container">
+                <table>
+                    <thead className="headerTable">
+
+                    <tr>
+                        <th className="ligneClient">Reférence</th>
+                        <th>Nom</th>
+                        <th>Catégorie</th>
+                        <th>Prix Achat</th>
+                        <th>Pric Vente</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {productsList.map((produit, index) => (
+
+                        <tr key={index}>
+
+                        <td>{produit.reference}</td>
+
+                        <td>{produit.nom}</td>
+
+                        <td>{produit.categorie}</td>
+
+                        <td>{produit.prixAchat}</td>
+
+                        <td>{produit.prixVente}</td>
+
+                        <td>{produit.actif}</td>
+
+                        <td>
+                            <NavLink to={`/produits/modifier/${produit.id}`}>
+                                <button className="profile"><UserPen size={20} /></button>
+                            </NavLink>
+                             
+                             <button className="profileSupp" onClick={() => DeleteProduct(produit)}> <UserRoundX size={20} /></button>
+                        </td>
+
+                    </tr>
+
+                    ))
+                    }
+
+                </tbody>
+                </table>
+            </div>
+
+            
+
+        
+            
+
+
+    </div> );
+}
+
+export default Products;

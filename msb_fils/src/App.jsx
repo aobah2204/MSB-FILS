@@ -17,6 +17,10 @@ import Settings from "./pages/Settings";
 import ClientCreate from "./pages/ClientCreate";
 import ClientEdit from "./pages/ClientEdit";
 import CA from "./pages/CA";
+import ProductCreate from "./pages/ProductCreate";
+import Products from "./pages/Products";
+import ProductEdit from './pages/ProductEdit'
+
 
 
 function App() {
@@ -58,6 +62,21 @@ function App() {
         <Route
           path="clients/modifier/:id"
           element={<ClientEdit />}
+        />
+
+        <Route
+          path="produits"
+          element={<Products />}
+        />
+
+        <Route
+          path="produits/nouveau"
+          element={<ProductCreate />}
+        />
+
+        <Route
+          path="produits/modifier/:id"
+          element={<ProductEdit />}
         />
 
         <Route 

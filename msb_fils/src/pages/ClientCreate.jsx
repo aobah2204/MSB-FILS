@@ -82,48 +82,48 @@ return (
             />
 
             <label>
-            Nom société
+                Nom société
             </label>
 
             <input
-            name="societe"
-            value={client.societe}
-            onChange={handleChange}
+                name="societe"
+                value={client.societe}
+                onChange={handleChange}
             />
 
             <label>
-            Téléphone
+                Téléphone
             </label>
 
             <input
-            name="telephone"
-            value={client.telephone}
-            onChange={handleChange}
+                name="telephone"
+                value={client.telephone}
+                onChange={handleChange}
             />
 
             <label>
-            Adresse
+                Adresse
             </label>
 
             <textarea
-            name="adresse"
-            value={client.adresse}
-            onChange={handleChange}
+                name="adresse"
+                value={client.adresse}
+                onChange={handleChange}
             />
 
             <label>
-            Email
+                Email
             </label>
 
             <input
-            type="email"
-            name="email"
-            value={client.email}
-            onChange={handleChange}
+                type="email"
+                name="email"
+                value={client.email}
+                onChange={handleChange}
             />
 
             <button>
-            Créer le client
+                Créer le client
             </button>
         </form>
 
