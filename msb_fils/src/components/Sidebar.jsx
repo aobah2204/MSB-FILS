@@ -7,10 +7,11 @@ import {
  Settings,
  UserPlus,
  HandCoins,
- Package
+ Package,
+ Factory
 } from "lucide-react";
 
-
+import logo from "../assets/Logo.png";
 import "./Sidebar.css";
 
 
@@ -25,8 +26,17 @@ return (
     >
 
 
-    <div className="logo">
-    MSB FILS
+    <div className="logo-container">
+
+        {/*<img
+        src={logo}
+        className="logo-image"
+        alt="MSB FILS"
+        />*/}
+        <Factory size={40} />
+        <span>
+        MSB FILS
+        </span>
     </div>
 
 
@@ -36,11 +46,14 @@ return (
             <LayoutDashboard /> Accueil
         </NavLink>
 
-
         <NavLink to="/clients">
             <Users /> Clients
-        </NavLink>       
+        </NavLink>     
 
+        <NavLink to="/produits">
+            <Package size={20}/>
+            Produits
+        </NavLink>    
 
         <NavLink to="/factures">
             <FileText /> Factures
@@ -48,13 +61,7 @@ return (
 
         <NavLink to="/ca">
             <HandCoins /> Chiffre d'Affaire
-        </NavLink>
-
-
-        <NavLink to="/produits">
-            <Package size={20}/>
-            Produits
-        </NavLink>        
+        </NavLink>              
 
         <NavLink to="/parametres">
             <Settings /> Paramètres
