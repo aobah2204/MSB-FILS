@@ -54,7 +54,7 @@ return (
     <div className="client-page">
 
         <h1>
-        Inscription Client
+            Inscription Client
         </h1>
 
         <form 

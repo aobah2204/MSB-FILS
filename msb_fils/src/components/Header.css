@@ -1,7 +1,5 @@
 .header{
 
-height:70px;
-
 background:rgb(16, 16, 46);
 
 display:flex;
@@ -52,7 +50,7 @@ cursor:pointer;
 
 
 
-.profile{
+.profile_admin{
 
 background:#2563eb;
 
@@ -66,6 +64,17 @@ white-space:nowrap;
 
 }
 
+.profile{
+
+background:#2563eb;
+
+color:white;
+
+padding:10px 18px;
+
+border-radius:25px;
+
+}
 
 
 

@@ -51,7 +51,7 @@ return (
         <NavLink to="/ca" className="card">
             <div className="card">
                 <h3>CA</h3>
-                <p>45 000 000 000 FG</p>
+                <p>45 000 000 000 000</p>
             </div>
         </NavLink>
         

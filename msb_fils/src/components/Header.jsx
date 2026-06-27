@@ -26,7 +26,7 @@ return (
         </div>
 
 
-        <div className="profile">
+        <div className="profile_admin">
 
             <span className="profile-name">
             Admin
