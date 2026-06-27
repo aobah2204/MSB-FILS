@@ -1,7 +1,25 @@
 import "./Dashboard.css";
-
+import { useState, useEffect } from 'react'
+import { supabase } from "../supabase.js";
 
 function Dashboard(){
+
+const [clients,setClients] = useState([]);
+const [NbreClient,setNbreClient] = useState(0);
+
+async function getAllClients(){
+
+    const { data } = await supabase
+        .from("clients")
+        .select("*");
+    
+    setClients(data);
+    setNbreClient(data.length);
+}
+
+useEffect(()=>{
+    getAllClients();    
+},[]);
 
 return (
 
@@ -17,7 +35,7 @@ return (
 
         <div className="card">
             <h3>Clients</h3>
-            <p>245</p>
+            <p>{NbreClient}</p>
         </div>
 
 
