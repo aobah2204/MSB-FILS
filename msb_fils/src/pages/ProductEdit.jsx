@@ -108,7 +108,7 @@ useEffect(()=>{
             return;
         }
 
-        
+        navigate("/produits");
     }
 
 
@@ -123,7 +123,7 @@ function handleChange(e){
         [e.target.name]:
         e.target.value
 
-        });
+    });
 
 
 }
@@ -159,10 +159,8 @@ return (
 
 
         <h1>
-        Modifier Product
+            Modifier Product
         </h1>
-
-
 
         <form
             className="product-form"
@@ -340,7 +338,7 @@ return (
 
             <div>
                 <label>
-                Stock initial
+                    Stock initial
                 </label>
 
                 <input

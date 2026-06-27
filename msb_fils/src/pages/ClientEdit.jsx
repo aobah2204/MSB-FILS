@@ -57,13 +57,13 @@ useEffect(()=>{
 
 async function UpdateClient(Client){
 
-        setClient(Client);
+    setClient(Client);
 
-        const table = "clients";
+    const table = "clients";
 
-        if (!client) return;
+    if (!client) return;
 
-        const { error } = await supabase
+    const { error } = await supabase
         .from(table)
         .update({
             nom: client.nom,
@@ -72,14 +72,16 @@ async function UpdateClient(Client){
             telephone: client.telephone,
             email: client.email,
             societe: client.societe
-        })
-        // IMPORTANT :
-        .eq("id", client.id);
+    })
+    // IMPORTANT :
+    .eq("id", client.id);
 
-        if (error) {
-            alert(error.message);
-            return;
-        }
+    if (error) {
+        alert(error.message);
+        return;
+    }
+    
+    navigate("/clients");
 }
 
 
@@ -117,7 +119,6 @@ function enregistrer(e){
     alert("Client modifié");
 
     navigate("/clients");
-
 
 }
 

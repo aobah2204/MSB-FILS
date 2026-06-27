@@ -46,6 +46,8 @@ async function handleSubmit(e){
         alert("Client non enregistré");
     }
 
+    navigate("/clients");
+
 }
 
 

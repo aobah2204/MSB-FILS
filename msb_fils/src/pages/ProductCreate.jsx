@@ -38,17 +38,16 @@ const [product,setProduct] = useState({
 function handleChange(e){
 
 
-const {name,value,type,checked}=e.target;
+    const {name,value,type,checked}=e.target;
 
+    setProduct({
 
-setProduct({
+        ...product,
 
-    ...product,
-
-    [name]:
-    type==="checkbox"
-    ? checked
-    : value
+        [name]:
+        type==="checkbox"
+        ? checked
+        : value
 
     });
 }
@@ -73,7 +72,7 @@ async function handleSubmit(e){
         alert("Produit non enregistré");
     }
 
-    
+    navigate("/produits");
 }
 
 

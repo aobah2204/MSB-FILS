@@ -7,7 +7,8 @@ import {
  UserPen,
  UserRoundX,
  Pencil,
- Trash2
+ Trash2,
+ Package
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -96,7 +97,7 @@ function Products() {
             <section>
                 <div>  
                     <NavLink to="/produits/nouveau">
-                        <button className="profile"><UserPlus size={20}/>  Nouveau Produit</button>
+                        <button className="profile"><Package size={20}/>  Nouveau Produit</button>
                     </NavLink>                        
                 </div>            
             </section>
