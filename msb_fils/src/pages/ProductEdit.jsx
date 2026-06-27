@@ -23,7 +23,7 @@ const navigate = useNavigate();
 
 
 
-const [Product,setProduct] = useState({
+const [produit,setProduct] = useState({
 
     reference:"",
     nom:"",
@@ -61,13 +61,14 @@ async function getProduct(id){
         .eq("id", id)
         .maybeSingle();
     
-    setClient(data);
+    setProduct(data);
     setLoading(false);
 }
 
 useEffect(()=>{
     // simulation chargement API
     getProduct(id);
+    
 },[id]);
 
     async function UpdateProduct(Product){
@@ -115,14 +116,14 @@ useEffect(()=>{
 function handleChange(e){
 
 
-setClient({
+    setProduct({
 
-    ...Product,
+        ...produit,
 
-    [e.target.name]:
-    e.target.value
+        [e.target.name]:
+        e.target.value
 
-    });
+        });
 
 
 }
@@ -137,15 +138,14 @@ function enregistrer(e){
     e.preventDefault();
 
 
-    console.log(Product);
+    console.log(produit);
 
     // Update Product
-    UpdateProduct(Product);
+    UpdateProduct(produit);
 
     alert("Produit modifié");
 
     navigate("/produits");
-
 
 }
 
@@ -165,113 +165,120 @@ return (
 
 
         <form
-    className="product-form"
-    onSubmit={handleSubmit}
-    >
+            className="product-form"
+            onSubmit={enregistrer}
+            >
 
-        <div className="grid">
+            <div className="grid">
 
-            <div>
-                <label>
-                    Référence
-                </label>
+                <div>
+                    <label>
+                        Référence
+                    </label>
 
-                <input
-                    name="reference"
+                    <input
+                        name="reference"
+                        value={produit.reference || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label>
+                        Code barre
+                    </label>
+
+                    <input
+                        name="codeBarre"
+                        value={produit.codeBarre || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label>
+                        Nom produit
+                    </label>
+
+                    <input
+                    name="nom"
+                    value={produit.nom || ""}
                     onChange={handleChange}
-                />
-            </div>
+                    />
 
-            <div>
-                <label>
-                    Code barre
-                </label>
+                </div>
 
-                <input
-                    name="codeBarre"
+                <div>
+                    <label>
+                        Catégorie
+                    </label>
+
+                    <input
+                        name="categorie"
+                        value={produit.categorie || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label>
+                        Marque
+                    </label>
+
+                    <input
+                        name="marque"
+                        value={produit.marque || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label>
+                        Unité
+                    </label>
+
+                    <select
+                    name="unite"
+                    value={produit.unite || ""}
                     onChange={handleChange}
-                />
+                    >
+
+                        <option>
+                            Pièce
+                        </option>
+
+                        <option>
+                            Kg
+                        </option>
+
+                        <option>
+                            Litre
+                        </option>
+
+                        <option>
+                            Mètre
+                        </option>
+
+                        <option>
+                            Mètre cube
+                        </option>
+
+                        <option>
+                            Tonne
+                        </option>
+
+                    </select>
+
+
+                </div>
             </div>
-
-            <div>
-                <label>
-                    Nom produit
-                </label>
-
-                <input
-                name="nom"
-                onChange={handleChange}
-                />
-
-            </div>
-
-            <div>
-                <label>
-                    Catégorie
-                </label>
-
-                <input
-                    name="categorie"
-                    onChange={handleChange}
-                />
-            </div>
-
-            <div>
-                <label>
-                    Marque
-                </label>
-
-                <input
-                    name="marque"
-                    onChange={handleChange}
-                />
-            </div>
-
-            <div>
-                <label>
-                    Unité
-                </label>
-
-                <select
-                name="unite"
-                onChange={handleChange}
-                >
-
-                    <option>
-                        Pièce
-                    </option>
-
-                    <option>
-                        Kg
-                    </option>
-
-                    <option>
-                        Litre
-                    </option>
-
-                    <option>
-                        Mètre
-                    </option>
-
-                    <option>
-                        Mètre cube
-                    </option>
-
-                    <option>
-                        Tonne
-                    </option>
-
-                </select>
-
-
-            </div>
-        </div>
 
         <label>
             Description
         </label>
         <textarea 
             name="description"
+            value={produit.description || ""}
             onChange={handleChange}
         />
 
@@ -285,6 +292,7 @@ return (
                 <input
                     type="number"
                     name="prixAchat"
+                    value={produit.prixAchat || ""}
                     onChange={handleChange}
                 />
             </div>
@@ -299,7 +307,7 @@ return (
                     type="number"
 
                     name="prixVente"
-
+                    value={produit.prixVente || ""}
                     onChange={handleChange}
 
                 />
@@ -316,7 +324,7 @@ return (
 
                     name="tva"
 
-                    value={Product.tva}
+                    value={produit.tva}
 
                     onChange={handleChange}
 
@@ -340,6 +348,7 @@ return (
                 type="number"
 
                 name="stock"
+                value={produit.stock || ""}
 
                 onChange={handleChange}
 
@@ -356,6 +365,7 @@ return (
                 type="number"
 
                 name="stockMin"
+                value={produit.stockMin || ""}
 
                 onChange={handleChange}
 
@@ -375,6 +385,7 @@ return (
             <input
                 placeholder="Poids"
                 name="poids"
+                value={produit.poids || ""}
                 onChange={handleChange}
             />
 
@@ -382,6 +393,7 @@ return (
             <input
                 placeholder="Longueur"
                 name="longueur"
+                value={produit.longueur || ""}
                 onChange={handleChange}
             />
 
@@ -389,6 +401,7 @@ return (
             <input
                 placeholder="Largeur"
                 name="largeur"
+                value={produit.largeur || ""}
                 onChange={handleChange}
             />
 
@@ -396,6 +409,7 @@ return (
             <input
                 placeholder="Hauteur"
                 name="hauteur"
+                value={produit.hauteur || ""}
                 onChange={handleChange}
             />
 
@@ -412,7 +426,7 @@ return (
 
                 name="actif"
 
-                checked={Product.actif}
+                checked={produit.actif}
 
                 onChange={handleChange}
 
@@ -433,9 +447,7 @@ return (
 
     </div>
 
-    )
-
-}
+)}
 
 
 export default ProductEdit;

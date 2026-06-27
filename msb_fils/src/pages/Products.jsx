@@ -5,7 +5,9 @@ import {
  Settings,
  UserPlus,
  UserPen,
- UserRoundX
+ UserRoundX,
+ Pencil,
+ Trash2
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -138,10 +140,10 @@ function Products() {
 
                         <td>
                             <NavLink to={`/produits/modifier/${produit.id}`}>
-                                <button className="profile"><UserPen size={20} /></button>
+                                <button className="profile"><Pencil size={20} /></button>
                             </NavLink>
                              
-                             <button className="profileSupp" onClick={() => DeleteProduct(produit)}> <UserRoundX size={20} /></button>
+                             <button className="profileSupp" onClick={() => DeleteProduct(produit)}> <Trash2 size={20} /></button>
                         </td>
 
                     </tr>
