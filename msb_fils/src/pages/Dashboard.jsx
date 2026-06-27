@@ -8,6 +8,9 @@ function Dashboard(){
 const [clients,setClients] = useState([]);
 const [NbreClient,setNbreClient] = useState(0);
 
+const [produit,setProducts] = useState([]);
+const [NbreProduit,setNbreProduct] = useState(0);
+
 async function getAllClients(){
 
     const { data } = await supabase
@@ -18,16 +21,27 @@ async function getAllClients(){
     setNbreClient(data.length);
 }
 
+async function getAllProducts(){
+
+    const { data } = await supabase
+        .from("products")
+        .select("*");
+    
+    setProducts(data);
+    setNbreProduct(data.length);
+}
+
 useEffect(()=>{
-    getAllClients();    
+    getAllClients();  
+    getAllProducts();  
 },[]);
 
 return (
 
 <div>
 
-    <h1>
-        Bienvenue 👋
+    <h1>        
+        Situation globale 
     </h1>
 
 
@@ -39,7 +53,13 @@ return (
                 <p>{NbreClient}</p>
             </div>
         </NavLink>
-        
+
+        <NavLink to="/produits" className="card">
+            <div className="card">
+                <h3>Produits</h3>
+                <p>{NbreProduit}</p>
+            </div>
+        </NavLink>        
 
         <NavLink to="/factures" className="card">
             <div className="card">
@@ -53,8 +73,7 @@ return (
                 <h3>CA</h3>
                 <p>45 000 000 000 000</p>
             </div>
-        </NavLink>
-        
+        </NavLink>       
 
 
     </div>
