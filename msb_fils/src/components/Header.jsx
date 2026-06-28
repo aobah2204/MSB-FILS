@@ -21,11 +21,9 @@ return (
 
         <h2>
             <User /> {user?.fullname} 
-        </h2>
+        </h2>      
 
     </div>
-
-    <h1>Tableau de bord</h1>
 
     <div className="header-actions">
 
@@ -33,19 +31,9 @@ return (
         <div className="notification">
         🔔
         </div>
-
-
-        <div className="profile">           
-
-            <button
-                onClick={logout}
-            >
+        <button onClick={logout}>
             <LogOut />
-
-            </button>
-
-        </div>
-
+        </button>
 
     </div>
 
