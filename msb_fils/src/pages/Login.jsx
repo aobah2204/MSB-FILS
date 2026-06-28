@@ -13,14 +13,16 @@ const navigate = useNavigate();
 
 const [form,setForm] = useState({
     email:"",
-    phone:""
+    password:""
 });
 
 const [user,setUser] = useState({
     email:"",
     phone:"",
     role:"",
-    fullname: ""
+    fullname: "",
+    address: "",
+    password: ""
 });
 
 
@@ -49,7 +51,7 @@ async function handleSubmit(e){
         .from("utilisateurs")
         .select("*")
         .eq("email", form.email)
-        .eq("telephone", form.phone)
+        .eq("password", form.password)
         .maybeSingle();
 
     if(err){
@@ -109,11 +111,11 @@ return (
 
             <input
 
-                name="phone"
+                name="password"
 
-                type="text"
+                type="password"
 
-                placeholder="Téléphone"
+                placeholder="Mot de pass"
 
                 onChange={handleChange}
 

@@ -17,6 +17,8 @@ const [user,setUser]=useState({
     telephone: "",
     email:"",
     role: "Administrateur",
+    adresse: "",
+    password: ""
 });
 
 
@@ -112,6 +114,34 @@ return (
                 placeholder="Email"
 
                 value={user.email}
+
+                onChange={handleChange}
+
+            />
+
+            <input
+
+                name="adresse"
+
+                type="adress"
+
+                placeholder="Adresse"
+
+                value={user.adresse}
+
+                onChange={handleChange}
+
+            />
+
+            <input
+
+                name="password"
+
+                type="password"
+
+                placeholder="Mot de pass"
+
+                value={user.password}
 
                 onChange={handleChange}
 
