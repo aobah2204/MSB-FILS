@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 
@@ -74,7 +74,9 @@ async function handleSubmit(e){
 
 }
 
-
+function gotoInscription(){
+    navigate("/register");
+}
 
 return (
 
@@ -129,9 +131,9 @@ return (
 
                 Pas de compte ?
 
-                <a href="/register">
-                Créer un compte
-                </a>
+                <Link to="/register">
+                    Créer un compte
+                </Link>
 
             </p>
 
