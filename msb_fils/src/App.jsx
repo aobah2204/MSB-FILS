@@ -19,7 +19,13 @@ import ClientEdit from "./pages/ClientEdit";
 import CA from "./pages/CA";
 import ProductCreate from "./pages/ProductCreate";
 import Products from "./pages/Products";
-import ProductEdit from './pages/ProductEdit'
+import ProductEdit from './pages/ProductEdit';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import RoleRoute from "./components/RoleRoute";
+
 
 
 
@@ -29,10 +35,32 @@ function App() {
   return (
     <Routes>
 
-      <Route
-        path="/"
-        element={<DashboardLayout />}
-      >
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+
+        <Route
+
+          path="/"
+
+          element={
+
+          <ProtectedRoute>
+
+            <DashboardLayout />
+
+          </ProtectedRoute>}
+
+        >
+
 
         <Route
           index
@@ -61,7 +89,11 @@ function App() {
 
         <Route
           path="clients/modifier/:id"
-          element={<ClientEdit />}
+          element={
+              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                <ClientEdit />
+              </RoleRoute>       
+        }
         />
 
         <Route
@@ -71,12 +103,20 @@ function App() {
 
         <Route
           path="produits/nouveau"
-          element={<ProductCreate />}
+          element={
+                    <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                      <ProductCreate />
+                    </RoleRoute>
+                  }
         />
 
         <Route
           path="produits/modifier/:id"
-          element={<ProductEdit />}
+          element={
+                <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                  <ProductEdit />
+                </RoleRoute>
+            }
         />
 
         <Route 

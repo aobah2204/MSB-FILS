@@ -8,7 +8,7 @@ import {
 import App from "./App";
 
 import "./index.css";
-
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(
   document.getElementById("root")
@@ -19,10 +19,14 @@ ReactDOM.createRoot(
 
     <BrowserRouter>
 
-      <App />
+      <AuthProvider>
+
+        <App />
+
+      </AuthProvider>
 
     </BrowserRouter>
 
-  </React.StrictMode>
+</React.StrictMode>
 
 );

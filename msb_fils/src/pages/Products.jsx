@@ -15,6 +15,7 @@ import { NavLink } from "react-router-dom";
 import { supabase } from "../supabase.js";
 import { useState, useEffect } from 'react'
 import "../CSS/Products.css";
+import { useAuth } from "../context/AuthContext";
 
 const Product = {
     reference:"",
@@ -41,6 +42,9 @@ const Product = {
 }
 
 function Products() {
+
+    // Connected user 
+    const { user } = useAuth();
 
     // List Produits
     const [productsList, setProductList] = useState([]);
@@ -94,6 +98,10 @@ function Products() {
     return (
         <div>
 
+            {
+            ["Administrateur","Responsable de production"]
+            .includes(user?.role)
+            &&
             <section>
                 <div>  
                     <NavLink to="/produits/nouveau">
@@ -101,6 +109,7 @@ function Products() {
                     </NavLink>                        
                 </div>            
             </section>
+            }
 
             <h2>Liste des Produits</h2>
 
@@ -138,7 +147,10 @@ function Products() {
                         <td>{produit.prixVente}</td>
 
                         <td>{produit.actif}</td>
-
+                        {
+                        ["Administrateur","Responsable de production"]
+                        .includes(user?.role)
+                        &&
                         <td>
                             <NavLink to={`/produits/modifier/${produit.id}`}>
                                 <button className="profile"><Pencil size={20} /></button>
@@ -146,6 +158,7 @@ function Products() {
                              
                              <button className="profileSupp" onClick={() => DeleteProduct(produit)}> <Trash2 size={20} /></button>
                         </td>
+                        }
 
                     </tr>
 

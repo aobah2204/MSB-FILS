@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import { supabase } from "../supabase.js";
 import { useState, useEffect } from 'react'
 import "../CSS/Clients.css";
+import { useAuth } from "../context/AuthContext";
 
 const Client = {
   nom: "",
@@ -26,6 +27,9 @@ const Client = {
 
 
 function Clients() {
+
+    // Connected user
+    const { user } = useAuth();
 
     // List clients
     const [clientsList, setClientList] = useState([]);
@@ -78,13 +82,18 @@ function Clients() {
     return (
         <div>
 
-            <section>
-                <div>  
-                    <NavLink to="/clientCreate">
-                        <button className="profile"><UserPlus size={20}/>  Nouveau client</button>
-                    </NavLink>                        
-                </div>            
-            </section>
+            {
+            ["Administrateur","Responsable de production"]
+            .includes(user?.role)
+            &&
+                <section>
+                    <div>  
+                        <NavLink to="/clientCreate">
+                            <button className="profile"><UserPlus size={20}/>  Nouveau client</button>
+                        </NavLink>                        
+                    </div>            
+                </section>
+            }
 
             <h2>Liste des clients</h2>
 
@@ -120,14 +129,18 @@ function Clients() {
 
                         <td>{client.email}</td>
 
-                        <td>
-                            <NavLink to={`/clients/modifier/${client.id}`}>
-                                <button className="profile"><UserPen size={20} /></button>
-                            </NavLink>
-                             
-                             <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /></button>
-                        </td>
-
+                        {
+                            ["Administrateur","Responsable de production"]
+                            .includes(user?.role)
+                            &&
+                            <td>                                
+                                <NavLink to={`/clients/modifier/${client.id}`}>
+                                    <button className="profile"><UserPen size={20} /></button>
+                                </NavLink>
+                                
+                                <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /></button>
+                            </td>
+                        }
                     </tr>
 
                     ))

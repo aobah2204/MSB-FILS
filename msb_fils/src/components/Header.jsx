@@ -1,7 +1,16 @@
 import "./Header.css";
+import {
+    useAuth
+} from "../context/AuthContext";
 
+import {
+ User,
+ LogOut
+} from "lucide-react";
 
 function Header(){
+
+    const { user, logout } = useAuth();
 
 return (
 
@@ -11,12 +20,12 @@ return (
     <div className="profile">
 
         <h2>
-            Tableau de bord
+            <User /> {user?.fullname} 
         </h2>
 
     </div>
 
-
+    <h1>Tableau de bord</h1>
 
     <div className="header-actions">
 
@@ -26,11 +35,14 @@ return (
         </div>
 
 
-        <div className="profile">
+        <div className="profile">           
 
-            <span className="profile-name">
-            Admin
-            </span>
+            <button
+                onClick={logout}
+            >
+            <LogOut />
+
+            </button>
 
         </div>
 

@@ -13,9 +13,12 @@ import {
 
 import logo from "../assets/Logo.png";
 import "./Sidebar.css";
+import { useAuth } from "../context/AuthContext";
 
 
 function Sidebar({open,closeMenu}){
+
+const { user } = useAuth();
 
 
 return (
@@ -50,10 +53,12 @@ return (
             <Users /> Clients
         </NavLink>     
 
+        
         <NavLink to="/produits">
             <Package size={20}/>
             Produits
         </NavLink>    
+        
 
         <NavLink to="/factures">
             <FileText /> Factures
