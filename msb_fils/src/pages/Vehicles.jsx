@@ -113,7 +113,7 @@ function Vehicles(){
             </button>
             }
 
-
+            <div className="table-container">
 
             <table>
 
@@ -184,7 +184,10 @@ function Vehicles(){
                     ))
                     }
                 </tbody>
-            </table>
+                </table>
+            </div>
+
+            
 
 
         </div>
