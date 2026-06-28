@@ -22,6 +22,10 @@ import Products from "./pages/Products";
 import ProductEdit from './pages/ProductEdit';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Vehicles from "./pages/Vehicles";
+import VehicleCreate from "./pages/VehicleCreate";
+import VehicleEdit from "./pages/VehicleEdit";
+import VehicleDetails from "./pages/VehicleDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -50,16 +54,11 @@ function App() {
         <Route
 
           path="/"
-
           element={
 
           <ProtectedRoute>
-
             <DashboardLayout />
-
-          </ProtectedRoute>}
-
-        >
+          </ProtectedRoute>}>
 
 
         <Route
@@ -93,7 +92,7 @@ function App() {
               <RoleRoute roles={["Administrateur","Responsable de production"]}>
                 <ClientEdit />
               </RoleRoute>       
-        }
+          }
         />
 
         <Route
@@ -118,6 +117,28 @@ function App() {
                 </RoleRoute>
             }
         />
+
+        <Route path="vehicules">
+          <Route
+          index
+          element={<Vehicles />}
+          />
+
+          <Route
+          path="nouveau"
+          element={<VehicleCreate />}
+          />
+
+          <Route
+          path="modifier/:id"
+          element={<VehicleEdit />}
+          />
+
+          <Route
+          path=":id"
+          element={<VehicleDetails />}
+          />
+        </Route>
 
         <Route 
           path="ca"

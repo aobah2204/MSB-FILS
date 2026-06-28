@@ -69,7 +69,7 @@ async function handleSubmit(e){
     if(!error){
         alert("Produit enregistré");
     }else{
-        alert("Produit non enregistré");
+        alert("Produit non enregistré : ", error.message);
     }
 
     navigate("/produits");

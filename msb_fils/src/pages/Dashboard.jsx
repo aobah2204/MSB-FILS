@@ -11,6 +11,9 @@ const [NbreClient,setNbreClient] = useState(0);
 const [produit,setProducts] = useState([]);
 const [NbreProduit,setNbreProduct] = useState(0);
 
+const [vehicules,setVehicules] = useState([]);
+const [NbreVehicule,setNbreVehicule] = useState(0);
+
 async function getAllClients(){
 
     const { data } = await supabase
@@ -31,9 +34,20 @@ async function getAllProducts(){
     setNbreProduct(data.length);
 }
 
+async function getAllVehicules(){
+
+    const { data } = await supabase
+        .from("vehicules")
+        .select("*");
+    
+    setVehicules(data);
+    setNbreVehicule(data.length);
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts();  
+    getAllVehicules();
 },[]);
 
 return (
@@ -58,6 +72,13 @@ return (
             <div className="card">
                 <h3>Produits</h3>
                 <p>{NbreProduit}</p>
+            </div>
+        </NavLink>  
+
+        <NavLink to="/vehicules" className="card">
+            <div className="card">
+                <h3>Flottes</h3>
+                <p>{NbreVehicule}</p>
             </div>
         </NavLink>        
 

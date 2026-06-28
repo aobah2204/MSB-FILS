@@ -8,7 +8,8 @@ import {
  UserPlus,
  HandCoins,
  Package,
- Factory
+ Factory,
+ Truck
 } from "lucide-react";
 
 import logo from "../assets/Logo.png";
@@ -57,7 +58,11 @@ return (
         <NavLink to="/produits">
             <Package size={20}/>
             Produits
-        </NavLink>    
+        </NavLink>   
+
+        <NavLink to="/vehicules">
+            <Truck /> Véhicules
+        </NavLink> 
         
 
         <NavLink to="/factures">
