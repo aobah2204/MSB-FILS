@@ -298,28 +298,28 @@ return (
 
 
             <input
-                placeholder="Poids"
+                placeholder="Poids en kg"
                 name="poids"
                 onChange={handleChange}
             />
 
 
             <input
-                placeholder="Longueur"
+                placeholder="Longueur en mètre"
                 name="longueur"
                 onChange={handleChange}
             />
 
 
             <input
-                placeholder="Largeur"
+                placeholder="Largeur en mètre"
                 name="largeur"
                 onChange={handleChange}
             />
 
 
             <input
-                placeholder="Hauteur"
+                placeholder="Hauteur en mètre"
                 name="hauteur"
                 onChange={handleChange}
             />
