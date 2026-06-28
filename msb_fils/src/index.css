@@ -52,10 +52,11 @@
 
 body {
   margin: 0;
+  background-color: rgb(16, 16, 117);
 }
 
 #root {
-  width: 1426px;
+  width: 90%;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
