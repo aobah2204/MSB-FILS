@@ -62,35 +62,35 @@ return (
     <div className="cards">
 
         <NavLink to="/clients" className="card">
-            <div className="card">
+            <div>
                 <h3>Clients</h3>
                 <p>{NbreClient}</p>
             </div>
         </NavLink>
 
         <NavLink to="/produits" className="card">
-            <div className="card">
+            <div>
                 <h3>Produits</h3>
                 <p>{NbreProduit}</p>
             </div>
         </NavLink>  
 
         <NavLink to="/vehicules" className="card">
-            <div className="card">
+            <div>
                 <h3>Flottes</h3>
                 <p>{NbreVehicule}</p>
             </div>
         </NavLink>        
 
         <NavLink to="/factures" className="card">
-            <div className="card">
+            <div>
                 <h3>Factures</h3>
                 <p>0</p>
             </div>
         </NavLink>
 
         <NavLink to="/ca" className="card">
-            <div className="card">
+            <div>
                 <h3>CA</h3>
                 <p>45 000 000 000 000</p>
             </div>

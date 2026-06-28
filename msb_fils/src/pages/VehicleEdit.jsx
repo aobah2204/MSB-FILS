@@ -136,8 +136,7 @@ function VehicleEdit(){
     return (
 
         <div>
-
-
+            
             <h1>
                 Modifier véhicule {id}
             </h1>

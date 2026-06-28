@@ -1,11 +1,11 @@
 import {
-useState,
-useEffect
+    useState,
+    useEffect
 } from "react";
 
 import {
-useParams,
-useNavigate
+    useParams,
+    useNavigate
 } from "react-router-dom";
 
 
@@ -115,7 +115,6 @@ useEffect(()=>{
 
 function handleChange(e){
 
-
     setProduct({
 
         ...produit,
@@ -125,18 +124,12 @@ function handleChange(e){
 
     });
 
-
 }
-
-
-
 
 
 function enregistrer(e){
 
-
     e.preventDefault();
-
 
     console.log(produit);
 
@@ -150,13 +143,9 @@ function enregistrer(e){
 }
 
 
-
-
-
 return (
 
     <div className="product-page">
-
 
         <h1>
             Modifier Product
@@ -236,9 +225,9 @@ return (
                     </label>
 
                     <select
-                    name="unite"
-                    value={produit.unite || ""}
-                    onChange={handleChange}
+                        name="unite"
+                        value={produit.unite || ""}
+                        onChange={handleChange}
                     >
 
                         <option>
@@ -266,7 +255,6 @@ return (
                         </option>
 
                     </select>
-
 
                 </div>
             </div>
@@ -307,8 +295,8 @@ return (
                     name="prixVente"
                     value={produit.prixVente || ""}
                     onChange={handleChange}
-
                 />
+
             </div>
 
             <div>
@@ -343,12 +331,12 @@ return (
 
                 <input
 
-                type="number"
+                    type="number"
 
-                name="stock"
-                value={produit.stock || ""}
+                    name="stock"
+                    value={produit.stock || ""}
 
-                onChange={handleChange}
+                    onChange={handleChange}
 
                 />
             </div>
@@ -360,16 +348,14 @@ return (
 
                 <input
 
-                type="number"
+                    type="number"
+                    name="stockMin"
+                    value={produit.stockMin || ""}
 
-                name="stockMin"
-                value={produit.stockMin || ""}
-
-                onChange={handleChange}
+                    onChange={handleChange}
 
                 />
             </div>
-
 
         </div>
 
@@ -379,14 +365,12 @@ return (
 
         <div className="grid">
 
-
             <input
                 placeholder="Poids"
                 name="poids"
                 value={produit.poids || ""}
                 onChange={handleChange}
             />
-
 
             <input
                 placeholder="Longueur"
@@ -395,14 +379,12 @@ return (
                 onChange={handleChange}
             />
 
-
             <input
                 placeholder="Largeur"
                 name="largeur"
                 value={produit.largeur || ""}
                 onChange={handleChange}
             />
-
 
             <input
                 placeholder="Hauteur"
@@ -411,7 +393,6 @@ return (
                 onChange={handleChange}
             />
 
-
         </div>
 
 
@@ -419,21 +400,13 @@ return (
 
 
             <input
-
                 type="checkbox"
-
                 name="actif"
-
                 checked={produit.actif}
-
                 onChange={handleChange}
-
-            />
+            />            
             Produit actif
         </label>
-
-
-
 
         <button>
             Modifier produit
