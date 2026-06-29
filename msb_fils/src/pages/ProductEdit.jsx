@@ -40,9 +40,13 @@ const [produit,setProduct] = useState({
     stockMin:"",
 
     poids:"",
+    unite_poids: "",
     longueur:"",
+    unite_longueur: "",
     largeur:"",
+    unite_largeur: "",
     hauteur:"",
+    unite_hauteur: "",
 
     codeBarre:"",
     actif:true
@@ -94,9 +98,13 @@ useEffect(()=>{
             stock: Product.stock,
             stockMin: Product.stockMin,
             poids: Product.poids,
+            unite_poids: Product.unite_poids,
             longueur: Product.longueur,
+            unite_longueur: Product.unite_longueur,
             largeur: Product.largeur,
+            unite_largeur: Product.unite_largeur,
             hauteur: Product.hauteur,
+            unite_hauteur: Product.unite_hauteur,
             codeBarre: Product.codeBarre,
             actif: Product.actif
         })
@@ -365,35 +373,163 @@ return (
 
         <div className="grid">
 
-            <input
-                placeholder="Poids"
-                name="poids"
-                value={produit.poids || ""}
-                onChange={handleChange}
-            />
+            <div className="grid">
 
-            <input
-                placeholder="Longueur"
-                name="longueur"
-                value={produit.longueur || ""}
-                onChange={handleChange}
-            />
+                <input
+                    placeholder="Poids"
+                    name="poids"
+                    value={produit.poids || ""}
+                    onChange={handleChange}
+                />
+            
+                <select
+                    name="unite_poids"
+                    value="Unité de mésure"
+                    value={produit.unite_poids || ""}
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    <option>
+                        gramme
+                    </option>
 
-            <input
-                placeholder="Largeur"
-                name="largeur"
-                value={produit.largeur || ""}
-                onChange={handleChange}
-            />
+                    <option>
+                        Kilogramme
+                    </option>
 
-            <input
-                placeholder="Hauteur"
-                name="hauteur"
-                value={produit.hauteur || ""}
-                onChange={handleChange}
-            />
+                    <option>
+                        tonne
+                    </option>
 
-        </div>
+                </select>
+            </div>
+
+            <div className="grid">
+                <input
+                    placeholder="Longueur"
+                    name="longueur"
+                    value={produit.longueur || ""}
+                    onChange={handleChange}
+                />
+                <select
+                    name="unite_longueur"
+                    value="Unité de mésure"
+                    value={produit.unite_longueur}
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>            
+
+            <div className="grid">
+
+                <input
+                    placeholder="Largeur"
+                    name="largeur"
+                    value={produit.largeur}
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_largeur"
+                    value={produit.unite_largeur}
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>            
+
+            <div className="grid">
+
+                <input
+                    placeholder="Hauteur"
+                    name="hauteur"
+                    value={produit.hauteur}
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_hauteur"
+                    value="Unité de mésure"
+                    value={produit.unite_hauteur}
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+
+        </div>        
 
 
         <label className="checkbox">

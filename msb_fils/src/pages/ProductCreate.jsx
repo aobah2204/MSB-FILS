@@ -24,9 +24,13 @@ const [product,setProduct] = useState({
     stockMin:"",
 
     poids:"",
+    unite_poids:"",
     longueur:"",
+    unite_longueur:"",
     largeur:"",
+    unite_largeur:"",
     hauteur:"",
+    unite_hauteur:"",
 
     codeBarre:"",
     actif:true
@@ -291,39 +295,161 @@ return (
         </div>
 
         <h3>
-            Dimensions ( en kg et mètre )
+            Dimensions
         </h3>
 
         <div className="grid">
 
+            <div className="grid">
+                <input
+                    placeholder="Poids"
+                    name="poids"
+                    onChange={handleChange}
+                />
+            
+                <select
+                    name="unite_poids"
+                    value="Unité de mésure"
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    <option>
+                        gramme
+                    </option>
 
-            <input
-                placeholder="Poids en kg"
-                name="poids"
-                onChange={handleChange}
-            />
+                    <option>
+                        Kilogramme
+                    </option>
+
+                    <option>
+                        tonne
+                    </option>
+
+                </select>
+            </div>
 
 
-            <input
-                placeholder="Longueur en mètre"
-                name="longueur"
-                onChange={handleChange}
-            />
 
+            <div className="grid">
+                <input
+                    placeholder="Longueur"
+                    name="longueur"
+                    onChange={handleChange}
+                />
+                <select
+                    name="unite_longueur"
+                    value="Unité de mésure"
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
 
-            <input
-                placeholder="Largeur en mètre"
-                name="largeur"
-                onChange={handleChange}
-            />
+                    <option>
+                        centimètre
+                    </option>
 
+                    <option>
+                        décimètre
+                    </option>
 
-            <input
-                placeholder="Hauteur en mètre"
-                name="hauteur"
-                onChange={handleChange}
-            />
+                    <option>
+                        mètre
+                    </option>
 
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+            
+
+            <div className="grid">
+
+                <input
+                    placeholder="Largeur"
+                    name="largeur"
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_largeur"
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+            
+
+            <div className="grid">
+
+                <input
+                    placeholder="Hauteur"
+                    name="hauteur"
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_hauteur"
+                    value="Unité de mésure"
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
 
         </div>
 
