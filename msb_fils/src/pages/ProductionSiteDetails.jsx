@@ -25,7 +25,7 @@ function ProductionSiteDetails(){
     });
 
 
-    async function getSite({id}){
+    async function getSite(){
 
         const table = "siteproduction";
         const { data } = await supabase
