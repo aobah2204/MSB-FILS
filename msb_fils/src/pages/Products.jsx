@@ -8,7 +8,8 @@ import {
  UserRoundX,
  Pencil,
  Trash2,
- Package
+ Package,
+ Eye
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -152,6 +153,9 @@ function Products() {
                         .includes(user?.role)
                         &&
                         <td>
+                            <NavLink to={`/produits/details/${produit.id}`}>
+                                <button className="profile"><Eye size={20} /></button>
+                            </NavLink>
                             <NavLink to={`/produits/modifier/${produit.id}`}>
                                 <button className="profile"><Pencil size={20} /></button>
                             </NavLink>

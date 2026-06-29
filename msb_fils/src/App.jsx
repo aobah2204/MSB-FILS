@@ -20,6 +20,7 @@ import CA from "./pages/CA";
 import ProductCreate from "./pages/ProductCreate";
 import Products from "./pages/Products";
 import ProductEdit from './pages/ProductEdit';
+import ProductDetails from './pages/ProductDetails'
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Vehicles from "./pages/Vehicles";
@@ -115,6 +116,13 @@ function App() {
                 <RoleRoute roles={["Administrateur","Responsable de production"]}>
                   <ProductEdit />
                 </RoleRoute>
+            }
+        />
+
+        <Route
+          path="produits/details/:id"
+          element={
+                <ProductDetails />
             }
         />
 
