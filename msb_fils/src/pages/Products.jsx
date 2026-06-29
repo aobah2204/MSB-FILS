@@ -118,8 +118,8 @@ function Products() {
                 <table>
                     <thead className="headerTable">
 
-                    <tr>
-                        <th className="ligneClient">Reférence</th>
+                    <tr className="header_Table_produits">
+                        <th>Reférence</th>
                         <th>Nom</th>
                         <th>Catégorie</th>
                         <th>Prix Achat</th>

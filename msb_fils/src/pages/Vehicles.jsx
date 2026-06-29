@@ -15,6 +15,7 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../supabase";
+import '../CSS/Vehicule.css'
 
 
 function Vehicles(){
@@ -118,7 +119,7 @@ function Vehicles(){
             <table>
 
                 <thead>
-                    <tr>
+                    <tr className="header_Table">
                         <th>Véhicule</th>
                         <th>Immatriculation</th>
                         <th>Chauffeur</th>

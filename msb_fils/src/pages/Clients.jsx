@@ -101,8 +101,8 @@ function Clients() {
                 <table>
                     <thead className="headerTable">
 
-                    <tr>
-                        <th className="ligneClient">Nom</th>
+                    <tr className="header_Table_clients">
+                        <th>Nom</th>
                         <th>Prénom</th>
                         <th>Société</th>
                         <th>Téléphone</th>
