@@ -5,7 +5,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Legend
 } from "recharts";
 
 import '../CSS/ProductionChart.css'
@@ -84,7 +85,11 @@ return (
 
         <Tooltip />
 
-
+        {/* Légende automatique */}
+        <Legend
+        verticalAlign="bottom"
+        height={40}
+        />
 
         <Line
 
@@ -94,7 +99,11 @@ return (
 
             name="Cette année"
 
+            stroke="#2563eb"
+
             strokeWidth={3}
+
+            dot={{r:5}}
 
         />
 
@@ -108,7 +117,11 @@ return (
 
             name="Mois dernier"
 
+            stroke="#16a34a"
+
             strokeWidth={2}
+
+            dot={{r:5}}
 
         />
 
@@ -122,7 +135,11 @@ return (
 
             name="Même mois année dernière"
 
-            strokeWidth={2}
+            stroke="#f97316"
+
+            strokeWidth={3}
+
+            dot={{r:5}}
 
         />
 
