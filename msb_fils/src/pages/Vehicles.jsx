@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../supabase";
 import '../CSS/Vehicule.css'
+import { NavLink } from "react-router-dom";
 
 
 function Vehicles(){
@@ -98,21 +99,24 @@ function Vehicles(){
 
     return (
 
-        <div>
-            <h1>
-                Véhicules
-            </h1>
+        <div>            
 
             {
             ["Administrateur","Responsable de production"]
             .includes(user?.role)
             &&
-            <button
-                onClick={()=>navigate("/vehicules/nouveau")}
-            >
-                <Truck size={25}/> Ajouter un véhicule
-            </button>
+            <section>
+                    <div>  
+                        <NavLink to="/vehicules/nouveau">
+                            <button className="profile"><Truck size={20}/>  Ajouter un véhicule </button>
+                        </NavLink>                        
+                    </div>            
+            </section>
+            
             }
+            <h2>
+                Liste des Véhicules
+            </h2>
 
             <div className="table-container">
 
