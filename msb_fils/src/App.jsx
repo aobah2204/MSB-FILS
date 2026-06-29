@@ -27,7 +27,9 @@ import Vehicles from "./pages/Vehicles";
 import VehicleCreate from "./pages/VehicleCreate";
 import VehicleEdit from "./pages/VehicleEdit";
 import VehicleDetails from "./pages/VehicleDetails";
-import ProductionChart from './components/ProductionChart'
+import ProductionChart from './components/ProductionChart';
+import VenteChart from './components/VenteChart';
+import AchatChart from './components/AchatChart';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";

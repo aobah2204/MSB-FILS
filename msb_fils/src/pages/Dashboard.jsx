@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { supabase } from "../supabase.js";
 import { NavLink } from "react-router-dom";
 import ProductionChart from "../components/ProductionChart";
+import VenteChart from "../components/VenteChart.jsx";
+import AchatChart from "../components/AchatChart.jsx";
 
 
 function Dashboard(){
@@ -108,12 +110,18 @@ return (
 
     <div className="cards">
 
-        <div className="card">
-            <h3>
-                Production
-                </h3>
-                <ProductionChart />
+        <div className="card">            
+            <AchatChart />
         </div> 
+
+        <div className="card">
+            <ProductionChart />
+        </div> 
+
+        <div className="card">
+            <VenteChart />
+        </div> 
+
     </div>
 
 
