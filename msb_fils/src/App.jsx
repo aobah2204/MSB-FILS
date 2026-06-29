@@ -30,6 +30,9 @@ import VehicleDetails from "./pages/VehicleDetails";
 import ProductionChart from './components/ProductionChart';
 import VenteChart from './components/VenteChart';
 import AchatChart from './components/AchatChart';
+import ProductionSites from "./pages/ProductionSites";
+import ProductionSiteCreate from "./pages/ProductionSiteCreate";
+import ProductionSiteDetails from "./pages/ProductionSiteDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -48,12 +51,10 @@ function App() {
           element={<Login />}
         />
 
-
         <Route
           path="/register"
           element={<Register />}
         />
-
 
         <Route
 
@@ -105,8 +106,8 @@ function App() {
         />
 
         <Route
-          path="produits/nouveau"
-          element={
+            path="produits/nouveau"
+            element={
                     <RoleRoute roles={["Administrateur","Responsable de production"]}>
                       <ProductCreate />
                     </RoleRoute>
@@ -129,27 +130,51 @@ function App() {
             }
         />
 
-        <Route path="vehicules">
-          <Route
-          index
-          element={<Vehicles />}
-          />
+        {/** Véhicules routes 
+        <Route path="vehicules"> */}
+
+          <Route path="vehicules"
+            index
+            element={<Vehicles />}
+            />
 
           <Route
-          path="nouveau"
+          path="vehicules/nouveau"
           element={<VehicleCreate />}
           />
 
           <Route
-          path="modifier/:id"
-          element={<VehicleEdit />}
+            path="vehicules/modifier/:id"
+            element={<VehicleEdit />}
           />
 
           <Route
-          path=":id"
+          path="vehicules/:id"
           element={<VehicleDetails />}
           />
-        </Route>
+
+        {/* Sites de production 
+        <Route path="production-sites"> */}
+
+
+          <Route path="production-sites"
+            index
+            element={<ProductionSites />}
+          />
+
+
+          <Route
+            path="production-sites/nouveau"
+            element={<ProductionSiteCreate />}
+          />
+
+
+          <Route
+            path="production-sites/:id"
+            element={<ProductionSiteDetails />}
+          />
+
+
 
         <Route 
           path="ca"

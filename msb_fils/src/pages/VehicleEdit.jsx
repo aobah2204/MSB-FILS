@@ -12,14 +12,14 @@ function VehicleEdit(){
 
     const [vehicule,setVehicule]=useState({
     
-            marque:"",
-            modele:"",
-            immatriculation:"",
-            annee:"",
-            chauffeur:"",
-            kilometrage:"",
-            carburant:"Diesel",
-            user_id: 0,
+        marque:"",
+        modele:"",
+        immatriculation:"",
+        annee:"",
+        chauffeur:"",
+        kilometrage:"",
+        carburant:"Diesel",
+        user_id: 0
     
     });
     
@@ -74,8 +74,7 @@ function VehicleEdit(){
     
         async function save(e){
     
-            e.preventDefault();
-    
+            e.preventDefault();    
     
             
             const table = "vehicules";
@@ -112,7 +111,7 @@ function VehicleEdit(){
             }
         }
 
-        async function getVehicule(id){
+        async function getVehicule(){
 
             const { data } = await supabase
                     .from("vehicules")            
@@ -135,97 +134,99 @@ function VehicleEdit(){
 
     return (
 
-        <div>
+        <div className="product_page">
             
             <h1>
                 Modifier véhicule {id}
             </h1>
 
-            <form onSubmit={save}>
+            <form className="product_form" onSubmit={save}>
 
-                <input
-                    name="marque"
-                    value={vehicule.marque || ""}
-                    onChange={change}
-                />
+                <div className="grid">
 
-                <input
-                    name="modele"
-                    value={vehicule.modele || ""}
-                    onChange={change}
-                />
+                    <input
+                        name="marque"
+                        value={vehicule?.marque || ""}
+                        onChange={change}
+                    />
 
-                <input
-                    name="immatriculation"
-                    value={vehicule.immatriculation || ""}
-                    onChange={change}
-                />
+                    <input
+                        name="modele"
+                        value={vehicule?.modele || ""}
+                        onChange={change}
+                    />
 
-                <input
-                    name="annee"
-                    value={vehicule.annee || ""}
-                    onChange={change}
-                />
+                    <input
+                        name="immatriculation"
+                        value={vehicule?.immatriculation || ""}
+                        onChange={change}
+                    />
 
-                <select
-                    value={chauffeur?.id}
-                    name="chauffeur"
-                    onChange={onChange}
-                >
-                    <option value="">
-                    -- Choisir un chauffeur --
-                    </option>
-                    {
-                        chauffeurs.map((c)=>(
+                    <input
+                        name="annee"
+                        value={vehicule?.annee || ""}
+                        onChange={change}
+                    />
 
-                            <option
-                                key={c.id}
-                                value={c.id}
-                            >
-                                {c.fullname}
-                            </option>
-                        ))
-                    }
+                    <select
+                        value={chauffeur?.id}
+                        name="chauffeur"
+                        onChange={onChange}
+                    >
+                        <option value="">
+                        -- Choisir un chauffeur --
+                        </option>
+                        {
+                            chauffeurs.map((c)=>(
+
+                                <option
+                                    key={c.id}
+                                    value={c.id}
+                                >
+                                    {c.fullname}
+                                </option>
+                            ))
+                        }
 
 
-                </select>
+                    </select>
 
 
-                <input
-                    name="kilometrage"
-                    type="int"
-                    value={vehicule.kilometrage || ""}
-                    onChange={change}
-                />
+                    <input
+                        name="kilometrage"
+                        type="int"
+                        value={vehicule?.kilometrage || ""}
+                        onChange={change}
+                    />
 
-                <select
-                    name="carburant"
-                    value={vehicule.carburant}
-                    onChange={change}
-                >
+                    <select
+                        name="carburant"
+                        value={vehicule?.carburant}
+                        onChange={change}
+                    >
 
-                    <option>
-                    Diesel
-                    </option>
+                        <option>
+                        Diesel
+                        </option>
 
-                    <option>
-                    Essence
-                    </option>
+                        <option>
+                        Essence
+                        </option>
 
-                    <option>
-                    Electrique
-                    </option>
+                        <option>
+                        Electrique
+                        </option>
 
-                </select>
+                    </select>
+
+                </div>                
+
+                
                 <br/>
-                <button>
+                <button className="profile">
                     Enregistrer
                 </button>
-            </form>
-
-            
-
-
+            </form>   
         </div>
 
     )

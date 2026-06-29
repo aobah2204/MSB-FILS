@@ -159,7 +159,7 @@ function Vehicles(){
                             .includes(user?.role)
                             &&
                             <td>
-                                <button
+                                <button className="profile" 
                                     onClick={()=>
                                         navigate(`/vehicules/${v.id}`)
                                     }
@@ -167,7 +167,7 @@ function Vehicles(){
                                     <FileText />
                                 </button>
                                     
-                                <button
+                                <button className="profile" 
                                     onClick={()=>
                                     navigate(`/vehicules/modifier/${v.id}`)
                                     }
@@ -175,7 +175,7 @@ function Vehicles(){
                                     <Pencil />
                                 </button>
 
-                                <button
+                                <button className="profile" 
                                     onClick={()=>
                                     DeleteVehicule(v)
                                     }

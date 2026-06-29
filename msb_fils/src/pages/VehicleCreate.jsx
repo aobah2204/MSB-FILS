@@ -7,6 +7,8 @@ import {
     useNavigate
 } from "react-router-dom";
 
+import '../CSS/ProductCreate.css'
+
 function VehicleCreate(){
 
 
@@ -120,92 +122,103 @@ useEffect(() => {
 
 return (
 
-    <div>
+    <div className="product_page">
 
 
-        <h1>
+        <h1 className="product_title">
         Nouveau véhicule
         </h1>
 
-        <form onSubmit={save}>
+        <form  className="product_form" onSubmit={save}>
 
-            <input
-                name="marque"
-                placeholder="Marque"
-                onChange={change}
-            />
+            <div className="grid">
 
-            <input
-                name="modele"
-                placeholder="Modèle"
-                onChange={change}
-            />
+                <input
+                    name="marque"
+                    placeholder="Marque"
+                    onChange={change}
+                />
 
-            <input
-                name="immatriculation"
-                placeholder="Immatriculation"
-                onChange={change}
-            />
+                <input
+                    name="modele"
+                    placeholder="Modèle"
+                    onChange={change}
+                />
 
-            <input
-                name="annee"
-                placeholder="Année"
-                onChange={change}
-            />
+                <input
+                    name="immatriculation"
+                    placeholder="Immatriculation"
+                    onChange={change}
+                />
 
-            <select
-                value={chauffeur?.id}
-                name="chauffeur"
-                onChange={onChange}
-            >
-                <option value="">
-                -- Choisir un chauffeur --
-                </option>
-                {
-                    chauffeurs.map((c)=>(
+                <input
+                    name="annee"
+                    placeholder="Année"
+                    onChange={change}
+                />
 
-                        <option
-                            key={c.id}
-                            value={c.id}
-                        >
-                            {c.fullname}
-                        </option>
-                    ))
-                }
+                <select
+                    value={chauffeur?.id}
+                    name="chauffeur"
+                    onChange={onChange}
+                >
+                    <option value="">
+                    -- Choisir un chauffeur --
+                    </option>
+                    {
+                        chauffeurs.map((c)=>(
+
+                            <option
+                                key={c.id}
+                                value={c.id}
+                            >
+                                {c.fullname}
+                            </option>
+                        ))
+                    }
 
 
-            </select>
+                </select>
 
 
-            <input
-                name="kilometrage"
-                type="int"
-                placeholder="Kilométrage"
-                onChange={change}
-            />
+                <input
+                    name="kilometrage"
+                    type="int"
+                    placeholder="Kilométrage"
+                    onChange={change}
+                />
 
-            <select
-                name="carburant"
-                onChange={change}
-            >
+                <select
+                    name="carburant"
+                    onChange={change}
+                >
 
-                <option>
-                Diesel
-                </option>
+                    <option>
+                    Diesel
+                    </option>
 
-                <option>
-                Essence
-                </option>
+                    <option>
+                    Essence
+                    </option>
 
-                <option>
-                Electrique
-                </option>
+                    <option>
+                    Electrique
+                    </option>
 
-            </select>
+                </select>
+
+            </div>
+            
             <br/>
-            <button>
-                Enregistrer
-            </button>
+
+            <div>
+
+                <button className="profile" >
+                    Enregistrer
+                </button>
+
+            </div>
+            
         </form>
 
 

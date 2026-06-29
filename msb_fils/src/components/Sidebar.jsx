@@ -63,6 +63,12 @@ return (
         <NavLink to="/vehicules">
             <Truck /> Véhicules
         </NavLink> 
+
+        <NavLink to="/production-sites">
+
+            <Factory /> Sites production
+
+        </NavLink>
         
 
         <NavLink to="/factures">

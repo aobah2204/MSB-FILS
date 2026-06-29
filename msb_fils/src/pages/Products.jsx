@@ -118,7 +118,7 @@ function Products() {
                 <table>
                     <thead className="headerTable">
 
-                    <tr className="header_Table_produits">
+                    <tr className="header_Table">
                         <th>Reférence</th>
                         <th>Nom</th>
                         <th>Catégorie</th>
