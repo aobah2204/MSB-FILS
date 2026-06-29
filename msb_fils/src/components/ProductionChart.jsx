@@ -50,91 +50,91 @@ const data = [
 
 return (
 
-<div className="chart-card">
+    <div className="chart-card">
 
 
-<h2 className="titre_graphe">
-    Evolution production
-</h2>
-
-
-
-<div
-style={{
- width:"100%",
- height:300
-}}
->
-
-
-<ResponsiveContainer>
-
-
-<LineChart data={data}>
-
-
-<CartesianGrid strokeDasharray="3 3" />
-
-
-<XAxis dataKey="mois" />
-
-
-<YAxis />
-
-
-<Tooltip />
+        <h2 className="titre_graphe">
+            Evolution production
+        </h2>
 
 
 
-<Line
-
-type="monotone"
-
-dataKey="actuel"
-
-name="Cette année"
-
-strokeWidth={3}
-
-/>
+        <div
+            style={{
+            width:"100%",
+            height:300
+            }}
+        >
 
 
-
-<Line
-
-type="monotone"
-
-dataKey="moisDernier"
-
-name="Mois dernier"
-
-strokeWidth={2}
-
-/>
+            <ResponsiveContainer>
 
 
+            <LineChart data={data}>
 
-<Line
 
-type="monotone"
+            <CartesianGrid strokeDasharray="3 3" />
 
-dataKey="anneeDerniere"
 
-name="Même mois année dernière"
+            <XAxis dataKey="mois" />
 
-strokeWidth={2}
 
-/>
+            <YAxis />
+
+
+        <Tooltip />
 
 
 
-</LineChart>
+        <Line
+
+            type="monotone"
+
+            dataKey="actuel"
+
+            name="Cette année"
+
+            strokeWidth={3}
+
+        />
 
 
-</ResponsiveContainer>
+
+        <Line
+
+            type="monotone"
+
+            dataKey="moisDernier"
+
+            name="Mois dernier"
+
+            strokeWidth={2}
+
+        />
 
 
-</div>
+
+        <Line
+
+            type="monotone"
+
+            dataKey="anneeDerniere"
+
+            name="Même mois année dernière"
+
+            strokeWidth={2}
+
+        />
+
+
+
+        </LineChart>
+
+
+        </ResponsiveContainer>
+
+
+    </div>
 
 
 </div>

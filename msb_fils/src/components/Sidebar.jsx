@@ -39,7 +39,7 @@ return (
         />*/}
         <Factory size={40} />
         <span>
-        MSB FILS
+        MSB & FILS
         </span>
     </div>
 

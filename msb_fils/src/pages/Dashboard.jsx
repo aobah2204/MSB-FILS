@@ -56,9 +56,9 @@ return (
 
 <div>
 
-    <h1>        
-        Situation globale 
-    </h1>
+    <h2>        
+        MSB & FILS Portail
+    </h2>
 
 
     <div className="cards">
@@ -82,7 +82,10 @@ return (
                 <h3>Flottes</h3>
                 <p>{NbreVehicule}</p>
             </div>
-        </NavLink>        
+        </NavLink>     
+    </div>
+
+    <div className="cards">   
 
         <NavLink to="/factures" className="card">
             <div>
@@ -99,6 +102,9 @@ return (
         </NavLink> 
         
     </div>
+    <br/>
+
+    <h2> Statistique </h2>
 
     <div className="cards">
 
