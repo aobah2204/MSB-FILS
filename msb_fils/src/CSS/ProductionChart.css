@@ -1,0 +1,28 @@
+.chart-card{
+
+background:rgb(227, 227, 236);
+
+border-radius:15px;
+
+padding:20px;
+
+box-shadow:0 5px 20px #ddd;
+color:black;
+
+}
+
+
+
+@media(max-width:768px){
+
+.chart-card{
+
+padding:10px;
+
+}
+
+}
+
+.titre_graphe{
+    color: rgb(68, 68, 184);
+}

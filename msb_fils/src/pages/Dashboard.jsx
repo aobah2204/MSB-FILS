@@ -2,6 +2,8 @@ import "../CSS/Dashboard.css";
 import { useState, useEffect } from 'react'
 import { supabase } from "../supabase.js";
 import { NavLink } from "react-router-dom";
+import ProductionChart from "../components/ProductionChart";
+
 
 function Dashboard(){
 
@@ -94,10 +96,20 @@ return (
                 <h3>CA</h3>
                 <p>45 000 000 000 000</p>
             </div>
-        </NavLink>       
-
-
+        </NavLink> 
+        
     </div>
+
+    <div className="cards">
+
+        <div className="card">
+            <h3>
+                Production
+                </h3>
+                <ProductionChart />
+        </div> 
+    </div>
+
 
 
 </div>
