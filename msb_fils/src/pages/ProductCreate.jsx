@@ -291,7 +291,7 @@ return (
         </div>
 
         <h3>
-            Dimensions
+            Dimensions ( en kg et mètre )
         </h3>
 
         <div className="grid">
