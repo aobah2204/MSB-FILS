@@ -67,7 +67,9 @@ border:1px solid #ddd;
 
 textarea{
 
-height:100px;
+height:80px;
+position: center;
+width: 100%;
 
 }
 

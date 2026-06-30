@@ -196,13 +196,15 @@ return (
             </div>
         </div>
 
-        <label>
-            Description
-        </label>
-        <textarea 
-            name="description"
-            onChange={handleChange}
-        />
+        <div>
+            <label>
+                Description
+            </label>
+            <textarea 
+                name="description"
+                onChange={handleChange}
+            />
+        </div>
 
         <div className="grid">
 

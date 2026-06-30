@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
@@ -15,6 +15,9 @@ const [MatierePremiere,setMatierePremiere] = useState({
     description:"",
     marque:"",
     unite:"",
+
+    fournisseur: "",
+    id_fournisseur: 0,
 
     prixAchat:"",
     
@@ -76,8 +79,37 @@ async function handleSubmit(e){
     navigate("/matierespremieres");
 }
 
+    const [fournisseur,setFournisseur] = useState(null);
+
+    const [fournisseurs, setAllFournisseurs] = useState([]);
 
 
+    function onChange(e){
+
+
+        const selected = chauffeurs.find(
+
+            ch => ch.id == e.target.value
+
+        );
+
+        console.log(selected);
+
+        setChauffeur(selected);
+    }
+
+    async function getAllChauffeur(){
+
+        const { data } = await supabase
+                .from("fournisseurs")            
+                .select("*");
+
+        if (!data) return alert("Aucun fournisseur");
+
+        console.log(data);
+        // Alimentation de la liste des chauffeurs
+        setAllFournisseurs(data);
+    }
 
 return (
 
@@ -181,6 +213,35 @@ return (
 
 
             </div>
+
+            <div>
+                <label>
+                    Fournisseur
+                </label>
+                <select
+                    value={fournisseur?.id}
+                    name="fournisseur"
+                    onChange={onChange}
+                >
+                    <option value="">
+                    -- Choisir un fournisseur --
+                    </option>
+                    {
+                        fournisseurs.map((c)=>(
+
+                            <option
+                                key={c.id}
+                                value={c.id}
+                            >
+                                {c.fullname}
+                            </option>
+                        ))
+                    }
+
+
+                </select>
+            </div>
+
         </div>
 
         <label>
@@ -421,7 +482,7 @@ return (
             />
             Matière active
         </label>
-        
+
         <div>
             <button className="profile">
                 Créer Matière
