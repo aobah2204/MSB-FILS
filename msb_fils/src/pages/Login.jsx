@@ -128,7 +128,7 @@ return (
             </button>
 
 
-
+            {/*
             <p>
 
                 Pas de compte ?
@@ -138,6 +138,7 @@ return (
                 </Link>
 
             </p>
+            */}
 
 
         </form>
