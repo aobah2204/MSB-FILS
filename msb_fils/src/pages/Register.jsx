@@ -177,6 +177,10 @@ return (
                         Chauffeur
                     </option>
 
+                    <option>
+                        Prestataire
+                    </option>
+
             </select>            
 
             <div>

@@ -94,8 +94,6 @@ setSalarie({
     e.target.value
 
     });
-
-
 }
 
 
@@ -129,7 +127,7 @@ return (
 
 
         <h1>
-        Modifier Salarie
+            Modifier Salarie
         </h1>
 
 
@@ -157,8 +155,6 @@ return (
                 onChange={handleChange}
             />
 
-
-
             <label>
                 Téléphone
             </label>
@@ -169,11 +165,8 @@ return (
                 onChange={handleChange}
             />
 
-
-
-
             <label>
-             Adresse
+                Adresse
             </label>
 
             <textarea
@@ -181,8 +174,6 @@ return (
                 value={Salarie.adresse || ""}
                 onChange={handleChange}
             />
-
-
 
             <label>
                 Email
@@ -194,23 +185,17 @@ return (
                 onChange={handleChange}
             />
 
-
             <div>
                 <button className="profile" type="submit" onClick={enregistrer}>
                     Enregistrer
                 </button>
-            </div>
-            
+            </div>           
 
         </form>
-
-
-
     </div>
 
     )
 
 }
-
 
 export default SalarieEdit;
