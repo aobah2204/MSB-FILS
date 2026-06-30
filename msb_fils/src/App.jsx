@@ -33,6 +33,9 @@ import AchatChart from './components/AchatChart';
 import ProductionSites from "./pages/ProductionSites";
 import ProductionSiteCreate from "./pages/ProductionSiteCreate";
 import ProductionSiteDetails from "./pages/ProductionSiteDetails";
+import Salaries from './pages/Salaries';
+import SalarieCreate from './pages/SalarieCreate';
+import SalarieEdit from './pages/SalarieEdit';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -100,6 +103,31 @@ function App() {
           }
         />
 
+        <Route 
+          path="salaries"
+          element={
+            <RoleRoute roles={["Administrateur"]}>
+              <Salaries />
+            </RoleRoute> 
+          }/>
+        
+        <Route 
+          path="salaries/nouveau"
+          element={
+            <RoleRoute roles={["Administrateur"]}>
+              <SalarieCreate />
+            </RoleRoute>
+          }/>
+        
+        <Route 
+          path="salaries/modifier/:id"
+          element={
+            <RoleRoute roles={["Administrateur"]}>
+              <SalarieEdit />
+            </RoleRoute>
+          }/>
+
+
         <Route
           path="produits"
           element={<Products />}
@@ -107,11 +135,12 @@ function App() {
 
         <Route
             path="produits/nouveau"
-            element={
-                    <RoleRoute roles={["Administrateur","Responsable de production"]}>
-                      <ProductCreate />
-                    </RoleRoute>
-                  }
+            element=
+            {
+              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                <ProductCreate />
+              </RoleRoute>
+            }
         />
 
         <Route

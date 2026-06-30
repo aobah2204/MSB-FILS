@@ -5,7 +5,7 @@ import { supabase } from "../supabase";
 import "../CSS/Auth.css";
 
 
-function Register(){
+function SalarieCreate(){
 
 
 const navigate = useNavigate();
@@ -55,7 +55,7 @@ async function handleSubmit(e){
     
     if(!error){
         alert("Compte créé");
-        navigate("/login");
+        navigate("/salaries");
     }else{
 
         alert("Compte non créé : " + error.message);
@@ -79,9 +79,9 @@ return (
         >
 
 
-            <h1>
-                Inscription
-            </h1>
+            <h2>
+                Inscription salarié
+            </h2>
 
             <input
 
@@ -177,14 +177,13 @@ return (
                         Chauffeur
                     </option>
 
-            </select>            
+            </select>  
 
             <div>
                 <button>
                     Créer un compte
                 </button>            
             </div> 
-
         </form>
 
 
@@ -193,4 +192,4 @@ return (
 )}
 
 
-export default Register;
+export default SalarieCreate;
