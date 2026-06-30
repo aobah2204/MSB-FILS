@@ -52,6 +52,10 @@ return (
 
         <NavLink to="/clients">
             <Users /> Clients
+        </NavLink>
+
+        <NavLink to="/fournisseurs">
+            <Users /> Fournisseurs
         </NavLink>     
 
         

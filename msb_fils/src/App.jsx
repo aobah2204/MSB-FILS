@@ -36,6 +36,9 @@ import ProductionSiteDetails from "./pages/ProductionSiteDetails";
 import Salaries from './pages/Salaries';
 import SalarieCreate from './pages/SalarieCreate';
 import SalarieEdit from './pages/SalarieEdit';
+import Fournisseurs from './pages/Fournisseurs';
+import FournisseurCreate from './pages/FournisseurCreate';
+import FournisseurEdit from './pages/FournisseurEdit';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -72,12 +75,7 @@ function App() {
         <Route
           index
           element={<Dashboard />}
-        />
-
-        <Route
-          path="clients"
-          element={<Clients />}
-        />
+        />        
 
         <Route
           path="factures"
@@ -90,6 +88,11 @@ function App() {
         />
 
         <Route
+          path="clients"
+          element={<Clients />}
+        />
+
+        <Route
           path="clientCreate"
           element={<ClientCreate />}
         />
@@ -99,6 +102,25 @@ function App() {
           element={
               <RoleRoute roles={["Administrateur","Responsable de production"]}>
                 <ClientEdit />
+              </RoleRoute>       
+          }
+        />
+
+        <Route
+          path="fournisseurs"
+          element={<Fournisseurs />}
+        />
+
+        <Route
+          path="fournisseurs/nouveau"
+          element={<FournisseurCreate />}
+        />
+
+        <Route
+          path="fournisseurs/modifier/:id"
+          element={
+              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                <FournisseurEdit />
               </RoleRoute>       
           }
         />
