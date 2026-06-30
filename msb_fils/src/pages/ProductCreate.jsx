@@ -468,11 +468,13 @@ return (
 
 
 
+        <div>
+            <button className="profile">
+                Créer produit
+            </button>
+        </div>
 
-        <button>
-            Créer produit
-        </button>
-
+        
     </form>
 </div>
 )}

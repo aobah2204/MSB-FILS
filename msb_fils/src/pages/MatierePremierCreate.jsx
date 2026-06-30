@@ -421,13 +421,12 @@ return (
             />
             Matière active
         </label>
-
-
-
-
-        <button>
-            Créer Matière
-        </button>
+        
+        <div>
+            <button className="profile">
+                Créer Matière
+            </button>
+        </div>
 
     </form>
 </div>

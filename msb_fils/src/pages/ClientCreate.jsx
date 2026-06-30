@@ -124,9 +124,11 @@ return (
                 onChange={handleChange}
             />
 
-            <button>
-                Créer le client
-            </button>
+            <div>
+                <button className="profile">
+                    Créer le client
+                </button>
+            </div>
         </form>
 
     </div>
