@@ -69,14 +69,16 @@ function Clients() {
 
     async function DeleteClient(Client){
 
-        await supabase
-          .from(tableClients)
-          .delete()
-          .eq("id", Client.id);
+        if(confirm("Supprimer ce client ?")){
+            await supabase
+            .from(tableClients)
+            .delete()
+            .eq("id", Client.id);
 
-        // Mettre à jour la liste des clients après la suppression
-        await getAllClients();
-        setClient(null);
+            // Mettre à jour la liste des clients après la suppression
+            await getAllClients();
+            setClient(null);
+        }
     }
 
     return (

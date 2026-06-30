@@ -69,14 +69,16 @@ function Salaries() {
 
     async function DeleteSalarie(Salarie){
 
-        await supabase
-          .from(tableSalaries)
-          .delete()
-          .eq("id", Salarie.id);
+        if(confirm("Supprimer ce salarié ?")){
+            await supabase
+            .from(tableSalaries)
+            .delete()
+            .eq("id", Salarie.id);
 
-        // Mettre à jour la liste des Salaries après la suppression
-        await getAllSalaries();
-        setSalarie(null);
+            // Mettre à jour la liste des Salaries après la suppression
+            await getAllSalaries();
+            setSalarie(null);
+        }
     }
 
     return (

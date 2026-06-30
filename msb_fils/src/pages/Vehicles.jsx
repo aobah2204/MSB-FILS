@@ -16,7 +16,8 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../supabase";
-import '../CSS/Vehicule.css'
+import '../CSS/Vehicule.css';
+import "../CSS/Clients.css";
 import { NavLink } from "react-router-dom";
 
 
@@ -182,7 +183,7 @@ function Vehicles(){
                                 ["Administrateur","Responsable de production"]
                                 .includes(user?.role)
                                 &&
-                                    <button className="profile" 
+                                    <button className="profileSupp" 
                                         onClick={()=>
                                         DeleteVehicule(v)
                                         }

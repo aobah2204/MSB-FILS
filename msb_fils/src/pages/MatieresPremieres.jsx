@@ -85,14 +85,16 @@ function MatieresPremieres() {
 
     async function DeleteMatierePremiere(MatierePremiere){
 
-        await supabase
-          .from(tableMatieresPremiere)
-          .delete()
-          .eq("id", MatierePremiere.id);
+        if(confirm("Supprimer cette matière première ?")){
+            await supabase
+            .from(tableMatieresPremiere)
+            .delete()
+            .eq("id", MatierePremiere.id);
 
-        // Mettre à jour la liste des MatieresPremieres après la suppression
-        await getAllMatieresPremieres();
-        setMatierePremiere(null);
+            // Mettre à jour la liste des MatieresPremieres après la suppression
+            await getAllMatieresPremieres();
+            setMatierePremiere(null);
+        }
     }
 
 

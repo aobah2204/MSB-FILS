@@ -198,7 +198,7 @@ return (
                 ["Administrateur"]
                 .includes(user?.role)
                 &&
-                <button className="profile"
+                <button className="profileSupp"
 
                     onClick={()=>
                     DeleteSite(site.id)

@@ -69,14 +69,16 @@ function Fournisseurs() {
 
     async function DeleteFournisseur(Fournisseur){
 
-        await supabase
-          .from(tableFournisseurs)
-          .delete()
-          .eq("id", Fournisseur.id);
+        if(confirm("Supprimer ce fournisseur ?")){
+            await supabase
+            .from(tableFournisseurs)
+            .delete()
+            .eq("id", Fournisseur.id);
 
-        // Mettre à jour la liste des Fournisseurs après la suppression
-        await getAllFournisseurs();
-        setFournisseur(null);
+            // Mettre à jour la liste des Fournisseurs après la suppression
+            await getAllFournisseurs();
+            setFournisseur(null);
+        }
     }
 
     return (

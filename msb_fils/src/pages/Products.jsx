@@ -85,14 +85,16 @@ function Products() {
 
     async function DeleteProduct(Product){
 
-        await supabase
-          .from(tableProduct)
-          .delete()
-          .eq("id", Product.id);
+        if(confirm("Supprimer ce produit ?")){
+            await supabase
+            .from(tableProduct)
+            .delete()
+            .eq("id", Product.id);
 
-        // Mettre à jour la liste des Products après la suppression
-        await getAllProducts();
-        setProduct(null);
+            // Mettre à jour la liste des Products après la suppression
+            await getAllProducts();
+            setProduct(null);
+        }
     }
 
 
