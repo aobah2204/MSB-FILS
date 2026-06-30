@@ -15,8 +15,13 @@ import {
 
 
 import { supabase } from "../supabase";
+import { useAuth } from "../context/AuthContext";
+
 
 function ProductionSites(){
+
+    // Connected user 
+    const { user } = useAuth();
 
 
     const navigate = useNavigate();
@@ -103,13 +108,18 @@ return (
 
 <div>
 
-    <button className="profile"
+    {
+    ["Administrateur"]
+    .includes(user?.role)
+    &&
 
+    <button className="profile"
         onClick={()=>
         navigate("/production-sites/nouveau")
         }>
         <Factory /> Ajouter un site
     </button>
+    }
 
     <h2>
         Sites de production
@@ -176,14 +186,22 @@ return (
 
 
 
+        {
+        ["Administrateur"]
+        .includes(user?.role)
+        &&
         <button className="profile">
 
           <Pencil />
 
         </button>
+        }
 
 
-
+        {
+        ["Administrateur"]
+        .includes(user?.role)
+        &&
         <button className="profile"
 
             onClick={()=>
@@ -195,6 +213,7 @@ return (
             <Trash2 />
 
         </button>
+        }
 
 
 
