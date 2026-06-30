@@ -55,7 +55,7 @@ async function handleSubmit(e){
         .maybeSingle();
 
     if(err){
-        alert("Echec connexion");
+        alert("Echec connexion :" + err.message);
     }else{
 
         localStorage.setItem(
