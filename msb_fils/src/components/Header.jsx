@@ -17,10 +17,10 @@ return (
 <header className="header">
 
 
-    <div>
-        <h2 className="profile">
+    <div className="profile_user">
+        <h3>
             {user?.fullname} 
-        </h2>
+        </h3>
         <p>{user?.role}</p>
     </div>
             

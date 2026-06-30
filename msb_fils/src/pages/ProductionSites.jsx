@@ -106,7 +106,7 @@ function ProductionSites(){
 
 return (
 
-<div>
+<div className="table-container">
 
     {
     ["Administrateur"]
