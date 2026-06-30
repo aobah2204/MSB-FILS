@@ -98,7 +98,7 @@ function Salaries() {
             <h2>Liste des Salariés</h2>
 
             <div className="table-container">
-                <table>
+                <table className="data-table">
                     <thead className="headerTable">
 
                     <tr className="header_Table">

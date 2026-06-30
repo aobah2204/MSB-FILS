@@ -98,7 +98,7 @@ function Clients() {
             <h2>Liste des clients</h2>
 
             <div className="table-container">
-                <table>
+                <table className="data-table">
                     <thead className="headerTable">
 
                     <tr className="header_Table_clients">

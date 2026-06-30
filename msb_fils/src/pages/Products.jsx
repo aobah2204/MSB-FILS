@@ -115,7 +115,7 @@ function Products() {
             <h2>Liste des Produits</h2>
 
             <div className="table-container">
-                <table>
+                <table className="data-table">
                     <thead className="headerTable">
 
                     <tr className="header_Table">

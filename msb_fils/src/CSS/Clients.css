@@ -67,3 +67,55 @@ min-width:700px;
     color: black;
     background-color: bisque;
 }
+
+.data-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+
+.data-table th{
+
+padding:12px;
+
+}
+
+
+
+.data-table td{
+
+border-bottom:1px solid #2b2727;
+
+}
+
+
+/* ligne paire */
+
+.data-table tbody tr:nth-child(even){
+
+background:#465575;
+
+}
+
+
+/* ligne impaire */
+
+.data-table tbody tr:nth-child(odd){
+
+background:rgb(150, 137, 137);
+
+}
+
+
+/* effet au survol */
+
+.data-table tbody tr:hover{
+
+background:#5691df;
+
+cursor:pointer;
+
+}

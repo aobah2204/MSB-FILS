@@ -98,7 +98,7 @@ function Fournisseurs() {
             <h2>Liste des Fournisseurs</h2>
 
             <div className="table-container">
-                <table>
+                <table className="data-table">
                     <thead className="headerTable">
 
                     <tr className="header_Table">

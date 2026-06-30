@@ -127,7 +127,7 @@ return (
 
 
 
-    <table>
+    <table className="data-table">
         <thead>
             <tr className="header_Table">
 

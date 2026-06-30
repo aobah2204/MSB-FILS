@@ -121,7 +121,7 @@ function Vehicles(){
 
             <div className="table-container">
 
-            <table>
+            <table className="data-table">
 
                 <thead>
                     <tr className="header_Table">
