@@ -6,7 +6,8 @@ import {
  Truck,
  Pencil,
  Trash2,
- FileText
+ FileText,
+ Eye
 } from "lucide-react";
 
 import {
@@ -154,37 +155,44 @@ function Vehicles(){
                                 {v.kilometrage}
                             </td>
 
-                            {
-                            ["Administrateur","Responsable de production"]
-                            .includes(user?.role)
-                            &&
+                            
                             <td>
                                 <button className="profile" 
                                     onClick={()=>
                                         navigate(`/vehicules/${v.id}`)
                                     }
                                 >
-                                    <FileText />
+                                    <Eye />
                                 </button>
-                                    
-                                <button className="profile" 
-                                    onClick={()=>
-                                    navigate(`/vehicules/modifier/${v.id}`)
-                                    }
-                                >
-                                    <Pencil />
-                                </button>
-
-                                <button className="profile" 
-                                    onClick={()=>
-                                    DeleteVehicule(v)
-                                    }
-
+                                
+                                {
+                                ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                                &&
+                                    <button className="profile" 
+                                        onClick={()=>
+                                        navigate(`/vehicules/modifier/${v.id}`)
+                                        }
                                     >
-                                    <Trash2 />
-                                </button>
+                                        <Pencil />
+                                    </button>
+                                }
+
+                                {
+                                ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                                &&
+                                    <button className="profile" 
+                                        onClick={()=>
+                                        DeleteVehicule(v)
+                                        }
+
+                                        >
+                                        <Trash2 />
+                                    </button>
+                                }
                             </td>
-                            }
+                            
                         </tr>
                     ))
                     }

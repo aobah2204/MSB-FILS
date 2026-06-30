@@ -115,38 +115,38 @@ function Clients() {
 
                     <tbody>
 
-                    {clientsList.map((client, index) => (
+                        {clientsList.map((client, index) => (
 
-                        <tr key={index}>
+                            <tr key={index}>
 
-                        <td>{client.nom}</td>
+                            <td>{client.nom}</td>
 
-                        <td>{client.prenom}</td>
+                            <td>{client.prenom}</td>
 
-                        <td>{client.societe}</td>
+                            <td>{client.societe}</td>
 
-                        <td>{client.telephone}</td>
+                            <td>{client.telephone}</td>
 
-                        <td>{client.email}</td>
+                            <td>{client.email}</td>
 
-                        {
-                            ["Administrateur","Responsable de production"]
-                            .includes(user?.role)
-                            &&
-                            <td>                                
-                                <NavLink to={`/clients/modifier/${client.id}`}>
-                                    <button className="profile"><UserPen size={20} /></button>
-                                </NavLink>
-                                
-                                <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /></button>
-                            </td>
+                            {
+                                ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                                &&
+                                <td>                                
+                                    <NavLink to={`/clients/modifier/${client.id}`}>
+                                        <button className="profile"><UserPen size={20} /></button>
+                                    </NavLink>
+                                    
+                                    <button className="profileSupp" onClick={() => DeleteClient(client)}> <UserRoundX size={20} /></button>
+                                </td>
+                            }
+                        </tr>
+
+                        ))
                         }
-                    </tr>
 
-                    ))
-                    }
-
-                </tbody>
+                    </tbody>
                 </table>
             </div>
 

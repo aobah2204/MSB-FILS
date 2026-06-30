@@ -148,21 +148,28 @@ function Products() {
                         <td>{produit.prixVente}</td>
 
                         <td>{produit.actif}</td>
-                        {
-                        ["Administrateur","Responsable de production"]
-                        .includes(user?.role)
-                        &&
+                        
                         <td>
                             <NavLink to={`/produits/details/${produit.id}`}>
                                 <button className="profile"><Eye size={20} /></button>
                             </NavLink>
+                            {
+                            ["Administrateur","Responsable de production"]
+                            .includes(user?.role)
+                            &&
                             <NavLink to={`/produits/modifier/${produit.id}`}>
                                 <button className="profile"><Pencil size={20} /></button>
                             </NavLink>
-                             
+                            }
+
+                            {
+                            ["Administrateur","Responsable de production"]
+                            .includes(user?.role)
+                            &&                             
                              <button className="profileSupp" onClick={() => DeleteProduct(produit)}> <Trash2 size={20} /></button>
+                            }
                         </td>
-                        }
+                        
 
                     </tr>
 

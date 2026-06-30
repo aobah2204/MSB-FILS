@@ -140,106 +140,94 @@ return (
             </tr>
         </thead>
 
-
-
         <tbody>
+            {
+                sites.map(site=>(
 
 
-        {
-        sites.map(site=>(
+                <tr key={site.id}>
 
 
-        <tr key={site.id}>
+                <td>
+                {site.nom}
+                </td>
 
 
-        <td>
-        {site.nom}
-        </td>
+                <td>
+                {site.adresse}
+                </td>
 
 
-        <td>
-        {site.adresse}
-        </td>
+                <td>
+                {site.responsable}
+                </td>
 
 
-        <td>
-        {site.responsable}
-        </td>
-
-
-        <td>
-        {site.capacite}
-        </td>
+                <td>
+                {site.capacite}
+                </td>
 
 
 
-        <td>
+                <td>
 
 
-        <button className="profile"
-            onClick={()=>
-            navigate(`/production-sites/${site.id}`)
+                <button className="profile"
+                    onClick={()=>
+                    navigate(`/production-sites/${site.id}`)
+                    }
+                    >
+                    <Eye /> 
+                </button>
+
+
+
+                {
+                ["Administrateur"]
+                .includes(user?.role)
+                &&
+                <button className="profile">
+
+                <Pencil />
+
+                </button>
+                }
+
+
+                {
+                ["Administrateur"]
+                .includes(user?.role)
+                &&
+                <button className="profile"
+
+                    onClick={()=>
+                    DeleteSite(site.id)
+                    }
+
+                    >
+
+                    <Trash2 />
+
+                </button>
+                }
+
+
+
+                </td>
+
+
+                </tr>
+
+
+                ))
+
             }
-            >
-            <Eye /> 
-        </button>
-
-
-
-        {
-        ["Administrateur"]
-        .includes(user?.role)
-        &&
-        <button className="profile">
-
-          <Pencil />
-
-        </button>
-        }
-
-
-        {
-        ["Administrateur"]
-        .includes(user?.role)
-        &&
-        <button className="profile"
-
-            onClick={()=>
-            DeleteSite(site.id)
-            }
-
-            >
-
-            <Trash2 />
-
-        </button>
-        }
-
-
-
-        </td>
-
-
-        </tr>
-
-
-        ))
-
-        }
-
-
         </tbody>
 
-
     </table>
-
-
 </div>
 
-)
-
-
-}
+)}
 
 
 export default ProductionSites;

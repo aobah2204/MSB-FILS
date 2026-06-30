@@ -30,7 +30,7 @@ return (
         <div className="notification">
         🔔
         </div>
-        <button onClick={logout}>
+        <button className="profile" onClick={logout}>
             <LogOut />
         </button>
 
