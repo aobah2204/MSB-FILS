@@ -21,6 +21,7 @@ return (
         <h2 className="profile">
             {user?.fullname} 
         </h2>
+        <p>{user?.role}</p>
     </div>
             
 
