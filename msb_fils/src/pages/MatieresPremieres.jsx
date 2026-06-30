@@ -122,9 +122,7 @@ function MatieresPremieres() {
                         <th>Reférence</th>
                         <th>Nom</th>
                         <th>Catégorie</th>
-                        <th>Prix Achat</th>
-                        <th>Pric Vente</th>
-                        <th>Status</th>
+                        <th>Prix Achat</th>                        
                         <th>Actions</th>
                     </tr>
 
@@ -144,10 +142,7 @@ function MatieresPremieres() {
                         <td>{produit.categorie}</td>
 
                         <td>{produit.prixAchat}</td>
-
-                        <td>{produit.prixVente}</td>
-
-                        <td>{produit.actif}</td>
+                        
                         
                         <td>
                             <NavLink to={`/matierespremieres/details/${produit.id}`}>

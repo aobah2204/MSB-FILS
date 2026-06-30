@@ -123,7 +123,7 @@ function Products() {
                         <th>Nom</th>
                         <th>Catégorie</th>
                         <th>Prix Achat</th>
-                        <th>Pric Vente</th>
+                        <th>Prix Vente</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
