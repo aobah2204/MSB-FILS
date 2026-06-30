@@ -39,6 +39,11 @@ import SalarieEdit from './pages/SalarieEdit';
 import Fournisseurs from './pages/Fournisseurs';
 import FournisseurCreate from './pages/FournisseurCreate';
 import FournisseurEdit from './pages/FournisseurEdit';
+import MatierePremiereCreate from './pages/MatierePremierCreate';
+import MatierePremiereDetails from './pages/MatierePremiereDetails';
+import MatierePremiereEdit from './pages/MatierePremiereEdit';
+import MatieresPremieres from './pages/MatieresPremieres';
+
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -178,6 +183,38 @@ function App() {
           path="produits/details/:id"
           element={
                 <ProductDetails />
+            }
+        />
+
+        {/** Matière premieres */}
+        <Route
+          path="matierespremieres"
+          element={<MatieresPremieres />}
+        />
+
+        <Route
+            path="matierespremieres/nouveau"
+            element=
+            {
+              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                <MatierePremiereCreate />
+              </RoleRoute>
+            }
+        />
+
+        <Route
+          path="matierespremieres/modifier/:id"
+          element={
+                <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                  <MatierePremiereEdit />
+                </RoleRoute>
+            }
+        />
+
+        <Route
+          path="matierespremieres/details/:id"
+          element={
+                <MatierePremiereDetails />
             }
         />
 

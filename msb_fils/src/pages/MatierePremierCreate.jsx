@@ -4,10 +4,10 @@ import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
 
 
-function ProductCreate(){
+function MatierePremiereCreate(){
 
 
-const [product,setProduct] = useState({
+const [MatierePremiere,setMatierePremiere] = useState({
 
     reference:"",
     nom:"",
@@ -17,9 +17,7 @@ const [product,setProduct] = useState({
     unite:"",
 
     prixAchat:"",
-    prixVente:"",
-    tva:"20",
-
+    
     stock:"",
     stockMin:"",
 
@@ -32,7 +30,6 @@ const [product,setProduct] = useState({
     hauteur:"",
     unite_hauteur:"",
 
-    codeBarre:"",
     actif:true
 
 });
@@ -44,9 +41,9 @@ function handleChange(e){
 
     const {name,value,type,checked}=e.target;
 
-    setProduct({
+    setMatierePremiere({
 
-        ...product,
+        ...MatierePremiere,
 
         [name]:
         type==="checkbox"
@@ -63,20 +60,20 @@ async function handleSubmit(e){
 
     e.preventDefault();
 
-    console.log(product);
+    console.log(MatierePremiere);
 
     // API Supabase ici
-    const table = "products";
+    const table = "matierespremieres";
     
-    const { error } = await supabase.from(table).insert(product);
+    const { error } = await supabase.from(table).insert(MatierePremiere);
     
     if(!error){
-        alert("Produit enregistré");
+        alert("Matière enregistré");
     }else{
-        alert("Produit non enregistré : " + error.message);
+        alert("Matière non enregistré : " + error.message);
     }
 
-    navigate("/produits");
+    navigate("/matierespremieres");
 }
 
 
@@ -88,7 +85,7 @@ return (
 
 
     <h1 className="titre">
-        Création produit
+        Création Matière
     </h1>
 
 
@@ -110,21 +107,11 @@ return (
                     onChange={handleChange}
                 />
             </div>
+            
 
             <div>
                 <label>
-                    Code barre
-                </label>
-
-                <input
-                    name="codeBarre"
-                    onChange={handleChange}
-                />
-            </div>
-
-            <div>
-                <label>
-                    Nom produit
+                    Nom Matière
                 </label>
 
                 <input
@@ -218,39 +205,6 @@ return (
                 />
             </div>
 
-            <div>
-                <label>
-                    Prix vente
-                </label>
-
-                <input
-
-                    type="number"
-
-                    name="prixVente"
-
-                    onChange={handleChange}
-
-                />
-            </div>
-
-            <div>
-                <label>
-                    TVA %
-                </label>
-
-                <input
-
-                    type="number"
-
-                    name="tva"
-
-                    value={product.tva}
-
-                    onChange={handleChange}
-
-                />
-            </div>
         </div>
 
         <h3>
@@ -311,7 +265,7 @@ return (
                     name="unite_poids"
                     onChange={handleChange}
                 >
-                    <option value="">
+                    <option>
                     -- Choisir l'unité --
                     </option>
                     <option>
@@ -329,6 +283,8 @@ return (
                 </select>
             </div>
 
+
+
             <div className="grid">
                 <input
                     placeholder="Longueur"
@@ -339,7 +295,7 @@ return (
                     name="unite_longueur"
                     onChange={handleChange}
                 >
-                    <option value="">
+                    <option>
                     -- Choisir l'unité --
                     </option>
                     
@@ -379,7 +335,7 @@ return (
                     name="unite_largeur"
                     onChange={handleChange}
                 >
-                    <option value="">
+                    <option>
                     -- Choisir l'unité --
                     </option>
                     
@@ -419,7 +375,7 @@ return (
                     name="unite_hauteur"
                     onChange={handleChange}
                 >
-                    <option value="">
+                    <option>
                     -- Choisir l'unité --
                     </option>
                     
@@ -458,19 +414,19 @@ return (
 
                 name="actif"
 
-                checked={product.actif}
+                checked={MatierePremiere.actif}
 
                 onChange={handleChange}
 
             />
-            Produit actif
+            Matière active
         </label>
 
 
 
 
         <button>
-            Créer produit
+            Créer Matière
         </button>
 
     </form>
@@ -478,4 +434,4 @@ return (
 )}
 
 
-export default ProductCreate;
+export default MatierePremiereCreate;

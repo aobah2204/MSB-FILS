@@ -64,6 +64,10 @@ return (
             Produits
         </NavLink>   
 
+        <NavLink to="/matierespremieres">
+            <FileText /> Matières premières
+        </NavLink>
+
         <NavLink to="/vehicules">
             <Truck /> Véhicules
         </NavLink> 
@@ -77,13 +81,15 @@ return (
         </NavLink>
         
 
+        {/*
         <NavLink to="/factures">
             <FileText /> Factures
         </NavLink>
 
         <NavLink to="/ca">
             <HandCoins /> Chiffre d'Affaire
-        </NavLink>              
+        </NavLink>     
+        */}         
 
         <NavLink to="/parametres">
             <Settings /> Paramètres

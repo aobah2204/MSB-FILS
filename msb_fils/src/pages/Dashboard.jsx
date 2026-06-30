@@ -18,6 +18,15 @@ const [NbreProduit,setNbreProduct] = useState(0);
 const [vehicules,setVehicules] = useState([]);
 const [NbreVehicule,setNbreVehicule] = useState(0);
 
+const [fournisseurs,setFournisseurs] = useState([]);
+const [NbreFournisseur,setNbreFournisseur] = useState(0);
+
+const [sites,setSites] = useState([]);
+const [NbreSite,setNbreSite] = useState(0);
+
+const [matprems,setMatPrems] = useState([]);
+const [NbreMatPrem,setNbreMatPrem] = useState(0);
+
 async function getAllClients(){
 
     const { data } = await supabase
@@ -48,10 +57,43 @@ async function getAllVehicules(){
     setNbreVehicule(data.length);
 }
 
+async function getAllFournisseurs(){
+
+    const { data } = await supabase
+        .from("fournisseurs")
+        .select("*");
+    
+    setFournisseurs(data);
+    setNbreFournisseur(data.length);
+}
+
+async function getAllSites(){
+
+    const { data } = await supabase
+        .from("siteproduction")
+        .select("*");
+    
+    setSites(data);
+    setNbreSite(data.length);
+}
+
+async function getAllMatPrems(){
+
+    const { data } = await supabase
+        .from("matierespremieres")
+        .select("*");
+    
+    setMatPrems(data);
+    setNbreMatPrem(data.length);
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts();  
     getAllVehicules();
+    getAllFournisseurs();
+    getAllMatPrems();
+    getAllSites();
 },[]);
 
 return (
@@ -81,7 +123,7 @@ return (
 
         <NavLink to="/vehicules" className="card">
             <div>
-                <h3>Flottes</h3>
+                <h3>Véhicules</h3>
                 <p>{NbreVehicule}</p>
             </div>
         </NavLink>     
@@ -89,19 +131,26 @@ return (
 
     <div className="cards">   
 
-        <NavLink to="/factures" className="card">
+        <NavLink to="/fournisseurs" className="card">
             <div>
-                <h3>Factures</h3>
-                <p>0</p>
+                <h3>Fournisseurs</h3>
+                <p>{NbreFournisseur}</p>
             </div>
         </NavLink>
 
-        <NavLink to="/ca" className="card">
+        <NavLink to="/production-sites" className="card">
             <div>
-                <h3>CA</h3>
-                <p>45 000 000 000 000</p>
+                <h3>Sites</h3>
+                <p>{NbreSite}</p>
             </div>
-        </NavLink> 
+        </NavLink>
+
+        <NavLink to="/matierespremieres" className="card">
+            <div>
+                <h3>Matière première</h3>
+                <p>{NbreMatPrem}</p>
+            </div>
+        </NavLink>
         
     </div>
     <br/>
