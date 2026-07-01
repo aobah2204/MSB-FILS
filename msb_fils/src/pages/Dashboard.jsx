@@ -33,7 +33,7 @@ const [NbreSalaries,setNbreSalaries] = useState(0);
 async function getAllClients(){
 
     const { data } = await supabase
-        .from("clients")
+        .from("clients") 
         .select("*");
     
     setClients(data);
@@ -167,11 +167,12 @@ return (
         </NavLink>
 
         <NavLink to="/salaries" className="card">
-            <div>
-                <h3>Salariés</h3>
+            <div>                
+                    <h3>Salariés</h3>                
                 <p>{NbreSalaries}</p>
             </div>
         </NavLink>
+        
         
     </div>
     <br/>

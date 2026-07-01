@@ -200,7 +200,7 @@ return (
             <label>
                 Description
             </label>
-            <textarea 
+            <input 
                 name="description"
                 onChange={handleChange}
             />

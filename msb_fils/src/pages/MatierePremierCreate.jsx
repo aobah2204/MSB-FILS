@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 
 import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
+import { useNavigate } from "react-router-dom";
+
+    
 
 
 function MatierePremiereCreate(){
+
+    const navigate = useNavigate();
 
 
 const [MatierePremiere,setMatierePremiere] = useState({
@@ -67,6 +72,12 @@ async function handleSubmit(e){
 
     // API Supabase ici
     const table = "matierespremieres";
+
+    // Set fournisseur ID if selected
+    if (fournisseur) {
+        MatierePremiere.id_fournisseur = fournisseur.id;
+        MatierePremiere.fournisseur = fournisseur.nom + " " + fournisseur.prenom;
+    }
     
     const { error } = await supabase.from(table).insert(MatierePremiere);
     
@@ -87,18 +98,18 @@ async function handleSubmit(e){
     function onChange(e){
 
 
-        const selected = chauffeurs.find(
+        const selected = fournisseurs.find(
 
-            ch => ch.id == e.target.value
+            f => f.id == e.target.value
 
         );
 
         console.log(selected);
 
-        setChauffeur(selected);
+        setFournisseur(selected);
     }
 
-    async function getAllChauffeur(){
+    async function getAllFournisseurs(){
 
         const { data } = await supabase
                 .from("fournisseurs")            
@@ -107,9 +118,13 @@ async function handleSubmit(e){
         if (!data) return alert("Aucun fournisseur");
 
         console.log(data);
-        // Alimentation de la liste des chauffeurs
+        // Alimentation de la liste des fournisseurs
         setAllFournisseurs(data);
     }
+
+useEffect(()=>{
+    getAllFournisseurs();
+},[])
 
 return (
 
@@ -233,7 +248,7 @@ return (
                                 key={c.id}
                                 value={c.id}
                             >
-                                {c.fullname}
+                                {c.nom} - {c.prenom}
                             </option>
                         ))
                     }
@@ -247,7 +262,7 @@ return (
         <label>
             Description
         </label>
-        <textarea 
+        <input 
             name="description"
             onChange={handleChange}
         />

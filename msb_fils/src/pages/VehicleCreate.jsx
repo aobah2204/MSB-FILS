@@ -122,7 +122,7 @@ useEffect(() => {
 
 return (
 
-    <div className="product_page">
+    <div className="product-page">
 
 
         <h1 className="product_title">

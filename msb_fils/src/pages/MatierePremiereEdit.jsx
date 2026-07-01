@@ -50,6 +50,10 @@ const [MatierePremiere,setMatierePremiere] = useState({
 
 });
 
+const [fournisseur,setFournisseur] = useState(null);
+
+const [fournisseurs, setAllFournisseurs] = useState([]);
+
 const [loading,setLoading] = useState(true);
 
 // Select MatierePremiere
@@ -66,17 +70,31 @@ async function getMatierePremiere(id){
     setLoading(false);
 }
 
+async function getAllFournisseurs(){
+
+        const { data } = await supabase
+                .from("fournisseurs")            
+                .select("*");
+
+        if (!data) return alert("Aucun fournisseur");
+
+        console.log(data);
+        // Alimentation de la liste des fournisseurs
+        setAllFournisseurs(data);
+    }
+
 useEffect(()=>{
     // simulation chargement API
     getMatierePremiere(id);
-    
+    getAllFournisseurs();
+
 },[id]);
 
     async function UpdateMatierePremiere(MatierePremiere){
 
         setMatierePremiere(MatierePremiere);
 
-        const table = "matieresPremieres";
+        const table = "matierespremieres";
 
         if (!MatierePremiere) return;
 
@@ -127,6 +145,20 @@ function handleChange(e){
     });
 
 }
+
+    function onChange(e){
+
+
+        const selected = fournisseurs.find(
+
+            f => f.id == e.target.value
+
+        );
+
+        console.log(selected);
+
+        setFournisseur(selected);
+    }
 
 
 function enregistrer(e){
@@ -247,17 +279,46 @@ return (
 
                     </select>
 
+                    </div>
+
+                    <div>
+                    <label>
+                        Fournisseur
+                    </label>
+                    <select
+                        value={fournisseur?.nom + " " + fournisseur?.prenom || ""}
+                        name="fournisseur"
+                        onChange={onChange}
+                    >                        
+                        {
+                            fournisseurs.map((c)=>(
+
+                                <option
+                                    key={c.id}
+                                    value={c.id}
+                                >
+                                    {c.nom} - {c.prenom}
+                                </option>
+                            ))
+                        }
+
+
+                    </select>
                 </div>
+
+
             </div>
 
-        <label>
-            Description
-        </label>
-        <textarea 
-            name="description"
-            value={MatierePremiere.description || ""}
-            onChange={handleChange}
-        />
+        <div>
+            <label>
+                Description
+            </label>
+            <input 
+                name="description"
+                value={MatierePremiere.description || ""}
+                onChange={handleChange}
+            />
+        </div>
 
         <div className="grid">
 

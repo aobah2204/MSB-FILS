@@ -53,7 +53,7 @@ async function handleSubmit(e){
 
 
 return (
-    <div className="client-page">
+    <div className="product-page">
 
         <h1>
             Inscription Client
@@ -107,7 +107,7 @@ return (
                 Adresse
             </label>
 
-            <textarea
+            <input
                 name="adresse"
                 value={client.adresse}
                 onChange={handleChange}

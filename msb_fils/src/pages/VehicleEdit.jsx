@@ -53,7 +53,7 @@ function VehicleEdit(){
     
             );
     
-            console.log(selected);
+            //console.log(selected);
     
             setChauffeur(selected);
         }
@@ -67,7 +67,7 @@ function VehicleEdit(){
     
             if (!data) return alert("Aucun chauffeurs");
     
-            console.log(data);
+            //console.log(data);
             // Alimentation de la liste des chauffeurs
             setAllChauffeur(data);
         }
@@ -120,21 +120,22 @@ function VehicleEdit(){
     
             if (!data) return alert("Aucun vehicule");
     
-            console.log(data);
 
             setVehicule(data);
+
+            console.log("Véhicule " + JSON.stringify(vehicule));
         }
 
         useEffect(()=>{
 
             getAllChauffeur();
-            getVehicule(id);
+            getVehicule();
             
         },[id]);
 
     return (
 
-        <div className="product_page">
+        <div className="product-page">
             
             <h1>
                 Modifier véhicule {id}
@@ -146,36 +147,34 @@ function VehicleEdit(){
 
                     <input
                         name="marque"
-                        value={vehicule?.marque || ""}
+                        value={vehicule.marque || ""}
                         onChange={change}
                     />
 
                     <input
                         name="modele"
-                        value={vehicule?.modele || ""}
+                        value={vehicule.modele || ""}
                         onChange={change}
                     />
 
                     <input
                         name="immatriculation"
-                        value={vehicule?.immatriculation || ""}
+                        value={vehicule.immatriculation || ""}
                         onChange={change}
                     />
 
                     <input
                         name="annee"
-                        value={vehicule?.annee || ""}
+                        value={vehicule.annee || ""}
                         onChange={change}
                     />
 
                     <select
-                        value={chauffeur?.id}
+                        value={vehicule.chauffeur || ""}
                         name="chauffeur"
                         onChange={onChange}
                     >
-                        <option value="">
-                        -- Choisir un chauffeur --
-                        </option>
+                        
                         {
                             chauffeurs.map((c)=>(
 
@@ -195,13 +194,13 @@ function VehicleEdit(){
                     <input
                         name="kilometrage"
                         type="int"
-                        value={vehicule?.kilometrage || ""}
+                        value={vehicule.kilometrage || ""}
                         onChange={change}
                     />
 
                     <select
                         name="carburant"
-                        value={vehicule?.carburant}
+                        value={vehicule.carburant}
                         onChange={change}
                     >
 

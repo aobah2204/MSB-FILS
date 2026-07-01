@@ -128,7 +128,7 @@ function enregistrer(e){
 
 return (
 
-    <div className="client-page">
+    <div className="product-page">
 
 
         <h1>
@@ -189,7 +189,7 @@ return (
              Adresse
             </label>
 
-            <textarea
+            <input
                 name="adresse"
                 value={client.adresse || ""}
                 onChange={handleChange}
@@ -209,9 +209,11 @@ return (
 
 
 
-            <button type="submit" onClick={enregistrer}>
-                Enregistrer
-            </button>
+            <div>
+                <button className="profile" type="submit" onClick={enregistrer}>
+                    Enregistrer
+                </button>
+            </div>
 
         </form>
 
