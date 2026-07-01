@@ -31,17 +31,17 @@ function VehicleEdit(){
 
     const navigate=useNavigate();
 
-        function change(e){
-    
-            setVehicule({
-    
-                ...vehicule,
-    
-                [e.target.name]:
-                e.target.value
-    
+        function handleChange(e){
+
+
+        setVehicule({
+
+            ...vehicule,
+
+            [e.target.name]:
+            e.target.value
+
             });
-    
         }
     
         function onChange(e){
@@ -121,19 +121,27 @@ function VehicleEdit(){
             if (!data) return alert("Aucun vehicule");
     
 
-            setVehicule(data);
+            setVehicule({
+                marque: data[0].marque,
+                modele: data[0].modele,
+                immatriculation: data[0].immatriculation,
+                annee: data[0].annee,
+                chauffeur: data[0].chauffeur,
+                kilometrage: data[0].kilometrage,   
+                carburant: data[0].carburant,
+                user_id: data[0].user_id, 
+                id: data[0].id
+            });
 
-            console.log("Véhicule " + JSON.stringify(vehicule));
         }
+useEffect(()=>{
 
-        useEffect(()=>{
-
-            getAllChauffeur();
-            getVehicule();
+    getAllChauffeur();
+    getVehicule();
             
-        },[id]);
+},[]);
 
-    return (
+return (
 
         <div className="product-page">
             
@@ -148,25 +156,25 @@ function VehicleEdit(){
                     <input
                         name="marque"
                         value={vehicule.marque || ""}
-                        onChange={change}
+                        onChange={handleChange}
                     />
 
                     <input
                         name="modele"
                         value={vehicule.modele || ""}
-                        onChange={change}
+                        onChange={handleChange}
                     />
 
                     <input
                         name="immatriculation"
                         value={vehicule.immatriculation || ""}
-                        onChange={change}
+                        onChange={handleChange}
                     />
 
                     <input
                         name="annee"
                         value={vehicule.annee || ""}
-                        onChange={change}
+                        onChange={handleChange}
                     />
 
                     <select
@@ -195,13 +203,13 @@ function VehicleEdit(){
                         name="kilometrage"
                         type="int"
                         value={vehicule.kilometrage || ""}
-                        onChange={change}
+                        onChange={handleChange}
                     />
 
                     <select
                         name="carburant"
                         value={vehicule.carburant}
-                        onChange={change}
+                        onChange={handleChange}
                     >
 
                         <option>
