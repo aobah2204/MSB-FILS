@@ -27,6 +27,9 @@ const [NbreSite,setNbreSite] = useState(0);
 const [matprems,setMatPrems] = useState([]);
 const [NbreMatPrem,setNbreMatPrem] = useState(0);
 
+const [salaries,setSalaries] = useState([]);
+const [NbreSalaries,setNbreSalaries] = useState(0);
+
 async function getAllClients(){
 
     const { data } = await supabase
@@ -87,12 +90,23 @@ async function getAllMatPrems(){
     setNbreMatPrem(data.length);
 }
 
+async function getAllSalaries(){
+
+    const { data } = await supabase
+        .from("utilisateurs")
+        .select("*");
+    
+    setSalaries(data);
+    setNbreSalaries(data.length);
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts();  
     getAllVehicules();
     getAllFournisseurs();
     getAllMatPrems();
+    getAllSalaries();
     getAllSites();
 },[]);
 
@@ -140,15 +154,22 @@ return (
 
         <NavLink to="/production-sites" className="card">
             <div>
-                <h3>Sites</h3>
+                <h3>Sites de production</h3>
                 <p>{NbreSite}</p>
             </div>
         </NavLink>
 
         <NavLink to="/matierespremieres" className="card">
             <div>
-                <h3>Matière première</h3>
+                <h3>Matières premières</h3>
                 <p>{NbreMatPrem}</p>
+            </div>
+        </NavLink>
+
+        <NavLink to="/salaries" className="card">
+            <div>
+                <h3>Salariés</h3>
+                <p>{NbreSalaries}</p>
             </div>
         </NavLink>
         
