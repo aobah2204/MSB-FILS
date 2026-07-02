@@ -186,7 +186,11 @@ return (
                 ["Administrateur"]
                 .includes(user?.role)
                 &&
-                <button className="profile">
+                <button className="profile"
+                    onClick={() =>
+                    navigate(`/production-sites/modifier/${site.id}`)
+                    }
+                    >
 
                 <Pencil />
 

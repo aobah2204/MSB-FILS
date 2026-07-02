@@ -154,7 +154,15 @@ return (
                 >
 
                     <option>
+                        Superviseur
+                    </option>
+                    
+                    <option>
                         Administrateur
+                    </option>
+
+                    <option>
+                        Coordinateur
                     </option>
 
                     <option>

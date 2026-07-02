@@ -164,11 +164,7 @@ return (
                 <select
                 name="unite"
                 onChange={handleChange}
-                >
-
-                    <option>
-                        Pièce
-                    </option>
+                >                   
 
                     <option>
                         Kg
@@ -188,6 +184,26 @@ return (
 
                     <option>
                         Tonne
+                    </option>
+
+                    <option>
+                        Pièce
+                    </option>
+
+                    <option>
+                        Sac
+                    </option>
+
+                    <option>
+                        Carton
+                    </option>
+
+                    <option>
+                        Fût
+                    </option>
+                    
+                    <option>
+                        Conteneur
                     </option>
 
                 </select>

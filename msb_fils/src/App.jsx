@@ -32,6 +32,7 @@ import VenteChart from './components/VenteChart';
 import AchatChart from './components/AchatChart';
 import ProductionSites from "./pages/ProductionSites";
 import ProductionSiteCreate from "./pages/ProductionSiteCreate";
+import ProductionSiteEdit from "./pages/ProductionSiteEdit";
 import ProductionSiteDetails from "./pages/ProductionSiteDetails";
 import Salaries from './pages/Salaries';
 import SalarieCreate from './pages/SalarieCreate';
@@ -127,7 +128,7 @@ function App() {
         <Route
           path="fournisseurs/modifier/:id"
           element={
-              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+              <RoleRoute roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}>
                 <FournisseurEdit />
               </RoleRoute>       
           }
@@ -136,7 +137,7 @@ function App() {
         <Route 
           path="salaries"
           element={
-            <RoleRoute roles={["Administrateur"]}>
+            <RoleRoute roles={["Administrateur", "Superviseur", "Coordinateur"]}>
               <Salaries />
             </RoleRoute> 
           }/>
@@ -144,7 +145,7 @@ function App() {
         <Route 
           path="salaries/nouveau"
           element={
-            <RoleRoute roles={["Administrateur"]}>
+            <RoleRoute roles={["Administrateur", "Superviseur", "Coordinateur"]}>
               <SalarieCreate />
             </RoleRoute>
           }/>
@@ -152,7 +153,7 @@ function App() {
         <Route 
           path="salaries/modifier/:id"
           element={
-            <RoleRoute roles={["Administrateur"]}>
+            <RoleRoute roles={["Administrateur", "Superviseur", "Coordinateur"]}>
               <SalarieEdit />
             </RoleRoute>
           }/>
@@ -167,7 +168,7 @@ function App() {
             path="produits/nouveau"
             element=
             {
-              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+              <RoleRoute roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}>
                 <ProductCreate />
               </RoleRoute>
             }
@@ -176,7 +177,7 @@ function App() {
         <Route
           path="produits/modifier/:id"
           element={
-                <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                <RoleRoute roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}>
                   <ProductEdit />
                 </RoleRoute>
             }
@@ -199,7 +200,7 @@ function App() {
             path="matierespremieres/nouveau"
             element=
             {
-              <RoleRoute roles={["Administrateur","Responsable de production"]}>
+              <RoleRoute roles={["Administrateur","Responsable de production",  "Superviseur", "Coordinateur"]}>
                 <MatierePremiereCreate />
               </RoleRoute>
             }
@@ -208,7 +209,7 @@ function App() {
         <Route
           path="matierespremieres/modifier/:id"
           element={
-                <RoleRoute roles={["Administrateur","Responsable de production"]}>
+                <RoleRoute roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}>
                   <MatierePremiereEdit />
                 </RoleRoute>
             }
@@ -224,8 +225,12 @@ function App() {
         {/** Productions routes */
         <Route path="productions">
           <Route index element={<Productions />} />
-          <Route path="nouveau" element={<ProductionCreate />} />
-          <Route path="modifier/:id" element={<ProductionEdit />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<ProductionCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<ProductionEdit />} />
         </Route>
         }
 
@@ -239,11 +244,13 @@ function App() {
 
           <Route
           path="vehicules/nouveau"
+          roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
           element={<VehicleCreate />}
           />
 
           <Route
             path="vehicules/modifier/:id"
+            roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
             element={<VehicleEdit />}
           />
 
@@ -264,9 +271,15 @@ function App() {
 
           <Route
             path="production-sites/nouveau"
+            roles={["Administrateur", "Superviseur", "Coordinateur"]}
             element={<ProductionSiteCreate />}
           />
 
+          <Route
+            path="production-sites/modifier/:id"
+            roles={["Administrateur", "Superviseur", "Coordinateur"]}
+            element={<ProductionSiteEdit />}          
+          />
 
           <Route
             path="production-sites/:id"
