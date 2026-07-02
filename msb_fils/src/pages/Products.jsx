@@ -26,9 +26,9 @@ const Product = {
     marque:"",
     unite:"",
 
-    prixAchat:"",
-    prixVente:"",
-    tva:"20",
+    //prixAchat:"",
+    //prixVente:"",
+    //tva:"20",
 
     stock:"",
     stockMin:"",
@@ -124,9 +124,9 @@ function Products() {
                         <th>Reférence</th>
                         <th>Nom</th>
                         <th>Catégorie</th>
-                        <th>Prix Achat</th>
-                        <th>Prix Vente</th>
-                        <th>Status</th>
+                        {/*<th>Prix Achat</th>
+                        <th>Prix Vente</th>*/}
+                        <th>Statut</th>
                         <th>Actions</th>
                     </tr>
 
@@ -145,11 +145,11 @@ function Products() {
 
                         <td>{produit.categorie}</td>
 
-                        <td>{produit.prixAchat}</td>
+                        <td>{produit.actif ? "oui" : "non"}</td>
 
-                        <td>{produit.prixVente}</td>
+                        {/*<td>{produit.prixAchat}</td>
 
-                        <td>{produit.actif}</td>
+                        <td>{produit.prixVente}</td>*/}
                         
                         <td>
                             <NavLink to={`/produits/details/${produit.id}`}>

@@ -32,9 +32,9 @@ const [produit,setProduct] = useState({
     marque:"",
     unite:"",
 
-    prixAchat:"",
-    prixVente:"",
-    tva:"20",
+    //prixAchat:"",
+    //prixVente:"",
+    //tva:"20",
 
     stock:"",
     stockMin:"",
@@ -92,9 +92,9 @@ useEffect(()=>{
             description: Product.description,
             marque: Product.marque,
             unite: Product.unite,
-            prixAchat: Product.prixAchat,
-            prixVente: Product.prixVente,
-            tva:Product.tva,
+            //prixAchat: Product.prixAchat,
+            //prixVente: Product.prixVente,
+            //tva:Product.tva,
             stock: Product.stock,
             stockMin: Product.stockMin,
             poids: Product.poids,
@@ -276,6 +276,7 @@ return (
             onChange={handleChange}
         />
 
+        {/*
         <div className="grid">
 
             <div>
@@ -325,6 +326,7 @@ return (
                 />
             </div>
         </div>
+        */}
 
         <h3>
             Stock

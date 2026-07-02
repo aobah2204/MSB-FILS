@@ -16,9 +16,9 @@ const [product,setProduct] = useState({
     marque:"",
     unite:"",
 
-    prixAchat:"",
-    prixVente:"",
-    tva:"20",
+    //prixAchat:"",
+    //prixVente:"",
+    //tva:"20",
 
     stock:"",
     stockMin:"",
@@ -222,6 +222,7 @@ return (
             />
         </div>
 
+        {/*}
         <div className="grid">
 
             <div>
@@ -270,7 +271,7 @@ return (
                 />
             </div>
         </div>
-
+        */}
         <h3>
             Stock
         </h3>

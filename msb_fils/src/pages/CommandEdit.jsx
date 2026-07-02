@@ -212,7 +212,7 @@ function CommandEdit() {
               <input
                 type="number"
                 value={line.prix_unitaire || ""}
-                readOnly
+                onChange={(e) => updateProductLine(index, "prix_unitaire", e.target.value)}
               />
             </div>
 
