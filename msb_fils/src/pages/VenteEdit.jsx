@@ -234,9 +234,9 @@ function VenteEdit() {
           + Ajouter produit
         </button>
 
-        <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
+        <div className="profile" style={{ backgroundColor: "#a8415b"}}>
           <label><strong>Montant total :</strong></label>
-          <output style={{ fontSize: "18px", fontWeight: "bold" }}>{totalAmount}</output>
+          <output style={{ fontSize: "18px", fontWeight: "bold" }}>{totalAmount}</output> Fg
         </div>
 
         <div style={{ marginTop: "20px" }}>

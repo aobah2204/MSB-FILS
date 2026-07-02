@@ -256,9 +256,9 @@ function ProductionCreate() {
 
         <label>Coût de stockage</label>
         <input
-          type="number"
+          type="float"
           name="cout_stockage"
-          value={production.cout_stockage || 0}
+          value={production.cout_stockage || ""}
           onChange={handleProductionChange}
         />
 
@@ -279,7 +279,7 @@ function ProductionCreate() {
             </select>
 
             <input
-              type="number"
+              type="float"
               placeholder="Quantité"
               value={m.quantite || ""}
               onChange={(e) => updateMaterial(index, "quantite", e.target.value)}
