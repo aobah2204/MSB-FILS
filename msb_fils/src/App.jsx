@@ -47,6 +47,7 @@ import MatieresPremieres from './pages/MatieresPremieres';
 import Productions from './pages/Productions';
 import ProductionCreate from './pages/ProductionCreate';
 import ProductionEdit from './pages/ProductionEdit';
+import ProductionDetails from './pages/ProductionDetails';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -231,6 +232,8 @@ function App() {
           <Route path="modifier/:id"
                 roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
                 element={<ProductionEdit />} />
+          <Route path="details/:id"
+                element={<ProductionDetails />} />
         </Route>
         }
 

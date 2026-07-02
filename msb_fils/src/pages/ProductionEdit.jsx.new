@@ -1,11 +1,11 @@
-﻿import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
-import { useAuth } from "../context/AuthContext";
 
-function ProductionCreate() {
+function ProductionEdit() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -20,49 +20,76 @@ function ProductionCreate() {
     cout_stockage: 0,
     cout_total: 0,
     dateproduction: "",
-    user_creation_id: "",
-    user_modification_id: "",
   });
 
   const [produits, setProduits] = useState([]);
   const [matieres, setMatieres] = useState([]);
   const [sites, setSites] = useState([]);
   const [materials, setMaterials] = useState([]);
-  const [isAddedMateriel, setIsAddedMateriel] = useState(false);
   const [coutTotalMateriels, setCoutTotalMateriels] = useState(0);
   const [coutTotalProduction, setCoutTotalProduction] = useState(0);
 
-  async function getMateriels() {
-    const { data } = await supabase.from("matierespremieres").select("*");
+  async function getProduction() {
+    const { data, error } = await supabase
+      .from("productions")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
 
-    if (!data) {
-      alert("Aucun materiel");
+    if (error) {
+      alert("Erreur lors du chargement de la production : " + error.message);
       return;
     }
 
-    setMatieres(data);
+    if (!data) {
+      alert("Aucune production trouvée");
+      navigate("/productions");
+      return;
+    }
+
+    setProduction({
+      ...data,
+      quantite: data.quantite ?? "",
+      cout_stockage: data.cout_stockage ?? 0,
+      cout_composants: data.cout_composants ?? 0,
+      cout_production: data.cout_production ?? 0,
+      cout_total: data.cout_total ?? 0,
+    });
+  }
+
+  async function getExistingMaterials() {
+    const { data, error } = await supabase
+      .from("materielproduction")
+      .select("*")
+      .eq("production_id", id);
+
+    if (error) {
+      alert("Erreur lors du chargement des matériaux : " + error.message);
+      return;
+    }
+
+    setMaterials(
+      (data || []).map((item) => ({
+        id: item.id,
+        matiere_id: item.matiere_id,
+        quantite: item.quantite,
+      }))
+    );
   }
 
   async function getProduits() {
     const { data } = await supabase.from("products").select("*");
+    if (data) setProduits(data);
+  }
 
-    if (!data) {
-      alert("Aucun produit");
-      return;
-    }
-
-    setProduits(data);
+  async function getMatieres() {
+    const { data } = await supabase.from("matierespremieres").select("*");
+    if (data) setMatieres(data);
   }
 
   async function getSites() {
     const { data } = await supabase.from("siteproduction").select("*");
-
-    if (!data) {
-      setSites([]);
-      return;
-    }
-
-    setSites(data);
+    if (data) setSites(data);
   }
 
   function handleProductionChange(e) {
@@ -71,17 +98,7 @@ function ProductionCreate() {
   }
 
   function addMaterial() {
-    const nextMaterials = [
-      ...materials,
-      {
-        matiere_id: "",
-        quantite: "",
-      },
-    ];
-
-    setMaterials(nextMaterials);
-    setIsAddedMateriel(true);
-    updateCosts(nextMaterials, production);
+    setMaterials((prev) => [...prev, { id: null, matiere_id: "", quantite: "" }]);
   }
 
   function updateMaterial(index, field, value) {
@@ -106,25 +123,24 @@ function ProductionCreate() {
 
     const stockageCost = Number(nextProduction.cout_stockage || 0);
     const productionCost = totalMaterialsCost + stockageCost;
-    const quantityProduced = Number(nextProduction.quantite || 0);
-    //const unitCost = quantityProduced > 0 ? productionCost / quantityProduced : productionCost;
-    const totalCost = productionCost;
-
     setProduction((prev) => ({
       ...prev,
       cout_composants: totalMaterialsCost,
       cout_production: productionCost,
-      cout_total: totalCost,
+      cout_total: productionCost,
     }));
     setCoutTotalMateriels(totalMaterialsCost);
     setCoutTotalProduction(productionCost);
   }
 
-  async function addMaterielProduction(materielProduction) {
-    const { error } = await supabase.from("materielproduction").insert(materielProduction);
+  async function deleteMaterialLines() {
+    const { error } = await supabase
+      .from("materielproduction")
+      .delete()
+      .eq("production_id", id);
 
     if (error) {
-      alert(error.message);
+      alert("Erreur lors de la mise à jour des matériaux : " + error.message);
       return false;
     }
 
@@ -136,30 +152,29 @@ function ProductionCreate() {
 
     const payload = {
       ...production,
-      site_id: production.site_id || "",
+      site_id: production.site_id || null,
+      produit_id: production.produit_id || null,
+      quantite: Number(production.quantite || 0),
       cout_composants: Number(production.cout_composants || 0),
       cout_production: Number(production.cout_production || 0),
       cout_stockage: Number(production.cout_stockage || 0),
       cout_total: Number(production.cout_total || 0),
-      typeproduction: production.typeproduction || "Fabrication",
-      quantite: Number(production.quantite || 0),
       dateproduction: production.dateproduction || new Date().toISOString(),
-      user_creation_id: user?.id || 0,
       user_modification_id: user?.id || 0,
     };
 
-    console.log("Payload:", payload);
-
-    const { data: insertedProduction, error: insertError } = await supabase
+    const { error: updateError } = await supabase
       .from("productions")
-      .insert(payload)
-      .select()
-      .single();
+      .update(payload)
+      .eq("id", id);
 
-    if (insertError) {
-      alert("Production non enregistrée : " + insertError.message);
+    if (updateError) {
+      alert("Production non modifiée : " + updateError.message);
       return;
     }
+
+    const canDelete = await deleteMaterialLines();
+    if (!canDelete) return;
 
     for (const item of materials) {
       if (!item.matiere_id || !item.quantite) continue;
@@ -170,39 +185,40 @@ function ProductionCreate() {
       const quantity = Number(item.quantite) || 0;
       const unitCost = Number(selectedMaterial?.prixAchat || 0);
 
-      const materialPayload = {
-        production_id: insertedProduction.id,
+      const { error: insertError } = await supabase.from("materielproduction").insert({
+        production_id: id,
         matiere_id: item.matiere_id,
         quantite: quantity,
-        //cout_unitaire: unitCost,
-        //cout_total: quantity * unitCost,
-      };
+      });
 
-      const ok = await addMaterielProduction(materialPayload);
-      if (!ok) return;
+      if (insertError) {
+        alert("Erreur lors de la sauvegarde des matériaux : " + insertError.message);
+        return;
+      }
     }
 
-    alert("Production enregistrée");
+    alert("Production modifiée");
     navigate("/productions");
   }
 
   useEffect(() => {
-    getMateriels();
+    getProduction();
+    getExistingMaterials();
     getProduits();
+    getMatieres();
     getSites();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     updateCosts(materials, production);
-  }, [materials, production.quantite, production.cout_stockage]);
+  }, [materials, production.quantite, production.cout_stockage, matieres]);
 
   return (
     <div className="product-page">
-      <h1>Nouvelle production</h1>
+      <h1>Modifier la production</h1>
 
       <form className="product-form" onSubmit={save}>
         <label>Type production</label>
-
         <select
           name="typeproduction"
           value={production.typeproduction || "Fabrication"}
@@ -214,14 +230,12 @@ function ProductionCreate() {
         </select>
 
         <label>Site de production</label>
-
         <select
           name="site_id"
           value={production.site_id || ""}
           onChange={handleProductionChange}
         >
           <option value="">Choisir un site</option>
-
           {sites.map((site) => (
             <option key={site.id} value={site.id}>
               {site.nom}
@@ -230,14 +244,12 @@ function ProductionCreate() {
         </select>
 
         <label>Produit réalisé</label>
-
         <select
           name="produit_id"
           value={production.produit_id || ""}
           onChange={handleProductionChange}
         >
           <option value="">Choisir</option>
-
           {produits.map((p) => (
             <option key={p.id} value={p.id}>
               {p.nom}
@@ -246,7 +258,6 @@ function ProductionCreate() {
         </select>
 
         <label>Quantité produite</label>
-
         <input
           type="number"
           name="quantite"
@@ -262,8 +273,14 @@ function ProductionCreate() {
           onChange={handleProductionChange}
         />
 
-        <h3>Matériaux utilisés</h3>
+        <label>Description</label>
+        <textarea
+          name="description"
+          value={production.description || ""}
+          onChange={handleProductionChange}
+        />
 
+        <h3>Matériaux utilisés</h3>
         {materials.map((m, index) => (
           <div className="grid" key={index}>
             <select
@@ -293,26 +310,22 @@ function ProductionCreate() {
           </button>
         </div>
 
-        {isAddedMateriel && (
-          <div className="grid">
-            <label>Coût total matière</label>
-            <output>{coutTotalMateriels}</output>
+        <div className="grid">
+          <label>Coût total matière</label>
+          <output>{coutTotalMateriels}</output>
 
-            <label>Coût production</label>
-            <output>{coutTotalProduction}</output>
-          </div>
-        )}
+          <label>Coût production</label>
+          <output>{coutTotalProduction}</output>
+        </div>
 
         <br />
 
-        <div>
-          <button className="profile" type="submit">
-            Enregistrer production
-          </button>
-        </div>
+        <button className="profile" type="submit">
+          Enregistrer
+        </button>
       </form>
     </div>
   );
 }
 
-export default ProductionCreate;
+export default ProductionEdit;

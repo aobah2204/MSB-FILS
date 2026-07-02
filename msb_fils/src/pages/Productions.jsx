@@ -1,194 +1,152 @@
-import {
- LayoutDashboard,
- Users,
- FileText,
- Settings,
- UserPlus,
- UserPen,
- UserRoundX,
- Pencil,
- Trash2,
- Package,
- Eye
-} from "lucide-react";
-
+import { Pencil, Trash2, Package, Eye } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { supabase } from "../supabase.js";
-import { useState, useEffect } from 'react'
 import "../CSS/Products.css";
 import { useAuth } from "../context/AuthContext";
 
-const Production = {
-    reference:"",
-    nom:"",
-    categorie:"",
-    description:"",
-    marque:"",
-    unite:"",
-
-    prixAchat:"",
-    prixVente:"",
-    tva:"20",
-
-    stock:"",
-    stockMin:"",
-
-    poids:"",
-    longueur:"",
-    largeur:"",
-    hauteur:"",
-
-    codeBarre:"",
-    actif:true
-}
-
 function Productions() {
+  const { user } = useAuth();
+  const [productionsList, setProductionsList] = useState([]);
 
-    // Connected user 
-    const { user } = useAuth();
+  useEffect(() => {
+    chargerProductions();
+  }, []);
 
-    // List Produits
-    const [productionsList, setProductionsList] = useState([]);
+  async function chargerProductions() {
+    try {
+      await getAllProductions();
+    } catch (error) {
+      console.error("Erreur lors du chargement des productions :", error);
+    }
+  }
 
-    // Produit selectionner
-    const [production, setProduction] = useState(Production);
+  async function getAllProductions() {
+    const { data: productionsData } = await supabase
+      .from("productions")
+      .select("*")
+      .order("dateproduction", { ascending: false });
 
-    const tableProduction = "productions";
-
-    // s'exécute une seule fois au chargement
-    useEffect(() => {
-
-        chargerProductions();
-
-    }, []);
-
-    async function chargerProductions() {
-
-        try {
-            await getAllProductions();
-        } catch (error) {
-            console.error("Erreur lors du chargement des productions :", error);
-        }
+    if (!productionsData || productionsData.length === 0) {
+      setProductionsList([]);
+      return;
     }
 
-    async function getAllProductions(){
+    const { data: sitesData } = await supabase.from("siteproduction").select("id, nom");
+    const { data: productsData } = await supabase.from("products").select("id, nom");
 
-        const { data } = await supabase
-            .from(tableProduction)
-            .select("*");
+    const siteMap = Object.fromEntries((sitesData || []).map((site) => [site.id, site.nom]));
+    const productMap = Object.fromEntries((productsData || []).map((product) => [product.id, product.nom]));
 
-        if (!data) return alert("Aucune productions");
+    const formattedProductions = productionsData.map((production) => ({
+      ...production,
+      siteName: siteMap[production.site_id] || "—",
+      productName: productMap[production.produit_id] || "—",
+    }));
 
-        setProductionsList(data);
+    setProductionsList(formattedProductions);
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("fr-FR");
+  }
+
+  async function DeleteProduction(production) {
+    if (!window.confirm("Supprimer cette production ?")) return;
+
+    const { error: materialsError } = await supabase
+      .from("materielproduction")
+      .delete()
+      .eq("production_id", production.id);
+
+    if (materialsError) {
+      alert("Erreur lors de la suppression des matériaux : " + materialsError.message);
+      return;
     }
-    
 
-    async function DeleteProduction(Production){
+    const { error } = await supabase.from("productions").delete().eq("id", production.id);
 
-        if(confirm("Supprimer cette production ?")){
-            await supabase
-            .from(tableProduction)
-            .delete()
-            .eq("id", Production.id);
-
-            // Mettre à jour la liste des Productions après la suppression
-            await getAllProductions();
-            setProduction(null);
-        }
+    if (error) {
+      alert("Erreur lors de la suppression : " + error.message);
+      return;
     }
 
+    await getAllProductions();
+  }
 
-    return (
-        <div>
+  return (
+    <div>
+      {['Administrateur', 'Responsable de production'].includes(user?.role) && (
+        <section>
+          <div>
+            <NavLink to="/productions/nouveau">
+              <button className="profile">
+                <Package size={20} /> Nouvelle Production
+              </button>
+            </NavLink>
+          </div>
+        </section>
+      )}
 
-            {
-            ["Administrateur","Responsable de production"]
-            .includes(user?.role)
-            &&
-            <section>
-                <div>  
-                    <NavLink to="/productions/nouveau">
-                        <button className="profile"><Package size={20}/>  Nouvelle Production</button>
-                    </NavLink>                        
-                </div>            
-            </section>
-            }
+      <h2>Liste des productions</h2>
 
-            <h2>Liste des Productions</h2>
+      <div className="table-container">
+        <table className="data-table">
+          <thead className="headerTable">
+            <tr className="header_Table">
+              <th>Site</th>
+              <th>Produit</th>
+              <th>Quantité</th>
+              <th>Date</th>
+              <th>Coût total production</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-            <div className="table-container">
-                <table className="data-table">
-                    <thead className="headerTable">
+          <tbody>
+            {productionsList.map((production) => (
+              <tr key={production.id}>
+                <td>{production.siteName}</td>
+                <td>{production.productName}</td>
+                <td>{production.quantite}</td>
+                <td>{formatDate(production.dateproduction)}</td>
+                <td>{production.cout_total}</td>
 
-                    <tr className="header_Table">
-                        <th>Reférence</th>
-                        <th>Nom</th>
-                        <th>Catégorie</th>
-                        <th>Prix Achat</th>
-                        <th>Prix Vente</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                <td>
+                  <NavLink to={`/productions/details/${production.id}`}>
+                    <button className="profile" type="button">
+                      <Eye size={20} />
+                    </button>
+                  </NavLink>
 
-                    </thead>
+                  {['Administrateur', 'Responsable de production'].includes(user?.role) && (
+                    <NavLink to={`/productions/modifier/${production.id}`}>
+                      <button className="profile" type="button">
+                        <Pencil size={20} />
+                      </button>
+                    </NavLink>
+                  )}
 
-
-                    <tbody>
-
-                    {productionsList.map((production, index) => (
-
-                        <tr key={index}>
-
-                        <td>{production.reference}</td>
-
-                        <td>{production.nom}</td>
-
-                        <td>{production.categorie}</td>
-
-                        <td>{production.prixAchat}</td>
-
-                        <td>{production.prixVente}</td>
-
-                        <td>{production.actif}</td>
-                        
-                        <td>
-                            <NavLink to={`/productions/details/${production.id}`}>
-                                <button className="profile"><Eye size={20} /></button>
-                            </NavLink>
-                            {
-                            ["Administrateur","Responsable de production"]
-                            .includes(user?.role)
-                            &&
-                            <NavLink to={`/productions/modifier/${production.id}`}>
-                                <button className="profile"><Pencil size={20} /></button>
-                            </NavLink>
-                            }
-
-                            {
-                            ["Administrateur","Responsable de production"]
-                            .includes(user?.role)
-                            &&                             
-                             <button className="profileSupp" onClick={() => DeleteProduction(production)}> <Trash2 size={20} /></button>
-                            }
-                        </td>
-                        
-
-                    </tr>
-
-                    ))
-                    }
-
-                </tbody>
-                </table>
-            </div>
-
-            
-
-        
-            
-
-
-    </div> );
+                  {['Administrateur', 'Responsable de production'].includes(user?.role) && (
+                    <button
+                      className="profileSupp"
+                      type="button"
+                      onClick={() => DeleteProduction(production)}
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
 export default Productions;

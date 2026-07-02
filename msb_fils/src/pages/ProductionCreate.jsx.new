@@ -1,32 +1,31 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
-import { useAuth } from "../context/AuthContext";
 
 function ProductionCreate() {
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const [production, setProduction] = useState({
     site_id: "",
     produit_id: "",
     typeproduction: "Fabrication",
     description: "",
+    unite: "",
     quantite: "",
     cout_composants: 0,
     cout_production: 0,
     cout_stockage: 0,
+    cout_unitaire: 0,
     cout_total: 0,
     dateproduction: "",
-    user_creation_id: "",
-    user_modification_id: "",
+    user_creation: "",
+    user_modification: "",
   });
 
   const [produits, setProduits] = useState([]);
   const [matieres, setMatieres] = useState([]);
-  const [sites, setSites] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [isAddedMateriel, setIsAddedMateriel] = useState(false);
   const [coutTotalMateriels, setCoutTotalMateriels] = useState(0);
@@ -52,17 +51,6 @@ function ProductionCreate() {
     }
 
     setProduits(data);
-  }
-
-  async function getSites() {
-    const { data } = await supabase.from("siteproduction").select("*");
-
-    if (!data) {
-      setSites([]);
-      return;
-    }
-
-    setSites(data);
   }
 
   function handleProductionChange(e) {
@@ -107,13 +95,14 @@ function ProductionCreate() {
     const stockageCost = Number(nextProduction.cout_stockage || 0);
     const productionCost = totalMaterialsCost + stockageCost;
     const quantityProduced = Number(nextProduction.quantite || 0);
-    //const unitCost = quantityProduced > 0 ? productionCost / quantityProduced : productionCost;
+    const unitCost = quantityProduced > 0 ? productionCost / quantityProduced : productionCost;
     const totalCost = productionCost;
 
     setProduction((prev) => ({
       ...prev,
       cout_composants: totalMaterialsCost,
       cout_production: productionCost,
+      cout_unitaire: unitCost,
       cout_total: totalCost,
     }));
     setCoutTotalMateriels(totalMaterialsCost);
@@ -136,19 +125,17 @@ function ProductionCreate() {
 
     const payload = {
       ...production,
-      site_id: production.site_id || "",
       cout_composants: Number(production.cout_composants || 0),
       cout_production: Number(production.cout_production || 0),
       cout_stockage: Number(production.cout_stockage || 0),
+      cout_unitaire: Number(production.cout_unitaire || 0),
       cout_total: Number(production.cout_total || 0),
       typeproduction: production.typeproduction || "Fabrication",
       quantite: Number(production.quantite || 0),
       dateproduction: production.dateproduction || new Date().toISOString(),
-      user_creation_id: user?.id || 0,
-      user_modification_id: user?.id || 0,
+      user_creation: production.user_creation || "system",
+      user_modification: production.user_modification || "system",
     };
-
-    console.log("Payload:", payload);
 
     const { data: insertedProduction, error: insertError } = await supabase
       .from("productions")
@@ -174,8 +161,8 @@ function ProductionCreate() {
         production_id: insertedProduction.id,
         matiere_id: item.matiere_id,
         quantite: quantity,
-        //cout_unitaire: unitCost,
-        //cout_total: quantity * unitCost,
+        cout_unitaire: unitCost,
+        cout_total: quantity * unitCost,
       };
 
       const ok = await addMaterielProduction(materialPayload);
@@ -189,7 +176,6 @@ function ProductionCreate() {
   useEffect(() => {
     getMateriels();
     getProduits();
-    getSites();
   }, []);
 
   useEffect(() => {
@@ -211,22 +197,6 @@ function ProductionCreate() {
           <option value="Fabrication">Fabrication</option>
           <option value="Transformation">Transformation</option>
           <option value="Assemblage">Assemblage</option>
-        </select>
-
-        <label>Site de production</label>
-
-        <select
-          name="site_id"
-          value={production.site_id || ""}
-          onChange={handleProductionChange}
-        >
-          <option value="">Choisir un site</option>
-
-          {sites.map((site) => (
-            <option key={site.id} value={site.id}>
-              {site.nom}
-            </option>
-          ))}
         </select>
 
         <label>Produit réalisé</label>
