@@ -43,6 +43,9 @@ import MatierePremiereCreate from './pages/MatierePremierCreate';
 import MatierePremiereDetails from './pages/MatierePremiereDetails';
 import MatierePremiereEdit from './pages/MatierePremiereEdit';
 import MatieresPremieres from './pages/MatieresPremieres';
+import Productions from './pages/Productions';
+import ProductionCreate from './pages/ProductionCreate';
+import ProductionEdit from './pages/ProductionEdit';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -217,6 +220,14 @@ function App() {
                 <MatierePremiereDetails />
             }
         />
+
+        {/** Productions routes */
+        <Route path="productions">
+          <Route index element={<Productions />} />
+          <Route path="nouveau" element={<ProductionCreate />} />
+          <Route path="modifier/:id" element={<ProductionEdit />} />
+        </Route>
+        }
 
         {/** Véhicules routes 
         <Route path="vehicules"> */}

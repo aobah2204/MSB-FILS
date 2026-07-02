@@ -76,6 +76,10 @@ return (
             <Factory /> Sites production
         </NavLink>
 
+        <NavLink to="/productions">
+            <Factory /> Productions
+        </NavLink>
+
         <NavLink to="/salaries">
             <Users /> Salariés
         </NavLink>
