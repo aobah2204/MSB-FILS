@@ -16,6 +16,7 @@ import Factures from "./pages/Factures";
 import Settings from "./pages/Settings";
 import ClientCreate from "./pages/ClientCreate";
 import ClientEdit from "./pages/ClientEdit";
+import ClientDetails from "./pages/ClientDetails";
 import CA from "./pages/CA";
 import ProductCreate from "./pages/ProductCreate";
 import Products from "./pages/Products";
@@ -122,6 +123,11 @@ function App() {
                 <ClientEdit />
               </RoleRoute>       
           }
+        />
+
+        <Route
+          path="clients/details/:id"
+          element={<ClientDetails />}
         />
 
         <Route

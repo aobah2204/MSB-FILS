@@ -5,7 +5,8 @@ import {
  Settings,
  UserPlus,
  UserPen,
- UserRoundX
+ UserRoundX,
+ Eye
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -135,7 +136,11 @@ function Clients() {
                                 ["Administrateur","Responsable de production"]
                                 .includes(user?.role)
                                 &&
-                                <td>                                
+                                <td>
+                                    <NavLink to={`/clients/details/${client.id}`}>
+                                        <button className="profile"><Eye size={20} /></button>
+                                    </NavLink>
+                                    
                                     <NavLink to={`/clients/modifier/${client.id}`}>
                                         <button className="profile"><UserPen size={20} /></button>
                                     </NavLink>
