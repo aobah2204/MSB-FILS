@@ -9,7 +9,8 @@ import {
  HandCoins,
  Package,
  Factory,
- Truck
+ Truck,
+ ShoppingCart
 } from "lucide-react";
 
 import logo from "../assets/Logo.png";
@@ -78,6 +79,14 @@ return (
 
         <NavLink to="/productions">
             <Factory /> Productions
+        </NavLink>
+
+        <NavLink to="/commandes">
+            <ShoppingCart /> Commandes
+        </NavLink>
+
+        <NavLink to="/ventes">
+            <HandCoins /> Ventes
         </NavLink>
 
         <NavLink to="/salaries">

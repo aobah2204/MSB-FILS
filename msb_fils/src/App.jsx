@@ -48,6 +48,14 @@ import Productions from './pages/Productions';
 import ProductionCreate from './pages/ProductionCreate';
 import ProductionEdit from './pages/ProductionEdit';
 import ProductionDetails from './pages/ProductionDetails';
+import Commandes from './pages/Commandes';
+import CommandCreate from './pages/CommandCreate';
+import CommandEdit from './pages/CommandEdit';
+import CommandDetails from './pages/CommandDetails';
+import Ventes from './pages/Ventes';
+import VenteCreate from './pages/VenteCreate';
+import VenteEdit from './pages/VenteEdit';
+import VenteDetails from './pages/VenteDetails';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -223,7 +231,7 @@ function App() {
             }
         />
 
-        {/** Productions routes */
+        {/** Productions routes */}
         <Route path="productions">
           <Route index element={<Productions />} />
           <Route path="nouveau"
@@ -235,7 +243,30 @@ function App() {
           <Route path="details/:id"
                 element={<ProductionDetails />} />
         </Route>
-        }
+
+        <Route path="commandes">
+          <Route index element={<Commandes />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<CommandCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<CommandEdit />} />
+          <Route path="details/:id"
+                element={<CommandDetails />} />
+        </Route>
+
+        <Route path="ventes">
+          <Route index element={<Ventes />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<VenteCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<VenteEdit />} />
+          <Route path="details/:id"
+                element={<VenteDetails />} />
+        </Route>
 
         {/** Véhicules routes 
         <Route path="vehicules"> */}
