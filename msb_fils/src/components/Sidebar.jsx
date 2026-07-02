@@ -10,7 +10,8 @@ import {
  Package,
  Factory,
  Truck,
- ShoppingCart
+ ShoppingCart,
+ ShoppingBag
 } from "lucide-react";
 
 import logo from "../assets/Logo.png";
@@ -87,6 +88,10 @@ return (
 
         <NavLink to="/ventes">
             <HandCoins /> Ventes
+        </NavLink>
+
+        <NavLink to="/achats">
+            <ShoppingBag /> Achats
         </NavLink>
 
         <NavLink to="/salaries">

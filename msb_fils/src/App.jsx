@@ -57,6 +57,10 @@ import Ventes from './pages/Ventes';
 import VenteCreate from './pages/VenteCreate';
 import VenteEdit from './pages/VenteEdit';
 import VenteDetails from './pages/VenteDetails';
+import Achats from './pages/Achats';
+import AchatCreate from './pages/AchatCreate';
+import AchatEdit from './pages/AchatEdit';
+import AchatDetails from './pages/AchatDetails';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -272,6 +276,18 @@ function App() {
                 element={<VenteEdit />} />
           <Route path="details/:id"
                 element={<VenteDetails />} />
+        </Route>
+
+        <Route path="achats">
+          <Route index element={<Achats />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<AchatCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<AchatEdit />} />
+          <Route path="details/:id"
+                element={<AchatDetails />} />
         </Route>
 
         {/** Véhicules routes 
