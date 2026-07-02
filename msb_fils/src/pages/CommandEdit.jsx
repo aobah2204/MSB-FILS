@@ -239,7 +239,7 @@ function CommandEdit() {
           + Ajouter produit
         </button>
 
-        <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#f5f5f5", borderRadius: "5px" }}>
+        <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
           <label><strong>Montant total :</strong></label>
           <output style={{ fontSize: "18px", fontWeight: "bold" }}>{totalAmount}</output>
         </div>
