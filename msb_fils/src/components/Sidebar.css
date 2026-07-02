@@ -11,6 +11,10 @@ background:#111827;
 color:white;
 
 padding:25px;
+padding-bottom:100px;
+
+overflow-y:auto;
+overflow-x:hidden;
 
 }
 
