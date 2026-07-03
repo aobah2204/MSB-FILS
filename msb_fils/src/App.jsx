@@ -41,6 +41,7 @@ import SalarieEdit from './pages/SalarieEdit';
 import Fournisseurs from './pages/Fournisseurs';
 import FournisseurCreate from './pages/FournisseurCreate';
 import FournisseurEdit from './pages/FournisseurEdit';
+import FournisseurDetails from './pages/FournisseurDetails';
 import MatierePremiereCreate from './pages/MatierePremierCreate';
 import MatierePremiereDetails from './pages/MatierePremiereDetails';
 import MatierePremiereEdit from './pages/MatierePremiereEdit';
@@ -151,6 +152,11 @@ function App() {
                 <FournisseurEdit />
               </RoleRoute>       
           }
+        />
+
+        <Route
+          path="fournisseurs/details/:id"
+          element={<FournisseurDetails />}
         />
 
         <Route 
