@@ -143,7 +143,7 @@ function MatieresPremieres() {
 
                         <td>{produit.categorie}</td>
 
-                        <td>{produit.prixAchat}</td>
+                        <td>{new Intl.NumberFormat("fr-FR").format(produit.prixAchat) || 0} FG</td>
                         
                         
                         <td>

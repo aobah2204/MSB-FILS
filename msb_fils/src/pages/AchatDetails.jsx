@@ -92,8 +92,8 @@ function AchatDetails() {
                 <tr key={line.id}>
                   <td>{line.matierespremieres?.nom || "—"}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
-                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0}</td>
-                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
                 </tr>
               ))}
             </tbody>

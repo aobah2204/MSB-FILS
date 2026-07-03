@@ -153,7 +153,7 @@ function Vehicles(){
                             </td>
 
                             <td>
-                                {v.kilometrage}
+                                {new Intl.NumberFormat("fr-FR").format(v.kilometrage)} 
                             </td>
 
                             

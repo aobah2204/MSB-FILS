@@ -164,7 +164,7 @@ return (
 
 
                 <td>
-                {site.capacite}
+                    {new Intl.NumberFormat("fr-FR").format(site.capacite)}
                 </td>
 
 
