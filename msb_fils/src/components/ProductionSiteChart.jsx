@@ -18,54 +18,8 @@ function ProductionSiteChart({ ChartData }) {
 
     console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
 
-    const data = [];
-
-    if(ChartData.length > 0 ) {
-        for (let i = 0; i < ChartData.length; i++) {
-            console.log("ChartData.date[i]: ", ChartData.date[i]); // Log each date
-            console.log("ChartData.quantite[i]: ", ChartData.quantite[i]); // Log each quantite
-            data.push({
-                date: ChartData.date[i],
-                quantite: ChartData.quantite[i]
-            });
-        }
-    }
-    else{
-        data.push(
-
-        {
-        date:"01/02/2026",
-        quantite:2000,
-        },
-
-        {
-        date:"06/02/2026",
-        quantite:500,
-        },
-
-        {
-        date:"01/03/2026",
-        quantite:100,
-        },
-
-        {
-        date:"01/04/2026",
-        quantite:1000,
-        },
-
-        {
-        date:"01/05/2026",
-        quantite:500,
-        },
-
-        {
-        date:"01/06/2026",
-        quantite:1000,
-        },
-
-
-        );
-    }
+    // Ensure ChartData is an array, default to empty array if not
+    const data = Array.isArray(ChartData) ? ChartData : [];   
 
 
 

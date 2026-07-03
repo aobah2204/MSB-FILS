@@ -29,7 +29,7 @@ function ProductionSiteDetails(){
         quantite:0
     });
 
-    const [productionSite, setProductionSite] = useState([]);
+    const [productionSite, setProductionSite] = useState([]); // Initialize as empty array for chart data
     const [nbreProductionSite, setNbreProductionSite] = useState(0);
 
 
@@ -57,12 +57,16 @@ function ProductionSiteDetails(){
         console.log("id:", id); // Log the site ID
         console.log("Number of records:", data.length); // Log the number of records fetched
 
-        if(data){
-            setProductionSite({
-                date: data.map((item) => item.dateproduction),
-                quantite: data.map((item) => item.quantite)
-            });
+        if(data && data.length > 0){
+            // Transform data into array of objects for chart
+            const chartData = data.map((item) => ({
+                date: item.dateproduction,
+                quantite: item.quantite
+            }));
+            setProductionSite(chartData);
             setNbreProductionSite(data.reduce((total, item) => total + item.quantite, 0));
+        } else {
+            setProductionSite([]);
         }
     }
 

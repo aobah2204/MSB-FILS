@@ -77,6 +77,7 @@ function ProductionDetails() {
         <p><strong>Date :</strong> {production.dateproduction || "—"}</p>
         <p><strong>Coût total :</strong> {production.cout_total || 0}</p>
         <p><strong>Coût de stockage :</strong> {production.cout_stockage || 0}</p>
+        <p><strong>Coût de production (main d'œuvre) :</strong> {production.cout_production || 0}</p>
         <p><strong>Description :</strong> {production.description || "—"}</p>
       </div>
 
