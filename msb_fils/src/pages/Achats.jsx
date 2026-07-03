@@ -39,6 +39,13 @@ function Achats() {
     }
   }
 
+  function formatDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("fr-FR");
+  }
+
   return (
     <div>
       {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
@@ -74,8 +81,8 @@ function Achats() {
               <tr key={achat.id}>
                 <td>{achat.reference || "—"}</td>
                 <td>{achat.fournisseurs?.nom + " "+ achat.fournisseurs?.prenom || "—"}</td>
-                <td>{achat.date_achat || "—"}</td>
-                <td>{achat.montant_total || 0}</td>
+                <td>{formatDate(achat.date_achat) || "—"}</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(achat.montant_total) || 0 } FG</td>
                 <td>{achat.statut || "—"}</td>
                 {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
                   user?.role

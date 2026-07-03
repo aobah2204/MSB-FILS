@@ -45,6 +45,13 @@ function Ventes() {
 
   }
 
+  function formatDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("fr-FR");
+  }
+
   return (
     <div className="product-page">
       <h1>Liste des ventes</h1>
@@ -76,8 +83,8 @@ function Ventes() {
               <tr key={sale.id}>
                 <td>{sale.reference || "—"}</td>
                 <td>{clientMap[sale.client_id] || "—"}</td>
-                <td>{sale.date_vente || "—"}</td>
-                <td>{sale.montant_total || 0}</td>
+                <td>{formatDate(sale.date_vente) || "—"}</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(sale.montant_total) || 0} FG </td>
                 <td>{sale.mode_paiement || "—"}</td>
                 <td>
                   <NavLink to={`/ventes/details/${sale.id}`}>

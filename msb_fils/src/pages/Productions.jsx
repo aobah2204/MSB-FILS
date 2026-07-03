@@ -113,7 +113,8 @@ function Productions() {
                 <td>{production.productName}</td>
                 <td>{production.quantite}</td>
                 <td>{formatDate(production.dateproduction)}</td>
-                <td>{production.cout_total}</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(production.cout_total)} FG</td>
+                
 
                 <td>
                   <NavLink to={`/productions/details/${production.id}`}>

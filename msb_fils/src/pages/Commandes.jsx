@@ -128,8 +128,8 @@ function Commandes() {
               <tr key={order.id}>
                 <td>{order.reference || "—"}</td>
                 <td>{clientMap[order.client_id] || "—"}</td>
-                <td>{order.date_commande || "—"}</td>
-                <td>{order.montant_total || 0}</td>
+                <td>{new Date(order.date_commande).toLocaleDateString("fr-FR") || "—"}</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(order.montant_total)} FG</td>
                 <td>{order.statut || "En cours"}</td>
                 <td>
                   <NavLink to={`/commandes/details/${order.id}`}>

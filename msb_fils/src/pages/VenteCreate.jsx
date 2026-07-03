@@ -164,7 +164,7 @@ function VenteCreate() {
               <label>Produit</label>
               <select
                 value={line.produit_id || ""}
-                onChange={(e) => updateProductLine(index, "produit_id", e.target.value)}
+                onChange={(e) => updateProductLine(index, "produit_id", e.target.value)}                
               >
                 <option value="">Choisir</option>
                 {products.map((p) => (
