@@ -52,6 +52,10 @@ function ProductionSiteDetails(){
             .from(table)
             .select("*")
             .eq("site_id", id);
+        
+        console.log("Production data:", data); // Log the fetched data for debugging
+        console.log("id:", id); // Log the site ID
+        console.log("Number of records:", data.length); // Log the number of records fetched
 
         if(data){
             setProductionSite({
