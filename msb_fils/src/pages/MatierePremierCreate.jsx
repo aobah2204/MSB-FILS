@@ -24,7 +24,7 @@ const [MatierePremiere,setMatierePremiere] = useState({
     fournisseur: "",
     id_fournisseur: 0,
 
-    prixAchat:"",
+    prixAchat:0,
     
     stock:"",
     stockMin:"",
@@ -207,6 +207,10 @@ return (
                     <option>
                         Kg
                     </option>
+
+                    <Option>
+                        Kw
+                    </Option>
 
                     <option>
                         Litre
@@ -398,7 +402,6 @@ return (
                 </select>
             </div>
             
-
             <div className="grid">
 
                 <input
