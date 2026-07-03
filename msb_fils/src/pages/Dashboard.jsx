@@ -43,6 +43,10 @@ const [NbreCmdLivree,setNbreCmdLivree] = useState(0);
 const [cmdAnnulee,setCmdAnnulee] = useState([]);
 const [NbreCmdAnnulee,setNbreCmdAnnulee] = useState(0);
 
+const [prodEncours,setProdEncours] = useState(0);
+const [NbreProdEncours,setNbreProdEncours] = useState(0);
+
+
 async function getAllClients(){
 
     const { data } = await supabase
@@ -148,6 +152,11 @@ async function getAllCommandes(){
     setNbreCmdAnnulee(cmdAnnulee.length);
 }
 
+async function getAllProductions(){
+
+    
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts();  
@@ -217,7 +226,7 @@ return (
 
         <NavLink to="/salaries" className="card">
             <div>                
-                    <h3>Salariés</h3>                
+                <h3>Salariés</h3>                
                 <p>{NbreSalaries}</p>
             </div>
         </NavLink>

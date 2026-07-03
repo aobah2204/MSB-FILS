@@ -254,6 +254,14 @@ function ProductionCreate() {
           onChange={handleProductionChange}
         />
 
+        <label>Date de production</label>
+        <input
+          type="date"
+          name="date_production"
+          value={production.date_production || ""}
+          onChange={handleProductionChange}
+        />
+
         <label>Coût de stockage</label>
         <input
           type="float"

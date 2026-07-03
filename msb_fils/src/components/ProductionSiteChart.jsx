@@ -14,42 +14,56 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabase";
 
 
-function ProductionChart(){
+function ProductionSiteChart({ ChartData }) {
 
-    const { ChartData } = useParams();
+    console.log("ChartData:", ChartData); // Log the ChartData to check its value
 
+    const data = [];
 
-const data = [
+    if(ChartData.length > 0 && Array.isArray(ChartData.date) && Array.isArray(ChartData.quantite)) {
+        for (let i = 0; i < ChartData.date.length; i++) {
+            data.push({
+                mois: ChartData.date[i],
+                quantite: ChartData.quantite[i]
+            });
+        }
+    }
+    else{
+        data.push(
 
-{
- mois:"Jan",
- actuel:1200,
- moisDernier:950,
- anneeDerniere:800
-},
+        {
+        mois:"Jan",
+        quantite:0,
+        },
 
-{
- mois:"Fev",
- actuel:1500,
- moisDernier:1300,
- anneeDerniere:1100
-},
+        {
+        mois:"Fev",
+        quantite:0,
+        },
 
-{
- mois:"Mar",
- actuel:1800,
- moisDernier:1600,
- anneeDerniere:1400
-},
+        {
+        mois:"Mar",
+        quantite:0,
+        },
 
-{
- mois:"Avr",
- actuel:2200,
- moisDernier:1900,
- anneeDerniere:1700
-}
+        {
+        mois:"Avr",
+        quantite:0,
+        },
 
-];
+        {
+        mois:"Mai",
+        quantite:0,
+        },
+
+        {
+        mois:"Juin",
+        quantite:0,
+        },
+        
+
+        );
+    }
 
 
 
@@ -99,7 +113,7 @@ return (
 
             type="monotone"
 
-            dataKey="actuel"
+            dataKey="quantite"
 
             name="Cette année"
 
@@ -109,43 +123,7 @@ return (
 
             dot={{r:5}}
 
-        />
-
-
-
-        <Line
-
-            type="monotone"
-
-            dataKey="moisDernier"
-
-            name="Mois dernier"
-
-            stroke="#16a34a"
-
-            strokeWidth={2}
-
-            dot={{r:5}}
-
-        />
-
-
-
-        <Line
-
-            type="monotone"
-
-            dataKey="anneeDerniere"
-
-            name="Même mois année dernière"
-
-            stroke="#f97316"
-
-            strokeWidth={3}
-
-            dot={{r:5}}
-
-        />
+        />       
 
 
 
@@ -165,4 +143,4 @@ return (
 }
 
 
-export default ProductionChart;
+export default ProductionSiteChart;

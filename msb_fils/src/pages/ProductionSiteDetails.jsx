@@ -3,7 +3,7 @@ import {
 } from "react-router-dom";
 import { supabase } from "../supabase";
 import { useState, useEffect } from "react";
-import ProductionChart from '../components/ProductionChart'
+import ProductionSiteChart from '../components/ProductionSiteChart';
 
 
 function ProductionSiteDetails(){
@@ -24,6 +24,14 @@ function ProductionSiteDetails(){
         resp_id: 0
     });
 
+    const productionData = useState({
+        date:"",
+        quantite:0
+    });
+
+    const [productionSite, setProductionSite] = useState([]);
+    const [nbreProductionSite, setNbreProductionSite] = useState(0);
+
 
     async function getSite(){
 
@@ -37,9 +45,27 @@ function ProductionSiteDetails(){
         setSite(data);
     }
 
+    async function getAllProductionSite(){
+
+        const table = "productions";
+        const { data } = await supabase
+            .from(table)
+            .select("*")
+            .eq("site_id", id);
+
+        if(data){
+            setProductionSite({
+                date: data.map((item) => item.dateproduction),
+                quantite: data.map((item) => item.quantite)
+            });
+            setNbreProductionSite(data.length);
+        }
+    }
+
     useEffect(()=>{
     
         getSite(id);
+        getAllProductionSite(id);
                 
     },[id]);
 
@@ -94,7 +120,7 @@ function ProductionSiteDetails(){
 
 
                 <p>
-                    Production actuelle : {site.capacite} unités
+                    Production actuelle :  {nbreProductionSite} unités/mois
                 </p>
 
 
@@ -143,10 +169,10 @@ function ProductionSiteDetails(){
 
 
                 <p>
-                Taux utilisation : 84%
+                    Taux utilisation : {site.capacite > 0 ? (nbreProductionSite / site.capacite) * 100 : 0} %
                 </p>
 
-                <ProductionChart />
+                <ProductionSiteChart ChartData={productionSite} />
 
 
             </div>     
