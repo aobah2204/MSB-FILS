@@ -31,11 +31,27 @@ function TopProduitsChart({data}){
 
             <CartesianGrid strokeDasharray="3 3"/>
 
-            <XAxis dataKey="nom"/>
+            <XAxis dataKey="nom"
+                   angle={-35}
+                    textAnchor="end"
+                    height={80}
+                    tickFormatter={(nom)=>
+                        nom.length>12
+                        ? nom.substring(0,12)+"..."
+                        : nom
+                    }/>
 
-            <YAxis/>
+            <YAxis
+                tickFormatter={(value) => `${(value / 1000000).toFixed(1)} M`}
+            />
 
-            <Tooltip/>
+            <Tooltip 
+                formatter={(value)=>
+
+                new Intl.NumberFormat("fr-FR").format(value)+" FG"
+
+                }
+            />
 
             <Legend/>
 
