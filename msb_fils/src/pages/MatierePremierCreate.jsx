@@ -208,9 +208,10 @@ return (
                         Kg
                     </option>
 
-                    <Option>
+                    <option>
                         Kw
-                    </Option>
+                    </option>
+                    
 
                     <option>
                         Litre
