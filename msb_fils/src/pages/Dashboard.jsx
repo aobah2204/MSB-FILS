@@ -255,11 +255,22 @@ useEffect(()=>{
 
 return (
 
-<div>
+<div>    
 
-    <h2>        
-        MSB & FILS Portail
-    </h2>
+    <h2> Top 10 des produits les vendus </h2>
+
+    <div className="cards">
+        <div className="card">            
+
+            <TopProduitsChart
+                data={datatop10}
+            />
+
+        </div>
+
+        
+
+    </div>
 
 
     <div className="cards">
@@ -349,25 +360,6 @@ return (
             </div>
         </NavLink>
     </div>
-    <br/>
-
-    <h2> Top 10 des produits les vendus </h2>
-
-    <div className="cards">
-        <div className="card">            
-
-            <TopProduitsChart
-                data={datatop10}
-            />
-
-        </div>
-
-        
-
-    </div>
-
-
-
 </div>
 
 )

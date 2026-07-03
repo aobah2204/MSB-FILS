@@ -23,6 +23,12 @@ return (
         </h4>
         <p>{user?.role}</p>
     </div>
+
+    <div>
+        <h2>        
+            MSB & FILS Portail
+        </h2>
+    </div>
             
 
     <div className="header-actions">
