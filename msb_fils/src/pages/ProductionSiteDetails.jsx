@@ -83,9 +83,9 @@ function ProductionSiteDetails(){
         <div>
 
 
-            <h1>
-                Fiche site #{id}
-            </h1>
+            <h3>
+                Fiche site N°: #{id}
+            </h3>
 
             <div className="cards">
                 <div className="card">
@@ -142,23 +142,8 @@ function ProductionSiteDetails(){
                 <h3>
                 Equipements
                 </h3>
-
-
-                <ul>
-
-                <li>
-                Machine découpe
-                </li>
-
-                <li>
-                Ligne assemblage
-                </li>
-
-                <li>
-                Contrôle qualité
-                </li>
-
-                </ul>
+                
+                    {site.equipements}
 
 
             </div>           

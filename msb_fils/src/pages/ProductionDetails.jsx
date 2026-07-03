@@ -43,7 +43,7 @@ function ProductionDetails() {
     if (data.produit_id) {
       const { data: productData } = await supabase
         .from("products")
-        .select("nom")
+        .select("*")
         .eq("id", data.produit_id)
         .maybeSingle();
       setProduct(productData);
@@ -71,6 +71,7 @@ function ProductionDetails() {
 
       <div className="card">
         <p><strong>Site :</strong> {site?.nom || "—"}</p>
+        <p><strong>Produit_id :</strong> {product?.id || "—"}</p>
         <p><strong>Produit :</strong> {product?.nom || "—"}</p>
         <p><strong>Type :</strong> {production.typeproduction || "—"}</p>
         <p><strong>Quantité :</strong> {production.quantite || 0}</p>

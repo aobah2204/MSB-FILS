@@ -19,6 +19,7 @@ import "../CSS/Products.css";
 import { useAuth } from "../context/AuthContext";
 
 const Product = {
+
     reference:"",
     nom:"",
     categorie:"",

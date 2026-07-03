@@ -56,8 +56,28 @@ function ProductDetails(){
 
         if (!data) return alert("Aucun Produit");
 
+        console.log(" ---------Produit :",data);
+
         setProduct(data);
-        console.log(data);
+        
+    }
+
+    const [nbrProduction, setNbrProduction] = useState(0);
+    const [productions, setProductions] = useState([]);
+
+    async function getNbrProductionsBySite(){
+
+        const { data } = await supabase
+            .from("productions")
+            .select("*")
+            .eq("produit_id",id);    
+            
+        console.log(" ---------Produit id :",id);
+        console.log(" ---------Nbr Production :",data);
+        setProductions(data);
+
+        if (!data) return alert("Aucune Production");
+        setNbrProduction(data.reduce((acc, curr) => acc + parseInt(curr.quantite), 0));
         
     }
 
@@ -66,6 +86,7 @@ function ProductDetails(){
     useEffect(() => {
 
         getProduct();
+        getNbrProductionsBySite();
 
     }, []);
 
@@ -143,56 +164,12 @@ function ProductDetails(){
             <div className="cards">
 
                 <div className="card">
-
-
-                    <h3>
-                        Production
-                    </h3>
-
-
-                    <ul>
-
-                        <li>
-                            Matière première : 
-                        </li>
-
-                        <li>
-                            Coût de production : 
-                        </li>
-
-                    </ul>
-
-
-                </div> 
-
-                <div className="card">
-
-                    <h3>
-                        Vente 
-                    </h3>
-
-
-                    <p>
-                        Total : 
-                    </p>
-
-
-                    <p>
-                        Coût de vente:
-                    </p>
-
-
-                </div>
-
-            </div>
-
-            <div className="cards">
-
-                <div className="card">
                     <h3>
                         Production
                         </h3>
-                        <ProductionChart />
+                        <p>
+                            Nombre de productions : {nbrProduction}
+                        </p>
                 </div> 
             </div>
 
