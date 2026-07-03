@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import ProductionChart from "../components/ProductionChart";
 import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
+import { ShoppingCart } from "lucide-react";
 
 
 function Dashboard(){
@@ -29,6 +30,18 @@ const [NbreMatPrem,setNbreMatPrem] = useState(0);
 
 const [salaries,setSalaries] = useState([]);
 const [NbreSalaries,setNbreSalaries] = useState(0);
+
+const [cmdEncours,setCmdEncours] = useState([]);
+const [NbreCmdEncours,setNbreCmdEncours] = useState(0);
+
+const [cmdValides,setCmdValides] = useState([]);
+const [NbreCmdValides,setNbreCmdValides] = useState(0);
+
+const [cmdLivree,setCmdLivree] = useState([]);
+const [NbreCmdLivree,setNbreCmdLivree] = useState(0);
+
+const [cmdAnnulee,setCmdAnnulee] = useState([]);
+const [NbreCmdAnnulee,setNbreCmdAnnulee] = useState(0);
 
 async function getAllClients(){
 
@@ -100,6 +113,41 @@ async function getAllSalaries(){
     setNbreSalaries(data.length);
 }
 
+async function getAllCommandes(){
+
+    const { data: cmdEncours } = await supabase
+        .from("commandes")
+        .select("*")
+        .eq("statut","En cours");
+    
+    setCmdEncours(cmdEncours);
+    setNbreCmdEncours(cmdEncours.length);
+
+    const { data: cmdValides } = await supabase
+        .from("commandes")
+        .select("*")
+        .eq("statut","Validée");
+    
+    setCmdValides(cmdValides);
+    setNbreCmdValides(cmdValides.length);
+
+    const { data: cmdLivree } = await supabase
+        .from("commandes")
+        .select("*")
+        .eq("statut","Livrée");
+    
+    setCmdLivree(cmdLivree);
+    setNbreCmdLivree(cmdLivree.length);
+
+    const { data: cmdAnnulee } = await supabase
+        .from("commandes")
+        .select("*")
+        .eq("statut","Annulée");
+    
+    setCmdAnnulee(cmdAnnulee);
+    setNbreCmdAnnulee(cmdAnnulee.length);
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts();  
@@ -108,6 +156,7 @@ useEffect(()=>{
     getAllMatPrems();
     getAllSalaries();
     getAllSites();
+    getAllCommandes();
 },[]);
 
 return (
@@ -174,6 +223,37 @@ return (
         </NavLink>
         
         
+    </div>
+    <br/>
+
+    <h3> <ShoppingCart /> Commandes </h3>
+    <div className="cards grid-4">
+        <NavLink to="/commandes">
+            <div className="card">
+                <h3>Commandes en cours</h3>
+                <p>{NbreCmdEncours}</p>
+            </div>
+        </NavLink>
+
+        <NavLink to="/commandes">
+            <div className="card">
+                <h3>Commandes validées</h3>
+                <p>{NbreCmdValides}</p>
+            </div>
+        </NavLink>
+
+        <NavLink to="/commandes">
+            <div className="card">
+                <h3>Commandes livrées</h3>
+                <p>{NbreCmdLivree}</p>
+            </div>
+        </NavLink>
+        <NavLink to="/commandes">
+            <div className="card">
+                <h3>Commandes annulées</h3>
+                <p>{NbreCmdAnnulee}</p>
+            </div>
+        </NavLink>
     </div>
     <br/>
 
