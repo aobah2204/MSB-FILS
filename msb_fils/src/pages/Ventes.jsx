@@ -12,7 +12,7 @@ function Ventes() {
   async function loadData() {
     const [{ data: salesData }, { data: clientsData }] = await Promise.all([
       supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
-      supabase.from("clients").select("id, nom"),
+      supabase.from("clients").select("id, nom, prenom"),
     ]);
 
     setSales(salesData || []);
@@ -37,7 +37,13 @@ function Ventes() {
     loadData();
   }
 
-  const clientMap = Object.fromEntries(clients.map((client) => [client.id, client.nom]));
+  const clientMap = Object.fromEntries(clients.map((client) => [client.id, `${client.nom} ${client.prenom}`]));
+
+  async function ClientFullName(id){
+    const client = await supabase.from("clients").select("nom, prenom").eq("id",id);
+    return client.nom + " "+ client.prenom
+
+  }
 
   return (
     <div className="product-page">

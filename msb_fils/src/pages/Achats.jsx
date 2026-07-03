@@ -17,7 +17,7 @@ function Achats() {
     try {
       const { data } = await supabase
         .from("achats")
-        .select("*, fournisseurs(nom)")
+        .select("*, fournisseurs(nom,prenom)")
         .order("created_at", { ascending: false });
 
       if (!data) return alert("Aucun achat");
@@ -73,7 +73,7 @@ function Achats() {
             {achatsList.map((achat) => (
               <tr key={achat.id}>
                 <td>{achat.reference || "—"}</td>
-                <td>{achat.fournisseurs?.nom || "—"}</td>
+                <td>{achat.fournisseurs?.nom + " "+ achat.fournisseurs?.prenom || "—"}</td>
                 <td>{achat.date_achat || "—"}</td>
                 <td>{achat.montant_total || 0}</td>
                 <td>{achat.statut || "—"}</td>
