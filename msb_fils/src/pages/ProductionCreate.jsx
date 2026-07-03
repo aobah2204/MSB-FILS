@@ -257,7 +257,7 @@ function ProductionCreate() {
         <label>Date de production</label>
         <input
           type="date"
-          name="date_production"
+          name="dateproduction"
           value={production.dateproduction || ""}
           onChange={handleProductionChange}
         />
