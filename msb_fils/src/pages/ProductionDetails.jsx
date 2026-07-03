@@ -69,24 +69,26 @@ function ProductionDetails() {
     <div className="product-page">
       <h1>Détails de la production</h1>
 
-      <div className="card">
+      <div className="card" style={{textAlign: "left"}}>
         <p><strong>Site :</strong> {site?.nom || "—"}</p>
-        <p><strong>Produit_id :</strong> {product?.id || "—"}</p>
         <p><strong>Produit :</strong> {product?.nom || "—"}</p>
         <p><strong>Type :</strong> {production.typeproduction || "—"}</p>
-        <p><strong>Quantité :</strong> {production.quantite || 0}</p>
+        <p><strong>Quantité :</strong> {new Intl.NumberFormat("fr-FR").format(production.quantite) || 0}</p>
         <p><strong>Date :</strong> {production.dateproduction || "—"}</p>
-        <p><strong>Coût total :</strong> {production.cout_total || 0}</p>
-        <p><strong>Coût de stockage :</strong> {production.cout_stockage || 0}</p>
-        <p><strong>Coût de production (main d'œuvre) :</strong> {production.cout_production || 0}</p>
         <p><strong>Description :</strong> {production.description || "—"}</p>
+        
+        <p><strong>Coût de stockage :</strong> {new Intl.NumberFormat("fr-FR").format(production.cout_stockage) || 0} FG</p>
+        <p><strong>Coût de production (main d'œuvre) :</strong> {new Intl.NumberFormat("fr-FR").format(production.cout_production) || 0} FG</p>
+
+        <p><strong>Coût total :</strong> {new Intl.NumberFormat("fr-FR").format(production.cout_total) || 0} FG</p>
+        
       </div>
 
       <h3>Matériaux utilisés</h3>
       {materials.length === 0 ? (
         <p>Aucun matériau associé.</p>
       ) : (
-        <ul>
+        <ul style={{textAlign: "left"}}>
           {materials.map((item) => (
             <li key={item.id}>
               {item.matierespremieres?.nom || "—"} — quantité : {item.quantite}

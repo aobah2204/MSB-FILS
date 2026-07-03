@@ -37,6 +37,13 @@ function AchatDetails() {
     setProductLines(linesData || []);
   }
 
+  function formatDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("fr-FR");
+  }
+
   useEffect(() => {
     loadAchat();
   }, [id]);
@@ -48,7 +55,7 @@ function AchatDetails() {
   return (
     <div className="product-page">
       <h1>Détails de l'achat {id}</h1>
-      <div className="card">
+      <div className="card" style={{textAlign: "left"}}>
         <p>
           <strong>Référence :</strong> {achat.reference || "—"}
         </p>
@@ -56,7 +63,7 @@ function AchatDetails() {
           <strong>Fournisseur :</strong> {fournisseur?.nom || "—"}
         </p>
         <p>
-          <strong>Date :</strong> {achat.date_achat || "—"}
+          <strong>Date :</strong> {formatDate(achat.date_achat) || "—"}
         </p>
         <p>
           <strong>Statut :</strong> {achat.statut || "—"}
@@ -84,9 +91,9 @@ function AchatDetails() {
               {productLines.map((line) => (
                 <tr key={line.id}>
                   <td>{line.matierespremieres?.nom || "—"}</td>
-                  <td>{line.quantite || 0}</td>
-                  <td>{line.prix_unitaire || 0}</td>
-                  <td>{line.montant_ligne || 0}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0}</td>
                 </tr>
               ))}
             </tbody>
@@ -96,7 +103,7 @@ function AchatDetails() {
 
       <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
         <p>
-          <strong>Montant total :</strong> {achat.montant_total || 0}
+          <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(achat.montant_total) || 0} FG
         </p>
       </div>
 
