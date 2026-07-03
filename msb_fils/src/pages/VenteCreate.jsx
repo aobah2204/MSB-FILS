@@ -24,7 +24,7 @@ function VenteCreate() {
   async function loadOptions() {
     const [{ data: clientsData }, { data: productsData }] = await Promise.all([
       supabase.from("clients").select("id, nom"),
-      supabase.from("products").select("id, nom, prixVente"),
+      supabase.from("products").select("id, nom, categorie, prixVente"),
     ]);
 
     setClients(clientsData || []);
@@ -168,7 +168,7 @@ function VenteCreate() {
               >
                 <option value="">Choisir</option>
                 {products.map((p) => (
-                  <option key={p.id} value={p.id}>{p.nom}</option>
+                  <option key={p.id} value={p.id}>{p.nom} - {p.categorie}</option>
                 ))}
               </select>
             </div>

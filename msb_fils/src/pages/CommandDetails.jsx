@@ -28,7 +28,7 @@ function CommandDetails() {
 
     const { data: linesData } = await supabase
       .from("commandeproduits")
-      .select("*, products(nom)")
+      .select("*, products(nom,unite)")
       .eq("commande_id", id);
 
     setProductLines(linesData || []);
@@ -63,6 +63,7 @@ function CommandDetails() {
               <tr>
                 <th>Produit</th>
                 <th>Quantité</th>
+                <th>Unité</th>
                 <th>Prix unitaire</th>
                 <th>Total ligne</th>
               </tr>
@@ -72,6 +73,7 @@ function CommandDetails() {
                 <tr key={line.id}>
                   <td>{line.products?.nom || "—"}</td>
                   <td>{line.quantite || 0}</td>
+                  <td>{line.products?.unite || "—"}</td>
                   <td>{line.prix_unitaire || 0}</td>
                   <td>{line.montant_ligne || 0}</td>
                 </tr>
