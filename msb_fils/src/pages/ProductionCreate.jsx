@@ -105,10 +105,10 @@ function ProductionCreate() {
     }, 0);
 
     const stockageCost = Number(nextProduction.cout_stockage || 0);
-    const productionCost = totalMaterialsCost + stockageCost;
+    const productionCost = Number(nextProduction.cout_production || 0);
     const quantityProduced = Number(nextProduction.quantite || 0);
     //const unitCost = quantityProduced > 0 ? productionCost / quantityProduced : productionCost;
-    const totalCost = productionCost;
+    const totalCost = productionCost + stockageCost + totalMaterialsCost;
 
     setProduction((prev) => ({
       ...prev,
@@ -117,7 +117,7 @@ function ProductionCreate() {
       cout_total: totalCost,
     }));
     setCoutTotalMateriels(totalMaterialsCost);
-    setCoutTotalProduction(productionCost);
+    setCoutTotalProduction(totalCost);
   }
 
   async function addMaterielProduction(materielProduction) {
@@ -269,6 +269,15 @@ function ProductionCreate() {
           value={production.cout_stockage || ""}
           onChange={handleProductionChange}
         />
+
+        <label>Coût de production (main d'œuvre)</label>
+        <input
+          type="float"
+          name="cout_production"
+          value={production.cout_production || ""}
+          onChange={handleProductionChange}
+        />
+        
 
         <h3>Matériaux utilisés</h3>
 

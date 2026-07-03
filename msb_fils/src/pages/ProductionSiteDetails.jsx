@@ -62,7 +62,7 @@ function ProductionSiteDetails(){
                 date: data.map((item) => item.dateproduction),
                 quantite: data.map((item) => item.quantite)
             });
-            setNbreProductionSite(data.length);
+            setNbreProductionSite(data.reduce((total, item) => total + item.quantite, 0));
         }
     }
 

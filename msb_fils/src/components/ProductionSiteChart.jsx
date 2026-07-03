@@ -16,14 +16,16 @@ import { supabase } from "../supabase";
 
 function ProductionSiteChart({ ChartData }) {
 
-    console.log("ChartData:", ChartData); // Log the ChartData to check its value
+    console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
 
     const data = [];
 
-    if(ChartData.length > 0 && Array.isArray(ChartData.date) && Array.isArray(ChartData.quantite)) {
-        for (let i = 0; i < ChartData.date.length; i++) {
+    if(ChartData.length > 0 ) {
+        for (let i = 0; i < ChartData.length; i++) {
+            console.log("ChartData.date[i]: ", ChartData.date[i]); // Log each date
+            console.log("ChartData.quantite[i]: ", ChartData.quantite[i]); // Log each quantite
             data.push({
-                mois: ChartData.date[i],
+                date: ChartData.date[i],
                 quantite: ChartData.quantite[i]
             });
         }
@@ -32,35 +34,35 @@ function ProductionSiteChart({ ChartData }) {
         data.push(
 
         {
-        mois:"Jan",
-        quantite:0,
+        date:"01/02/2026",
+        quantite:2000,
         },
 
         {
-        mois:"Fev",
-        quantite:0,
+        date:"06/02/2026",
+        quantite:500,
         },
 
         {
-        mois:"Mar",
-        quantite:0,
+        date:"01/03/2026",
+        quantite:100,
         },
 
         {
-        mois:"Avr",
-        quantite:0,
+        date:"01/04/2026",
+        quantite:1000,
         },
 
         {
-        mois:"Mai",
-        quantite:0,
+        date:"01/05/2026",
+        quantite:500,
         },
 
         {
-        mois:"Juin",
-        quantite:0,
+        date:"01/06/2026",
+        quantite:1000,
         },
-        
+
 
         );
     }
@@ -95,7 +97,7 @@ return (
             <CartesianGrid strokeDasharray="3 3" />
 
 
-            <XAxis dataKey="mois" />
+            <XAxis dataKey="date" />
 
 
             <YAxis />
