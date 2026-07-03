@@ -7,6 +7,75 @@ import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
 import { ShoppingCart } from "lucide-react";
 
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    CartesianGrid,
+    ResponsiveContainer
+} from "recharts";
+
+function TopProduitsChart({data}){
+
+    return(
+
+        <ResponsiveContainer
+            width="100%"
+            height={400}
+        >
+
+            <BarChart data={data}>
+
+            <CartesianGrid strokeDasharray="3 3"/>
+
+            <XAxis dataKey="nom"/>
+
+            <YAxis/>
+
+            <Tooltip/>
+
+            <Legend/>
+
+            <Bar
+
+                dataKey="cout_production"
+
+                fill="#ef4444"
+
+                name="Coût de production"
+
+            />
+
+            <Bar
+
+                dataKey="chiffre_affaires"
+
+                fill="#22c55e"
+
+                name="Ventes"
+
+            />
+
+            <Bar
+
+                dataKey="benefice"
+
+                fill="#2563eb"
+
+                name="Bénéfice"
+
+            />
+
+            </BarChart>
+
+        </ResponsiveContainer>
+
+    );
+
+}
 
 function Dashboard(){
 
@@ -157,6 +226,21 @@ async function getAllProductions(){
     
 }
 
+const [datatop10,setData]=useState([]);
+
+async function loadTop10(){
+
+    const {data,error}=await supabase
+
+    .from("vw_top10_produits")
+
+    .select("*");
+
+    setData(data);
+    console.log(data);
+
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts();  
@@ -166,6 +250,7 @@ useEffect(()=>{
     getAllSalaries();
     getAllSites();
     getAllCommandes();
+    loadTop10();
 },[]);
 
 return (
@@ -266,21 +351,18 @@ return (
     </div>
     <br/>
 
-    <h2> Statistique </h2>
+    <h2> Top 10 des produits les vendus </h2>
 
     <div className="cards">
-
         <div className="card">            
-            <AchatChart />
-        </div> 
 
-        <div className="card">
-            <ProductionChart />
-        </div> 
+            <TopProduitsChart
+                data={datatop10}
+            />
 
-        <div className="card">
-            <VenteChart />
-        </div> 
+        </div>
+
+        
 
     </div>
 
