@@ -96,7 +96,7 @@ function ClientDetails() {
         >
           <h4 style={{ margin: "0 0 10px 0", color: "#2e7d32" }}>Total Commandes</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#1b5e20" }}>
-            {totalCommandes.toFixed(2)} Fg
+            {new Intl.NumberFormat("fr-FR").format(totalCommandes.toFixed(2))} Fg
           </p>
         </div>
 
@@ -111,7 +111,7 @@ function ClientDetails() {
         >
           <h4 style={{ margin: "0 0 10px 0", color: "#e65100" }}>Total Ventes</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#bf360c" }}>
-            {totalVentes.toFixed(2)} Fg
+            {new Intl.NumberFormat("fr-FR").format(totalVentes.toFixed(2))} Fg
           </p>
         </div>
       </div>

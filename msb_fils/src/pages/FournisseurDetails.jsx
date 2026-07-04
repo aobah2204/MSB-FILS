@@ -103,7 +103,7 @@ function FournisseurDetails() {
         >
           <h4 style={{ margin: "0 0 10px 0", color: "#e65100" }}>En cours</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#bf360c" }}>
-            {totalEnCours.toFixed(2)} Fg
+            {new Intl.NumberFormat("fr-FR").format(totalEnCours.toFixed(2))} Fg
           </p>
         </div>
 
@@ -118,7 +118,7 @@ function FournisseurDetails() {
         >
           <h4 style={{ margin: "0 0 10px 0", color: "#2e7d32" }}>Reçu</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#1b5e20" }}>
-            {totalRecu.toFixed(2)} Fg
+            {new Intl.NumberFormat("fr-FR").format(totalRecu.toFixed(2))} Fg
           </p>
         </div>
 
@@ -133,7 +133,7 @@ function FournisseurDetails() {
         >
           <h4 style={{ margin: "0 0 10px 0", color: "#1565c0" }}>Facturé</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#0d47a1" }}>
-            {totalFacture.toFixed(2)} Fg
+            {new Intl.NumberFormat("fr-FR").format(totalFacture.toFixed(2))} Fg
           </p>
         </div>
 
@@ -148,7 +148,7 @@ function FournisseurDetails() {
         >
           <h4 style={{ margin: "0 0 10px 0", color: "#6a1b9a" }}>Total général</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#4a148c" }}>
-            {totalGeneral.toFixed(2)} Fg
+            {new Intl.NumberFormat("fr-FR").format(totalGeneral.toFixed(2))} Fg
           </p>
         </div>
       </div>
