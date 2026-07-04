@@ -24,7 +24,7 @@ function AchatCreate() {
 
   async function loadData() {
     try {
-      const { data: fournisseursData } = await supabase.from("fournisseurs").select("id, nom");
+      const { data: fournisseursData } = await supabase.from("fournisseurs").select("id, nom, prenom");
       const { data: matieresData } = await supabase.from("matierespremieres").select("id, nom, prixAchat");
 
       setFournisseurs(fournisseursData || []);
@@ -149,7 +149,7 @@ function AchatCreate() {
               <option value="">Sélectionner un fournisseur</option>
               {fournisseurs.map((f) => (
                 <option key={f.id} value={f.id}>
-                  {f.nom}
+                  {f.nom} {f.prenom}
                 </option>
               ))}
             </select>

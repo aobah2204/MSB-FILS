@@ -23,7 +23,7 @@ function CommandCreate() {
 
   async function loadOptions() {
     const [{ data: clientsData }, { data: productsData }] = await Promise.all([
-      supabase.from("clients").select("id, nom"),
+      supabase.from("clients").select("id, nom, prenom"),
       supabase.from("products").select("id, nom, categorie, prixVente"),
     ]);
 
@@ -143,7 +143,7 @@ function CommandCreate() {
         <select name="client_id" value={form.client_id} onChange={handleFormChange} required>
           <option value="">Choisir un client</option>
           {clients.map((client) => (
-            <option key={client.id} value={client.id}>{client.nom}</option>
+            <option key={client.id} value={client.id}>{client.nom} {client.prenom}</option>
           ))}
         </select>
 
