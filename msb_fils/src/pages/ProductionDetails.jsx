@@ -51,7 +51,7 @@ function ProductionDetails() {
 
     const { data: materialsData } = await supabase
       .from("materielproduction")
-      .select("*, matierespremieres(nom)")
+      .select("*, matierespremieres(nom, unite, prixAchat)")
       .eq("production_id", data.id);
 
     setMaterials(materialsData || []);
@@ -77,8 +77,10 @@ function ProductionDetails() {
         <p><strong>Date :</strong> {production.dateproduction || "—"}</p>
         <p><strong>Description :</strong> {production.description || "—"}</p>
         
+        
         <p><strong>Coût de stockage :</strong> {new Intl.NumberFormat("fr-FR").format(production.cout_stockage) || 0} FG</p>
         <p><strong>Coût de production (main d'œuvre) :</strong> {new Intl.NumberFormat("fr-FR").format(production.cout_production) || 0} FG</p>
+
 
         <p><strong>Coût total :</strong> {new Intl.NumberFormat("fr-FR").format(production.cout_total) || 0} FG</p>
         
@@ -91,9 +93,18 @@ function ProductionDetails() {
         <ul style={{textAlign: "left"}}>
           {materials.map((item) => (
             <li key={item.id}>
-              {item.matierespremieres?.nom || "—"} — quantité : {item.quantite} {item.unite}
+              {item.matierespremieres?.nom || "—"} ———————————" 
+              quantité : {item.quantite} {item.matierespremieres?.unite} - 
+              prix unitaire : {new Intl.NumberFormat("fr-FR").format(item.matierespremieres?.prixAchat)} fg ————————————— 
+              coût : { new Intl.NumberFormat("fr-FR").format(item.quantite * item.matierespremieres?.prixAchat) } fg "              
             </li>
+            
           ))}
+          
+          <li>coût total matériaux : { new Intl.NumberFormat("fr-FR").format(materials.reduce((total, item) => {
+                                      return total + (item.quantite * item.matierespremieres?.prixAchat);
+                                      }, 0))} FG
+          </li>
         </ul>
       )}
 
