@@ -32,7 +32,10 @@ function TopProduitsChart({data}){
             <CartesianGrid strokeDasharray="3 3"/>
 
             <XAxis dataKey="nom"
-                   angle={-35}
+                   tickFormatter={(value, index) =>
+                        `${value} ${data[index].categorie}`
+                    }
+                   angle={-25}
                     textAnchor="end"
                     height={80}
                     tickFormatter={(nom)=>

@@ -51,7 +51,8 @@ function ProductionSiteDetails(){
         const { data } = await supabase
             .from(table)
             .select("*")
-            .eq("site_id", id);
+            .eq("site_id", id)
+            .order("dateproduction", { ascending: true });
         
         console.log("Production data:", data); // Log the fetched data for debugging
         console.log("id:", id); // Log the site ID
