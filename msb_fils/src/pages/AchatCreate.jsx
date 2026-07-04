@@ -306,7 +306,7 @@ function AchatCreate() {
 
         <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
           <p>
-            <strong>Montant total :</strong> {totalAmount.toFixed(2)} DA
+            <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(totalAmount.toFixed(2))} FG
           </p>
         </div>
 
