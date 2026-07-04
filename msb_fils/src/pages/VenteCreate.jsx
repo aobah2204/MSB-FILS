@@ -173,7 +173,7 @@ function VenteCreate() {
         <select name="client_id" value={form.client_id} onChange={handleFormChange} required>
           <option value="">Choisir un client</option>
           {clients.map((client) => (
-            <option key={client.id} value={client.id}>{client.nom}</option>
+            <option key={client.id} value={client.id}>{client.nom} {client.prenom}</option>
           ))}
         </select>
 
