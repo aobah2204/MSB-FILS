@@ -182,7 +182,8 @@ function ProductionSiteDetails(){
             </div> 
         </div>
 
-        <div className="cards">    
+        
+        {/*<div className="cards">    
 
             <div className="card"> 
                 <p>
@@ -191,9 +192,8 @@ function ProductionSiteDetails(){
 
                 <VenteSiteChart ProduitsVendu={produitsVendus}/>
 
-
             </div>   
-        </div>
+        </div>*/}
 
                 
 
