@@ -62,7 +62,9 @@ import Achats from './pages/Achats';
 import AchatCreate from './pages/AchatCreate';
 import AchatEdit from './pages/AchatEdit';
 import AchatDetails from './pages/AchatDetails';
-
+import Depenses from './pages/Depenses';
+import DepenseCreate from './pages/DepenseCreate';
+import DepenseDetails from './pages/DepenseDetails';
 
 
 
@@ -296,6 +298,18 @@ function App() {
                 element={<AchatEdit />} />
           <Route path="details/:id"
                 element={<AchatDetails />} />
+        </Route>
+
+        <Route path="depenses">
+          <Route index element={<Depenses />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<DepenseCreate />} />
+          {/*<Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<DepenseEdit />} />*/}
+          <Route path="details/:id"
+                element={<DepenseDetails />} />
         </Route>
 
         {/** Véhicules routes 

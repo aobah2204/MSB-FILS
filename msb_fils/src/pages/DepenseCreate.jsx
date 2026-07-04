@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Input } from "postcss";
 
 function DepenseCreate() {
   const navigate = useNavigate();
@@ -14,15 +15,16 @@ function DepenseCreate() {
     reference: "",
     libelle: "",
     categorie: "", 
-    fournisseur_id: "",
-    site_id: "",
-    vehicule_id: "",
-    utilisateur_id: "",
+    fournisseur_id: 0,
+    site_id: 0,
+    vehicule_id: 0,
+    utilisateur_id: 0,
     date_depense: new Date().toISOString().split("T")[0],
     statut: "Payé",
     mode_paiement: "",
     montant: "",
     justificatif: "",
+    type_liaison: "GENERAL",
   });
 
   const [depense, setDepense] = useState({
@@ -73,6 +75,11 @@ function handleChange(e) {
         ...prev,
         [name]: value
     }));
+
+    setFormData({
+        ...formData,
+        [name]: value
+    });
 }
 
 
@@ -83,6 +90,8 @@ function handleChange(e) {
       alert("Veuillez remplir tous les champs");
       return;
     }
+
+    console.log("Form data :", formData)
 
     try {
       const { data: DepenseData, error: DepenseError } = await supabase
@@ -140,6 +149,9 @@ function handleChange(e) {
                     onChange={(e) => setFormData({ ...formData, categorie: e.target.value })}
             > 
                 <option>
+                    ---Choisir---
+                </option>
+                <option>
                     Carburant
                 </option>
                 <option>
@@ -190,18 +202,7 @@ function handleChange(e) {
               value={formData.date_Depense}
               onChange={(e) => setFormData({ ...formData, date_Depense: e.target.value })}
             />
-          </div>
-
-          <div>
-            <label>Statut</label>
-            <select
-              value={formData.statut}
-              onChange={(e) => setFormData({ ...formData, statut: e.target.value })}
-            >
-              <option>Payé</option>
-              <option>Non payé</option>
-            </select>
-          </div>
+          </div>          
 
           <div>
             <label>Libellé</label>
@@ -210,6 +211,36 @@ function handleChange(e) {
               onChange={(e) => setFormData({ ...formData, libelle: e.target.value })}
             />
           </div>
+        
+
+            <div>
+                <label>Montant</label>
+                <input
+                type="number"
+                value={formData.montant}
+                onChange={(e) => setFormData({ ...formData, montant: e.target.value })}
+                />
+            </div>
+
+            <div>
+                <label>Mode de paiement</label>
+                <input
+                type="text"
+                value={formData.mode_paiement}
+                onChange={(e) => setFormData({ ...formData, mode_paiement: e.target.value })}
+                />
+            </div>
+
+            <div>
+                <label>Statut</label>
+                <select
+                value={formData.statut}
+                onChange={(e) => setFormData({ ...formData, statut: e.target.value })}
+                >
+                <option>Payé</option>
+                <option>Non payé</option>
+                </select>
+            </div>
         </div>
 
         <div className="form-group">

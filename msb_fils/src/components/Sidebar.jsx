@@ -94,6 +94,10 @@ return (
             <ShoppingBag /> Achats
         </NavLink>
 
+        <NavLink to="/depenses">
+            <ShoppingBag /> Dépenses
+        </NavLink>
+
         <NavLink to="/salaries">
             <Users /> Salariés
         </NavLink>

@@ -7,13 +7,14 @@ function DepenseDetails() {
   const navigate = useNavigate();
   const [Depense, setDepense] = useState(null);
   const [fournisseur, setFournisseur] = useState(null);
-  const [productLines, setProductLines] = useState([]);
+  const [site, setSite] = useState(null);
+  const [vehicule, setVehicule] = useState(null);
 
   async function loadDepense() {
-    const { data, error } = await supabase.from("Depenses").select("*").eq("id", id).maybeSingle();
+    const { data, error } = await supabase.from("depenses").select("*").eq("id", id).maybeSingle();
 
     if (error || !data) {
-      alert("Depense introuvable");
+      alert("Dépense introuvable");
       navigate("/Depenses");
       return;
     }
@@ -29,12 +30,24 @@ function DepenseDetails() {
       setFournisseur(fournisseurData);
     }
 
-    const { data: linesData } = await supabase
-      .from("Depensematierepremieres")
-      .select("*, matierespremieres(nom)")
-      .eq("Depense_id", id);
+    if (data.site_id) {
+      const { data: siteData } = await supabase
+        .from("siteproduction")
+        .select("nom, adresse")
+        .eq("id", data.site_id)
+        .maybeSingle();
+      setSite(siteData);
+    }
 
-    setProductLines(linesData || []);
+    if (data.vehicule_id) {
+      const { data: vehiculeData } = await supabase
+        .from("vehicules")
+        .select("marque, immatriculation")
+        .eq("id", data.vehicule_id)
+        .maybeSingle();
+      setFournisseur(vehiculeData);
+    }
+
   }
 
   function formatDate(value) {
@@ -54,56 +67,42 @@ function DepenseDetails() {
 
   return (
     <div className="product-page">
-      <h1>Détails de l'Depense {id}</h1>
+      <h1>Détails de la dépense {id}</h1>
       <div className="card" style={{textAlign: "left"}}>
         <p>
           <strong>Référence :</strong> {Depense.reference || "—"}
         </p>
+        {site?.nom && 
         <p>
-          <strong>Fournisseur :</strong> {fournisseur?.nom || "—"}
+          <strong>Site associé :</strong> {site?.nom + " "+ site?.adresse || "—"}
         </p>
+        }
+        {vehicule?.marque &&
         <p>
-          <strong>Date :</strong> {formatDate(Depense.date_Depense) || "—"}
+          <strong>Véhicule associé :</strong> {vehicule?.marque + " "+ vehicule?.immatriculation || "—"}
+        </p>
+        }
+        {fournisseur?.nom &&
+        <p>
+          <strong>Fournisseur associé :</strong> {fournisseur?.nom + " "+ fournisseur?.prenom || "—"}
+        </p>
+        }
+        <p>
+          <strong>Date :</strong> {formatDate(Depense.date_depense) || "—"}
         </p>
         <p>
           <strong>Statut :</strong> {Depense.statut || "—"}
         </p>
         <p>
-          <strong>Description :</strong> {Depense.description || "—"}
-        </p>
+          <strong>Libellé :</strong> {Depense.libelle || "—"}
+        </p>        
       </div>
 
-      <h3>Matières premières achetées</h3>
-      {productLines.length === 0 ? (
-        <p>Aucune matière.</p>
-      ) : (
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Matière</th>
-                <th>Quantité</th>
-                <th>Prix unitaire</th>
-                <th>Total ligne</th>
-              </tr>
-            </thead>
-            <tbody>
-              {productLines.map((line) => (
-                <tr key={line.id}>
-                  <td>{line.matierespremieres?.nom || "—"}</td>
-                  <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
-                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
-                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      
 
       <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
         <p>
-          <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(Depense.montant_total) || 0} FG
+          <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(Depense.montant) || 0} FG
         </p>
       </div>
 

@@ -16,8 +16,8 @@ function Depenses() {
   async function loadDepenses() {
     try {
       const { data } = await supabase
-        .from("Depenses")
-        .select("*, fournisseurs(nom,prenom), siteproduction(nom, adresse), vehicules(immatriculation, marque)")
+        .from("depenses")
+        .select("*")
         .order("created_at", { ascending: false });
 
       if (!data) return alert("Aucun Dépense");
@@ -31,7 +31,7 @@ function Depenses() {
     if (confirm("Supprimer cette Depense ?")) {
       try {
         // Delete cascade: Depenses cascade to Depensematierepremieres
-        await supabase.from("Depenses").delete().eq("id", Depense.id);
+        await supabase.from("depenses").delete().eq("id", Depense.id);
         await loadDepenses();
       } catch (error) {
         console.error("Erreur lors de la suppression :", error);
@@ -73,7 +73,7 @@ function Depenses() {
               <th>Référence</th>
               <th>catégorie</th>
               <th>libelle</th>
-              <th>Element associé</th>
+              <th>Date</th>
               <th>Montant total</th>
               <th>Statut</th>
               <th>Action</th>
@@ -84,12 +84,9 @@ function Depenses() {
               <tr key={Depense.id}>
                 <td>{Depense.reference || "—"}</td>
                 <td>{Depense.categorie}</td>
-                <td>{Depense.libelle}</td>
-                {Depense.fournisseurs?.nom && <td>{Depense.fournisseurs?.nom} {Depense.fournisseurs?.prenom}</td>}
-                {Depense.fournisseurs?.nom && <td>{Depense.fournisseurs?.nom} {Depense.fournisseurs?.prenom}</td>}
-                {Depense.fournisseurs?.nom && <td>{Depense.fournisseurs?.nom} {Depense.fournisseurs?.prenom}</td>}
+                <td>{Depense.libelle}</td>                
                 <td>{formatDate(Depense.date_depense) || "—"}</td>
-                <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant_total) || 0 } FG</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant) || 0 } FG</td>
                 <td>{Depense.statut || "—"}</td>
                 {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
                   user?.role
