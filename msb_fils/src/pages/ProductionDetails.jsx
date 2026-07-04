@@ -73,7 +73,7 @@ function ProductionDetails() {
         <p><strong>Site :</strong> {site?.nom || "—"}</p>
         <p><strong>Produit :</strong> {product?.nom || "—"}</p>
         <p><strong>Type :</strong> {production.typeproduction || "—"}</p>
-        <p><strong>Quantité :</strong> {new Intl.NumberFormat("fr-FR").format(production.quantite) || 0}</p>
+        <p><strong>Quantité :</strong> {new Intl.NumberFormat("fr-FR").format(production.quantite) || 0} {product?.unite}</p>
         <p><strong>Date :</strong> {production.dateproduction || "—"}</p>
         <p><strong>Description :</strong> {production.description || "—"}</p>
         
@@ -91,7 +91,7 @@ function ProductionDetails() {
         <ul style={{textAlign: "left"}}>
           {materials.map((item) => (
             <li key={item.id}>
-              {item.matierespremieres?.nom || "—"} — quantité : {item.quantite}
+              {item.matierespremieres?.nom || "—"} — quantité : {item.quantite} {item.unite}
             </li>
           ))}
         </ul>

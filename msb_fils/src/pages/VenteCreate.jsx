@@ -11,6 +11,7 @@ function VenteCreate() {
   const [form, setForm] = useState({
     reference: "",
     client_id: "",
+    site_id: "",
     date_vente: "",
     mode_paiement: "",
     description: "",
@@ -19,16 +20,19 @@ function VenteCreate() {
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
   const [productLines, setProductLines] = useState([]);
+  const [sites, setSites] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadOptions() {
-    const [{ data: clientsData }, { data: productsData }] = await Promise.all([
+    const [{ data: clientsData }, { data: productsData }, {data: sitesData}] = await Promise.all([
       supabase.from("clients").select("id, nom"),
       supabase.from("products").select("id, nom, categorie, prixVente"),
+      supabase.from("siteproduction").select("id, nom, adresse"),
     ]);
 
     setClients(clientsData || []);
     setProducts(productsData || []);
+    setSites(sitesData || []);
   }
 
   useEffect(() => {
@@ -52,6 +56,7 @@ function VenteCreate() {
       ...productLines,
       {
         produit_id: "",
+        site_id: "",
         quantite: 0,
         prix_unitaire: 0,
       },
@@ -59,17 +64,41 @@ function VenteCreate() {
   }
 
   function updateProductLine(index, field, value) {
+      const copy = [...productLines];
+
+      const numValue =
+          field !== "produit_id" && field !== "site_id"
+              ? Number(value)
+              : value;
+
+      copy[index][field] = numValue;
+
+      // Si le produit ou le site change, on recherche le bon produit
+      if (field === "produit_id" || field === "site_id") {
+
+          const selectedProduct = products.find(
+              (p) =>
+                  String(p.id) === String(copy[index].produit_id) &&
+                  String(p.site_id) === String(copy[index].site_id)
+          );
+
+          copy[index].prix_unitaire = Number(selectedProduct?.prixVente ?? 0);
+      }
+
+      setProductLines(copy);
+  }
+
+  function updateSiteLine(field, value) {
     const copy = [...productLines];
-    const numValue = field !== "produit_id" ? Number(value) : value;
+    const numValue = field !== "site_id" ? Number(value) : value;
 
-    copy[index][field] = numValue;
+    copy[field] = numValue;
 
-    if (field === "produit_id") {
-      const selectedProduct = products.find((p) => String(p.id) === String(value));
-      copy[index].prix_unitaire = Number(selectedProduct?.prixVente || 0);
+    if(field === "site_id"){
+      const selectedSite = sites.find((p) => String(p.id) === String(value));
     }
 
-    setProductLines(copy);
+    setSite(copy);
   }
 
   function removeProductLine(index) {
@@ -115,6 +144,7 @@ function VenteCreate() {
       const linePayload = {
         vente_id: insertedVente.id,
         produit_id: line.produit_id,
+        site_id: line.site_id,
         quantite: Number(line.quantite),
         prix_unitaire: Number(line.prix_unitaire),
         montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
@@ -155,6 +185,7 @@ function VenteCreate() {
 
         <label>Description</label>
         <input name="description" value={form.description} onChange={handleFormChange} />
+        
 
         <h3>Produits</h3>
 
@@ -169,6 +200,18 @@ function VenteCreate() {
                 <option value="">Choisir</option>
                 {products.map((p) => (
                   <option key={p.id} value={p.id}>{p.nom} - {p.categorie}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Site de production</label>
+              <select name="site_id" value={form.site_id} 
+                value={line.site_id || ""}
+                onChange={(e) => updateProductLine(index, "site_id", e.target.value)}
+                required>
+                <option value="">Choisir le site de production</option>
+                {sites.map((site) => (
+                  <option key={site.id} value={site.id}>{site.nom}</option>
                 ))}
               </select>
             </div>
@@ -193,7 +236,7 @@ function VenteCreate() {
             <div>
               <label>Total ligne</label>
               <output>
-                {Number(line.quantite || 0) * Number(line.prix_unitaire || 0)}
+                {new Intl.NumberFormat("fr-FR").format(Number(line.quantite || 0) * Number(line.prix_unitaire || 0))} FG
               </output>
             </div>
 
@@ -215,7 +258,7 @@ function VenteCreate() {
 
         <div className="profile" style={{ backgroundColor: "#a8415b"}}>
           <label><strong>Montant total :</strong></label>
-          <output style={{ fontSize: "18px", fontWeight: "bold" }}>{totalAmount}</output> Fg
+          <output style={{ fontSize: "18px", fontWeight: "bold" }}>{new Intl.NumberFormat("fr-FR").format(totalAmount)} FG</output>
         </div>
 
         <div style={{ marginTop: "20px" }}>

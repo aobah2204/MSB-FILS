@@ -16,12 +16,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabase";
 
 
-function ProductionSiteChart({ ChartData }) {
+function VenteSiteChart({ ProduitsVendu }) {
 
-    console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
+    console.log("ChartData in chart : ", ProduitsVendu); // Log the ChartData to check its value
 
     // Ensure ChartData is an array, default to empty array if not
-    const data = Array.isArray(ChartData) ? ChartData : [];  
+    const data = Array.isArray(ProduitsVendu) ? ProduitsVendu : []; 
 
 
 
@@ -31,7 +31,7 @@ return (
 
 
         <h2 className="titre_graphe">
-            Evolution production
+            Evolution vente
         </h2>
 
 
@@ -47,7 +47,7 @@ return (
             <ResponsiveContainer>
 
 
-            <LineChart data={data}>
+            <BarChart data={data}/>
 
 
             <CartesianGrid strokeDasharray="3 3" />
@@ -67,26 +67,20 @@ return (
         height={40}
         />
 
-        <Line
+        <BarChart data={data}>
+            <XAxis dataKey="site" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
 
-            type="monotone"
+            <Bar
+                dataKey="quantite_vendue"
+                fill="#3b82f6"
+                name="Produits vendus"
+            />
+        </BarChart>
 
-            dataKey="quantite"
-
-            name="Quantité produite"
-
-            stroke="#2563eb"
-
-            strokeWidth={3}
-
-            dot={{r:5}}
-
-        />       
-
-
-
-        </LineChart>
-
+        
 
 
         </ResponsiveContainer>
@@ -102,4 +96,4 @@ return (
 }
 
 
-export default ProductionSiteChart;
+export default VenteSiteChart;

@@ -4,6 +4,7 @@ import {
 import { supabase } from "../supabase";
 import { useState, useEffect } from "react";
 import ProductionSiteChart from '../components/ProductionSiteChart';
+import VenteSiteChart from "../components/VenteSiteChart";
 
 
 function ProductionSiteDetails(){
@@ -69,6 +70,20 @@ function ProductionSiteDetails(){
         } else {
             setProductionSite([]);
         }
+    }
+
+    const [produitsVendus, setProduitsVendus] = useState([]);
+
+    async function getProduitsVendus(){
+
+        const {data,error}=await supabase
+
+        .from("vw_produits_vendus_par_site")
+
+        .select("*");
+
+        setProduitsVendus(data);
+        console.log(data);
     }
 
     useEffect(()=>{
@@ -146,30 +161,38 @@ function ProductionSiteDetails(){
                 
                     {site.equipements}
 
-
             </div>           
 
             
         </div>  
 
+        <h3>
+            Statistiques
+        </h3>
+        
         <div className="cards">
 
-            <div className="card">
-
-
-                <h3>
-                    Statistiques
-                </h3>
-
-
+            <div className="card"> 
                 <p>
                     Taux utilisation : {site.capacite > 0 ? (nbreProductionSite / site.capacite) * 100 : 0} %
                 </p>
 
                 <ProductionSiteChart ChartData={productionSite} />
 
+            </div> 
+        </div>
 
-            </div>     
+        <div className="cards">    
+
+            <div className="card"> 
+                <p>
+                    Taux Produits vendus : {produitsVendus.length}
+                </p>
+
+                <VenteSiteChart ProduitsVendu={produitsVendus}/>
+
+
+            </div>   
         </div>
 
                 
