@@ -119,3 +119,23 @@ background:#5691df;
 cursor:pointer;
 
 }
+
+.radio-group{
+    display:flex;
+    gap:20px;
+    margin-top:8px;
+    flex-wrap:wrap;
+}
+
+.radio-group label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.radio-group input[type="radio"]{
+    width:18px;
+    height:18px;
+}

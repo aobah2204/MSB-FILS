@@ -25,7 +25,7 @@ function VenteCreate() {
 
   async function loadOptions() {
     const [{ data: clientsData }, { data: productsData }, {data: sitesData}] = await Promise.all([
-      supabase.from("clients").select("id, nom"),
+      supabase.from("clients").select("id, nom, prenom"),
       supabase.from("products").select("id, nom, categorie, prixVente"),
       supabase.from("siteproduction").select("id, nom, adresse"),
     ]);
