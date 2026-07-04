@@ -240,7 +240,7 @@ function ProductionCreate() {
 
           {produits.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.nom}
+              {p.nom} - {p.categorie}
             </option>
           ))}
         </select>
