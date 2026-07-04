@@ -83,7 +83,7 @@ function Fournisseurs() {
     }
 
     return (
-        <div className="table-container">
+        <div className="product-page">
 
             {
             ["Administrateur","Responsable de production"]

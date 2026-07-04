@@ -100,9 +100,13 @@ function Vehicles(){
 
 
     return (
+        
 
-        <div>            
+        <div className="product-page">            
 
+            <h1>
+                Liste des Véhicules
+            </h1>
             {
             ["Administrateur","Responsable de production"]
             .includes(user?.role)
@@ -116,9 +120,7 @@ function Vehicles(){
             </section>
             
             }
-            <h2>
-                Liste des Véhicules
-            </h2>
+            <br/>
 
             <div className="table-container">
 

@@ -47,7 +47,9 @@ function Achats() {
   }
 
   return (
-    <div>
+    <div className="product-page">
+
+      <h1>Liste des achats</h1>
       {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
         user?.role
       ) && (
@@ -62,7 +64,7 @@ function Achats() {
         </section>
       )}
 
-      <h2>Liste des achats</h2>
+      <br/>
 
       <div className="table-container">
         <table className="data-table">

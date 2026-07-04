@@ -78,7 +78,7 @@ function Productions() {
   }
 
   return (
-    <div>
+    <div className="product-page">
       {['Administrateur', 'Responsable de production'].includes(user?.role) && (
         <section>
           <div>

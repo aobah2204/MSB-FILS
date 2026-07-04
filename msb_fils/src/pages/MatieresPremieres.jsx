@@ -99,7 +99,9 @@ function MatieresPremieres() {
 
 
     return (
-        <div>
+        <div className="product-page">
+
+            <h1>Liste des matières premières</h1>
 
             {
             ["Administrateur","Responsable de production"]
@@ -114,7 +116,7 @@ function MatieresPremieres() {
             </section>
             }
 
-            <h2>Liste des matières premières</h2>
+            <br/>
 
             <div className="table-container">
                 <table className="data-table">

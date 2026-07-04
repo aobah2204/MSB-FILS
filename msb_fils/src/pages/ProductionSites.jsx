@@ -106,7 +106,11 @@ function ProductionSites(){
 
 return (
 
-<div className="table-container">
+<div className="product-page">
+
+    <h1>
+        Sites de production
+    </h1>
 
     {
     ["Administrateur"]
@@ -121,9 +125,7 @@ return (
     </button>
     }
 
-    <h2>
-        Sites de production
-    </h2>
+    <br/>
 
 
 

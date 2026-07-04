@@ -82,7 +82,9 @@ function Salaries() {
     }
 
     return (
-        <div>
+        <div className="product-page">
+
+            <h1>Liste des Salariés</h1>
 
             {
             ["Administrateur","Responsable de production"]
@@ -97,7 +99,7 @@ function Salaries() {
                 </section>
             }
 
-            <h2>Liste des Salariés</h2>
+            <br/>
 
             <div className="table-container">
                 <table className="data-table">

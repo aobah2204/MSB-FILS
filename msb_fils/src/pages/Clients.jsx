@@ -83,7 +83,7 @@ function Clients() {
     }
 
     return (
-        <div>
+        <div className="product-page">
 
             {
             ["Administrateur","Responsable de production"]

@@ -100,8 +100,9 @@ function Products() {
 
 
     return (
-        <div>
+        <div className="product-page">
 
+            <h1>Liste des Produits</h1>
             {
             ["Administrateur","Responsable de production"]
             .includes(user?.role)
@@ -114,8 +115,9 @@ function Products() {
                 </div>            
             </section>
             }
+            <br/>
 
-            <h2>Liste des Produits</h2>
+            
 
             <div className="table-container">
                 <table className="data-table">
