@@ -161,6 +161,9 @@ function handleChange(e) {
                     Réparation
                 </option>
                 <option>
+                    Pièce
+                </option>
+                <option>
                     Salaire
                 </option>
                 <option>
