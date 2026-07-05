@@ -73,6 +73,7 @@ function ProductionSiteDetails(){
     }
 
     const [produitsVendus, setProduitsVendus] = useState([]);
+    const [TotalVendu, setTotalVendu] = useState();
 
     async function getProduitsVendus(){
 
@@ -83,6 +84,8 @@ function ProductionSiteDetails(){
         .select("*");
 
         setProduitsVendus(data);
+        setTotalVendu(data.reduce((total, item) => total + item.quantite_vendue, 0))
+        
         console.log(data);
     }
 
@@ -90,6 +93,7 @@ function ProductionSiteDetails(){
     
         getSite(id);
         getAllProductionSite(id);
+        getProduitsVendus();
                 
     },[id]);
 
@@ -139,12 +143,20 @@ function ProductionSiteDetails(){
 
 
                 <p>
-                    Capacité : {site.capacite} unités/mois
+                    Capacité : {new Intl.NumberFormat("fr-FR").format(site.capacite)} unités
                 </p>
 
 
                 <p>
-                    Production actuelle :  {nbreProductionSite} unités/mois
+                    Production actuelle :  {new Intl.NumberFormat("fr-FR").format(nbreProductionSite)} unités
+                </p>
+
+                <p>
+                    Total Vendus :  {new Intl.NumberFormat("fr-FR").format(TotalVendu)} unités
+                </p>
+
+                <p>
+                    Total en stock :  {new Intl.NumberFormat("fr-FR").format(nbreProductionSite - TotalVendu)} unités
                 </p>
 
 

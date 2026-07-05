@@ -64,7 +64,7 @@ function TopProduitsChart({data}){
 
                 fill="#ef4444"
 
-                name="Coût de production"
+                name="Production"
 
             />
 
@@ -74,7 +74,7 @@ function TopProduitsChart({data}){
 
                 fill="#22c55e"
 
-                name="Ventes"
+                name="Vente"
 
             />
 
@@ -285,10 +285,7 @@ return (
                 data={datatop10}
             />
 
-        </div>
-
-        
-
+        </div>  
     </div>
 
 
