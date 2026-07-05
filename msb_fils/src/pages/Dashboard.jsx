@@ -24,10 +24,18 @@ function TopProduitsChart({data}){
 
     return(
 
+    <div className="chart-card">
+
+
+        <h2 className="titre_graphe">
+            Top 10 des produits les plus vendus
+        </h2>
+
         <ResponsiveContainer
             width="100%"
             height={400}
         >
+
 
             <BarChart data={data}>
 
@@ -94,7 +102,10 @@ function TopProduitsChart({data}){
 
         </ResponsiveContainer>
 
+        </div>
+
     );
+
 
 }
 
@@ -415,7 +426,6 @@ return (
 
 <div>    
 
-    <h2> Top 10 des produits les vendus </h2>
 
     <div className="cards">
         <div className="card">            
@@ -434,11 +444,7 @@ return (
         </div>  
     </div>
 
-    <h2> Dépenses par catégorie </h2>
-
-    <div className="cards">
-        
-    </div>
+    
 
 
     <div className="cards">

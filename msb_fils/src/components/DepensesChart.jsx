@@ -53,13 +53,30 @@ return (
                     <CartesianGrid strokeDasharray="3 3" />
 
 
-                    <XAxis dataKey="categorie" />
+                    <XAxis dataKey="categorie"
+                        tickFormatter={(value, index) =>
+                                `${value} ${data[index].categorie}`
+                            }
+                        angle={-25}
+                            textAnchor="end"
+                            height={80}
+                            tickFormatter={(nom)=>
+                                nom.length>12
+                                ? nom.substring(0,12)+"..."
+                                : nom
+                            }/>
+
+                    <YAxis
+                        datakey="montant"
+                        tickFormatter={(value) => `${(value / 1000000).toFixed(1)} M`}
+                    />
 
 
-                    <YAxis dataKey="montant" />
+                    <Tooltip  formatter={(value)=>
 
+                    new Intl.NumberFormat("fr-FR").format(value)+" FG"
 
-                    <Tooltip />
+                    }/>
 
                     {/* Légende automatique */}
                     <Legend
