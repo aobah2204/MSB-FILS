@@ -73,7 +73,8 @@ function handleChange(e) {
             type_liaison: value,
             site_id: "",
             vehicule_id: "",
-            utilisateur_id: ""
+            utilisateur_id: "",
+            fournisseur_id: ""
         }));
 
         return;
@@ -99,7 +100,7 @@ function handleChange(e) {
       return;
     }
 
-    console.log("Form data :", formData)
+    //console.log("Form data :", formData)
 
     try {
       const { data: DepenseData, error: DepenseError } = await supabase
@@ -200,6 +201,9 @@ function handleChange(e) {
                     Assurance
                 </option>
                 <option>
+                    Fournisseur
+                </option>
+                <option>
                     Divers
                 </option>
 
@@ -292,6 +296,17 @@ function handleChange(e) {
                         onChange={handleChange}
                     />
                     Salarié
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="type_liaison"
+                        value="FOURNISSEUR"
+                        checked={depense.type_liaison === "FOURNISSEUR"}
+                        onChange={handleChange}
+                    />
+                    Fournisseur
                 </label>
 
                 <label>
@@ -402,6 +417,41 @@ function handleChange(e) {
                             value={sal.id}
                         >
                             {sal.fullname} 
+                        </option>
+
+                    ))
+                }
+
+            </select>
+
+        </div>
+
+        )
+        }
+
+        { /* Fournisseur */
+        depense.type_liaison === "FOURNISSEUR" && (
+
+        <div className="form-group">
+
+            <label>Fournisseur</label>
+
+            <select
+                name="fournisseur_id"
+                value={depense.fournisseur_id}
+                onChange={handleChange}
+            >
+
+                <option value="">Sélectionner un fournisseur</option>
+
+                {
+                    fournisseurs?.map(f => (
+
+                        <option
+                            key={f.id}
+                            value={f.id}
+                        >
+                            {f?.nom} {f?.prenom} 
                         </option>
 
                     ))

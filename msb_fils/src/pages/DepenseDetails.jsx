@@ -25,7 +25,7 @@ function DepenseDetails() {
     if (data.fournisseur_id) {
       const { data: fournisseurData } = await supabase
         .from("fournisseurs")
-        .select("nom")
+        .select("nom, prenom, adresse")
         .eq("id", data.fournisseur_id)
         .maybeSingle();
       setFournisseur(fournisseurData);
@@ -95,7 +95,7 @@ function DepenseDetails() {
         }
         {fournisseur?.nom &&
         <p>
-          <strong>Fournisseur associé :</strong> {fournisseur?.nom + " "+ fournisseur?.prenom || "—"}
+          <strong>Fournisseur associé :</strong> {fournisseur?.nom + " "+ fournisseur?.prenom + " : "+ fournisseur?.adresse || "—"}
         </p>
         }
         {salarie?.fullname &&
