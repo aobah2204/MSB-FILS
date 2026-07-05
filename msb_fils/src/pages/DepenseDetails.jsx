@@ -9,6 +9,7 @@ function DepenseDetails() {
   const [fournisseur, setFournisseur] = useState(null);
   const [site, setSite] = useState(null);
   const [vehicule, setVehicule] = useState(null);
+  const [salarie, setSalarie] = useState();
 
   async function loadDepense() {
     const { data, error } = await supabase.from("depenses").select("*").eq("id", id).maybeSingle();
@@ -48,6 +49,16 @@ function DepenseDetails() {
       setFournisseur(vehiculeData);
     }
 
+    if (data.utilisateur_id) {
+      const { data: userData } = await supabase
+        .from("utilisateurs")
+        .select("fullname")
+        .eq("id", data.utilisateur_id)
+        .maybeSingle();
+      setSalarie(userData);
+      console.log(userData)
+    }
+
   }
 
   function formatDate(value) {
@@ -85,6 +96,11 @@ function DepenseDetails() {
         {fournisseur?.nom &&
         <p>
           <strong>Fournisseur associé :</strong> {fournisseur?.nom + " "+ fournisseur?.prenom || "—"}
+        </p>
+        }
+        {salarie?.fullname &&
+        <p>
+          <strong>Salarié associé :</strong> {salarie?.fullname || "—"}
         </p>
         }
         <p>

@@ -10,6 +10,9 @@ function DepenseCreate() {
   const [fournisseurs, setFournisseurs] = useState([]);
   const [sites, setSites] = useState([]);
   const [vehicules, setVehicules] = useState([]);
+  const [salaries, setSalaries] = useState([]);
+
+  const [salarie, setSalarie] = useState();
 
   const [formData, setFormData] = useState({
     reference: "",
@@ -34,7 +37,8 @@ function DepenseCreate() {
     categorie: "",
     type_liaison: "GENERAL",
     site_id: "",
-    vehicule_id: ""
+    vehicule_id: "",
+    utilisateur_id: ""
 });
 
   useEffect(() => {
@@ -43,13 +47,16 @@ function DepenseCreate() {
 
   async function loadData() {
     try {
-      const { data: fournisseursData } = await supabase.from("fournisseurs").select("id, nom");
+      const { data: fournisseursData } = await supabase.from("fournisseurs").select("id, nom, prenom");
       const { data: sitesData } = await supabase.from("siteproduction").select("id, nom");
       const { data: vehiculesData } = await supabase.from("vehicules").select("id, immatriculation, marque");
+      const { data: salariesData } = await supabase.from("utilisateurs").select("id, fullname");
 
       setFournisseurs(fournisseursData || []);
       setSites(sitesData || []);
       setVehicules(vehiculesData || []);
+      setSalaries(salariesData);
+
     } catch (error) {
       console.error("Erreur lors du chargement des données :", error);
     }
@@ -65,7 +72,8 @@ function handleChange(e) {
             ...prev,
             type_liaison: value,
             site_id: "",
-            vehicule_id: ""
+            vehicule_id: "",
+            utilisateur_id: ""
         }));
 
         return;
@@ -104,12 +112,13 @@ function handleChange(e) {
             fournisseur_id: formData.fournisseur_id,
             site_id: formData.site_id,
             vehicule_id: formData.vehicule_id,
-            utilisateur_id: user?.id,
+            utilisateur_id: formData.utilisateur_id,
             date_depense: formData.date_depense,
             statut: formData.statut,
             montant: formData.montant,
             mode_paiement: formData.mode_paiement,
             justificatif: formData.justificatif,
+            created_user_id: user?.id
           },
         ])
         .select();
@@ -278,6 +287,17 @@ function handleChange(e) {
                     <input
                         type="radio"
                         name="type_liaison"
+                        value="SALARIE"
+                        checked={depense.type_liaison === "SALARIE"}
+                        onChange={handleChange}
+                    />
+                    Salarié
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="type_liaison"
                         value="GENERAL"
                         checked={depense.type_liaison === "GENERAL"}
                         onChange={handleChange}
@@ -347,6 +367,41 @@ function handleChange(e) {
                             value={v.id}
                         >
                             {v.immatriculation} - {v.marque}
+                        </option>
+
+                    ))
+                }
+
+            </select>
+
+        </div>
+
+        )
+        }
+
+        { /* Salarié */
+        depense.type_liaison === "SALARIE" && (
+
+        <div className="form-group">
+
+            <label>Salarié</label>
+
+            <select
+                name="utilisateur_id"
+                value={depense.utilisateur_id}
+                onChange={handleChange}
+            >
+
+                <option value="">Sélectionner un salarié</option>
+
+                {
+                    salaries?.map(sal => (
+
+                        <option
+                            key={sal.id}
+                            value={sal.id}
+                        >
+                            {sal.fullname} 
                         </option>
 
                     ))
