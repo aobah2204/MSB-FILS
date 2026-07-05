@@ -7,6 +7,8 @@ import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
 import { ShoppingCart } from "lucide-react";
 
+import DepensesChart from "../components/DepensesChart.jsx";
+
 import {
     BarChart,
     Bar,
@@ -134,6 +136,10 @@ const [NbreCmdAnnulee,setNbreCmdAnnulee] = useState(0);
 const [prodEncours,setProdEncours] = useState(0);
 const [NbreProdEncours,setNbreProdEncours] = useState(0);
 
+const [ventes, setVentes] = useState([]);
+const [NbreVentes, setNbrVentes] = useState(0);
+const [venteProduits, setVenteProduits] = useState([]);
+
 
 async function getAllClients(){
 
@@ -240,25 +246,152 @@ async function getAllCommandes(){
     setNbreCmdAnnulee(cmdAnnulee.length);
 }
 
+async function getAllVentes(){
+
+    const { data: VentesData } = await supabase
+        .from("ventes")
+        .select("*");
+    
+    setVentes(VentesData);
+    setNbreVentes(VentesData.length);
+
+    const { data: VenteProduitsData } = await supabase
+        .from("venteproduits")
+        .select("*");
+    
+    setVenteProduits(VenteProduitsData);
+}
+
 async function getAllProductions(){
 
     
 }
 
+{/* Vues select */}
+
+// Top 10
 const [datatop10,setData]=useState([]);
-
 async function loadTop10(){
-
     const {data,error}=await supabase
-
     .from("vw_top10_produits")
-
     .select("*");
 
     setData(data);
-    console.log(data);
-
 }
+
+// Top produits 
+const [dataTopProd,setTopProd]=useState([]);
+async function loadTopProd(){
+    const {data,error}=await supabase
+    .from("vw_dashboard_top_products")
+    .select("*");
+
+    setTopProd(data);
+}
+
+
+// Produit par site 
+const [produitsBySite, setProduitBySite] = useState([]);
+async function Produits_by_site(){
+    const { data } = await supabase
+    .from("vw_dashboard_products_site")
+    .select("*");
+
+    setProduitBySite(data);
+}
+
+// Ventes du mois
+const [venteMois, setVenteMois] = useState([]);
+async function Ventes_mois(){
+    const { data } = await supabase
+    .from("vw_dashboard_ca_mensuel")
+    .select("*");
+
+    setVenteMois(data);
+}
+
+// Productions du mois
+const [prodMois, setProdMois] = useState([]);
+async function Prods_mois(){
+    const { data } = await supabase
+    .from("vw_dashboard_production_mensuelle")
+    .select("*");
+
+    setProdMois(data);
+}
+
+// Dépenses catégorie
+const [depensesCategorie, setDepensesCategorie] = useState([]);
+async function Depenses_categorie(){
+    const { data } = await supabase
+    .from("vw_dashboard_depenses_categorie")
+    .select("*");
+
+    setDepensesCategorie(data);
+}
+
+// Dépenses sites
+const [depenses_site, setDepenses_site] = useState([]);
+async function Depenses_site(){
+    const { data } = await supabase
+    .from("vw_dashboard_depenses_site")
+    .select("*");
+
+    setDepense_site(data);
+}
+
+// Benefices
+const [benefice, setBenefice] = useState([]);
+async function Benefice(){
+    const { data } = await supabase
+    .from("vw_dashboard_benefice")
+    .select("*");
+
+    setBenefice(data);
+}
+
+// Stock
+const [stock, setStock] = useState([]);
+async function Stock(){
+    const { data } = await supabase
+    .from("vw_dashboard_stock")
+    .select("*");
+
+    setStock(data);
+}
+
+
+// Dernières ventes 
+const [lastVente, setlastVente] = useState([]);
+async function Stock(){
+    const { data } = await supabase
+    .from("vw_dashboard_last_sales")
+    .select("*");
+
+    setlastVente(data);
+}
+
+// Dernières productions 
+const [lastProd, setlastProd] = useState([]);
+async function LastProd(){
+    const { data } = await supabase
+    .from("vw_dashboard_last_productions")
+    .select("*");
+
+    setlastProd(data);
+}
+
+// Dernières dépenses 
+const [lastDepense, setDepense] = useState([]);
+async function LastDepense(){
+    const { data } = await supabase
+    .from("vw_dashboard_last_depenses")
+    .select("*");
+
+    setLastDente(data);
+}
+
+
 
 useEffect(()=>{
     getAllClients();  
@@ -269,6 +402,12 @@ useEffect(()=>{
     getAllSalaries();
     getAllSites();
     getAllCommandes();
+    getAllVentes();
+
+    // Depenses
+    Depenses_site();
+    Depenses_categorie();
+
     loadTop10();
 },[]);
 
@@ -286,6 +425,19 @@ return (
             />
 
         </div>  
+        <div className="card">            
+
+            <DepensesChart
+                ChartData={depensesCategorie}
+            />
+
+        </div>  
+    </div>
+
+    <h2> Dépenses par catégorie </h2>
+
+    <div className="cards">
+        
     </div>
 
 
@@ -375,6 +527,18 @@ return (
                 <p>{NbreCmdAnnulee}</p>
             </div>
         </NavLink>
+    </div>
+
+    <h3> <ShoppingCart /> Ventes </h3>
+    <div className="cards grid-4">
+        <NavLink to="/ventes">
+            <div className="card">
+                <h3>Total des ventes</h3>
+                <p>{NbreVentes}</p>
+            </div>
+        </NavLink>
+
+        
     </div>
 </div>
 
