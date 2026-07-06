@@ -259,6 +259,14 @@ function ProductionEdit() {
           onChange={handleProductionChange}
         />
 
+        <label>Date de production</label>
+        <input
+          type="date"
+          name="dateproduction"
+          value={production.dateproduction || ""}
+          onChange={handleProductionChange}
+        />
+
         <label>Coût de stockage</label>
         <input
           type="number"
