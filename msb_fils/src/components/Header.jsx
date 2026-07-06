@@ -7,10 +7,12 @@ import {
  User,
  LogOut
 } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Header(){
 
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
 return (
 
@@ -37,6 +39,7 @@ return (
         <div className="notification">
         🔔
         </div>
+        <button className="profile" type="button" onClick={() => navigate("/")}>Accueil</button>
         <button className="profile" onClick={logout}>
             <LogOut />
         </button>

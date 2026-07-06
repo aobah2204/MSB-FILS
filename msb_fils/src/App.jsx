@@ -65,6 +65,10 @@ import AchatDetails from './pages/AchatDetails';
 import Depenses from './pages/Depenses';
 import DepenseCreate from './pages/DepenseCreate';
 import DepenseDetails from './pages/DepenseDetails';
+import Marchandises from './pages/Marchandises';
+import MarchandiseCreate from './pages/MarchandiseCreate';
+import MarchandiseEdit from './pages/MarchandiseEdit';
+import MarchandiseDetails from './pages/MarchandiseDetails';
 
 
 
@@ -264,6 +268,7 @@ function App() {
                 element={<ProductionDetails />} />
         </Route>
 
+        {/** Commandes routes */}
         <Route path="commandes">
           <Route index element={<Commandes />} />
           <Route path="nouveau"
@@ -276,6 +281,7 @@ function App() {
                 element={<CommandDetails />} />
         </Route>
 
+        {/** Ventes routes */}
         <Route path="ventes">
           <Route index element={<Ventes />} />
           <Route path="nouveau"
@@ -288,6 +294,7 @@ function App() {
                 element={<VenteDetails />} />
         </Route>
 
+        {/** Achats routes */}
         <Route path="achats">
           <Route index element={<Achats />} />
           <Route path="nouveau"
@@ -298,6 +305,19 @@ function App() {
                 element={<AchatEdit />} />
           <Route path="details/:id"
                 element={<AchatDetails />} />
+        </Route>
+
+         {/** Marchandises routes */}
+        <Route path="marchandises">
+          <Route index element={<Marchandises />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<MarchandiseCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<MarchandiseEdit />} />
+          <Route path="details/:id"
+                element={<MarchandiseDetails />} />
         </Route>
 
         <Route path="depenses">

@@ -7,18 +7,17 @@ import { useNavigate } from "react-router-dom";
     
 
 
-function MatierePremiereCreate(){
+function MarchandiseCreate(){
 
     const navigate = useNavigate();
 
 
-const [MatierePremiere,setMatierePremiere] = useState({
+const [Marchandise,setMarchandise] = useState({
 
     reference:"",
     nom:"",
     categorie:"",
     description:"",
-    marque:"",
     unite:"",
 
     fournisseur: "",
@@ -49,9 +48,9 @@ function handleChange(e){
 
     const {name,value,type,checked}=e.target;
 
-    setMatierePremiere({
+    setMarchandise({
 
-        ...MatierePremiere,
+        ...Marchandise,
 
         [name]:
         type==="checkbox"
@@ -68,18 +67,18 @@ async function handleSubmit(e){
 
     e.preventDefault();
 
-    console.log(MatierePremiere);
+    console.log(Marchandise);
 
     // API Supabase ici
-    const table = "matierespremieres";
+    const table = "marchandises";
 
     // Set fournisseur ID if selected
     if (fournisseur) {
-        MatierePremiere.id_fournisseur = fournisseur.id;
-        MatierePremiere.fournisseur = fournisseur.nom + " " + fournisseur.prenom;
+        Marchandise.id_fournisseur = fournisseur.id;
+        Marchandise.fournisseur = fournisseur?.nom + " " + fournisseur?.prenom + " - " + fournisseur.societe;
     }
     
-    const { error } = await supabase.from(table).insert(MatierePremiere);
+    const { error } = await supabase.from(table).insert(Marchandise);
     
     if(!error){
         alert("Matière enregistré");
@@ -87,7 +86,7 @@ async function handleSubmit(e){
         alert("Matière non enregistré : " + error.message);
     }
 
-    navigate("/matierespremieres");
+    navigate("/marchandises");
 }
 
     const [fournisseur,setFournisseur] = useState(null);
@@ -132,7 +131,7 @@ return (
 
 
     <h1 className="titre">
-        Création Matière
+        Création Marchandise
     </h1>
 
 
@@ -177,18 +176,7 @@ return (
                     name="categorie"
                     onChange={handleChange}
                 />
-            </div>
-
-            <div>
-                <label>
-                    Marque
-                </label>
-
-                <input
-                    name="marque"
-                    onChange={handleChange}
-                />
-            </div>
+            </div>            
 
             <div>
                 <label>
@@ -494,17 +482,17 @@ return (
 
                 name="actif"
 
-                checked={MatierePremiere.actif}
+                checked={Marchandise.actif}
 
                 onChange={handleChange}
 
             />
-            Matière active
+            Marchandise active
         </label>
 
         <div>
             <button className="profile">
-                Créer Matière
+                Créer
             </button>
         </div>
 
@@ -513,4 +501,4 @@ return (
 )}
 
 
-export default MatierePremiereCreate;
+export default MarchandiseCreate;

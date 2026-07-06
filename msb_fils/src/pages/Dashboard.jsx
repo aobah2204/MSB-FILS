@@ -264,7 +264,7 @@ async function getAllVentes(){
         .select("*");
     
     setVentes(VentesData);
-    setNbreVentes(VentesData.length);
+    setNbrVentes(VentesData.length);
 
     const { data: VenteProduitsData } = await supabase
         .from("venteproduits")
@@ -348,7 +348,7 @@ async function Depenses_site(){
     .from("vw_dashboard_depenses_site")
     .select("*");
 
-    setDepense_site(data);
+    setDepenses_site(data);
 }
 
 // Benefices

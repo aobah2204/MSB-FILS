@@ -64,6 +64,11 @@ return (
         <NavLink to="/produits">
             <Package size={20}/>
             Produits
+        </NavLink>  
+
+        <NavLink to="/marchandises">
+            <Package size={20}/>
+            Marchandises
         </NavLink>   
 
         <NavLink to="/matierespremieres">
