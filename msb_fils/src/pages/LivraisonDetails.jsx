@@ -39,10 +39,9 @@ function LivraisonDetails(){
 
         if (!data) return alert("Aucune livraison");
 
-        setLivraison(data);
-        getVenteInfo(data.vente_id);
-        getVehiculeInfo(data.vehicule_id);
-        
+        getVenteInfo(data?.vente_id);
+        getVehiculeInfo(data?.vehicule_id);
+        setLivraison(data);        
     }
 
     const [vente , setVente] = useState();
@@ -69,7 +68,7 @@ function LivraisonDetails(){
             .eq("id",id)            
             .maybeSingle();
 
-        if (!data) return alert("Aucune vente correspondante à la livraison");
+        //if (!data) return alert("Aucune vente correspondante à la livraison", id);
         setVente(data);
 
         const { dataProduits } = await supabase
@@ -77,7 +76,7 @@ function LivraisonDetails(){
             .select("*")
             .eq("id",id);
 
-        if (!dataProduits) return alert("Aucun produits associé à la vente");
+        //if (!dataProduits) return alert("Aucun produits associé à la vente", id);
         setLignes(dataProduits);
     }
 
@@ -185,12 +184,7 @@ function LivraisonDetails(){
                         </p>
                     </div>
 
-                    {lignes.map((ligne, index) => (                        
-
-                        ligne.produit_id - ligne.quantite +"--"+ new Intl.NumberFormat("fr-FR").format(ligne.montant_ligne)                     
-
-                    ))
-                    }                 
+                                  
 
                 </div>
 
