@@ -69,7 +69,10 @@ import Marchandises from './pages/Marchandises';
 import MarchandiseCreate from './pages/MarchandiseCreate';
 import MarchandiseEdit from './pages/MarchandiseEdit';
 import MarchandiseDetails from './pages/MarchandiseDetails';
-
+import Livraisons from './pages/Livraisons';
+import LivraisonCreate from './pages/LivraisonCreate';
+import LivraisonEdit from './pages/LivraisonEdit';
+import LivraisonDetails from './pages/LivraisonDetails';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -307,7 +310,7 @@ function App() {
                 element={<AchatDetails />} />
         </Route>
 
-         {/** Marchandises routes */}
+        {/** Marchandises routes */}
         <Route path="marchandises">
           <Route index element={<Marchandises />} />
           <Route path="nouveau"
@@ -318,6 +321,19 @@ function App() {
                 element={<MarchandiseEdit />} />
           <Route path="details/:id"
                 element={<MarchandiseDetails />} />
+        </Route>
+
+        {/** Livraisons routes */}
+        <Route path="livraisons">
+          <Route index element={<Livraisons />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<LivraisonCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<LivraisonEdit />} />
+          <Route path="details/:id"
+                element={<LivraisonDetails />} />
         </Route>
 
         <Route path="depenses">

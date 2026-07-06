@@ -18,7 +18,7 @@ import { supabase } from "../supabase";
 
 function DepensesChart({ ChartData }) {
 
-    console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
+    //console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
 
     // Ensure ChartData is an array, default to empty array if not
     const data = Array.isArray(ChartData) ? ChartData : [];  
@@ -87,7 +87,7 @@ return (
                     
                     <Bar 
                         dataKey="montant"
-                        name="montant"
+                        name="Montants"
                         stroke="#2563eb"
                         fill="#f15517"
                         strokeWidth={3}
