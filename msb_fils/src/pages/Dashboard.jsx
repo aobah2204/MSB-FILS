@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import ProductionChart from "../components/ProductionChart";
 import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
+import ProductionMensuelSiteChart from "../components/ProductionMensuelSiteChart.jsx";
 import { ShoppingCart } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
@@ -325,7 +326,7 @@ async function Ventes_mois(){
 const [prodMois, setProdMois] = useState([]);
 async function Prods_mois(){
     const { data } = await supabase
-    .from("vw_dashboard_production_mensuelle")
+    .from("vw_dashboard_production_mensuelle_site")
     .select("*");
 
     setProdMois(data);
@@ -419,6 +420,9 @@ useEffect(()=>{
     Depenses_site();
     Depenses_categorie();
 
+    // production 
+    Prods_mois();
+
     loadTop10();
 },[]);
 
@@ -441,10 +445,18 @@ return (
                 ChartData={depensesCategorie}
             />
 
-        </div>  
+        </div>         
     </div>
 
-    
+    <div className="cards">
+        <div className="card">            
+
+            <ProductionMensuelSiteChart
+                ChartData={prodMois}
+            />
+
+        </div>  
+    </div>
 
 
     <div className="cards">

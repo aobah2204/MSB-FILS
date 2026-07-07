@@ -5,7 +5,7 @@ import { supabase } from "../supabase";
 import { useState, useEffect } from "react";
 import ProductionSiteChart from '../components/ProductionSiteChart';
 import VenteSiteChart from "../components/VenteSiteChart";
-
+import ProductionMensuelSiteChart from "../components/ProductionMensuelSiteChart";
 
 function ProductionSiteDetails(){
 
@@ -89,11 +89,22 @@ function ProductionSiteDetails(){
         console.log(data);
     }
 
+    // Produit mensuelle du site 
+    const [produitsBySite, setProduitBySite] = useState([]);
+    async function Produits_by_site(){
+        const { data } = await supabase
+        .from("vw_dashboard_production_mensuelle_site")
+        .select("*");
+
+        setProduitBySite(data);
+    }
+
     useEffect(()=>{
     
         getSite(id);
         getAllProductionSite(id);
         getProduitsVendus();
+        Produits_by_site();
                 
     },[id]);
 
@@ -195,17 +206,14 @@ function ProductionSiteDetails(){
         </div>
 
         
-        {/*<div className="cards">    
+        <div className="cards">    
 
-            <div className="card"> 
-                <p>
-                    Taux Produits vendus : {produitsVendus.length}
-                </p>
+            <div className="card">                
 
-                <VenteSiteChart ProduitsVendu={produitsVendus}/>
+                <ProductionMensuelSiteChart ChartData={produitsBySite}/>
 
             </div>   
-        </div>*/}
+        </div>
 
                 
 
