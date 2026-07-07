@@ -112,6 +112,7 @@ function Depenses() {
           </tbody>
         </table>
       </div>
+      
     </div>
   );
 }
