@@ -123,7 +123,7 @@ function Marchandises() {
                         <th>Nom</th>
                         <th>Catégorie</th>
                         <th>Description</th>
-                        <th>Prix Achat</th> 
+                        <th>Fournisseur</th>
                         <th>Actions</th>
                     </tr>
 
@@ -144,7 +144,7 @@ function Marchandises() {
 
                         <td>{produit?.description}</td>
 
-                        <td>{new Intl.NumberFormat("fr-FR").format(produit.prixAchat) || 0} FG</td>
+                        <td>{produit?.fournisseur}</td>
                         
                         
                         <td>
