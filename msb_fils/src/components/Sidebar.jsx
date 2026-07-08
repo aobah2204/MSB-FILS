@@ -1,17 +1,24 @@
 import { NavLink } from "react-router-dom";
+import {
+    useState,
+    useEffect
+} from "react";
+
 
 import {
- LayoutDashboard,
- Users,
- FileText,
- Settings,
- UserPlus,
- HandCoins,
- Package,
- Factory,
- Truck,
- ShoppingCart,
- ShoppingBag
+    LayoutDashboard,
+    Users,
+    FileText,
+    Settings,
+    UserPlus,
+    HandCoins,
+    Package,
+    Factory,
+    ShoppingCart,
+    ShoppingBag,
+    ChartBar,
+    Truck,
+    Cog
 } from "lucide-react";
 
 import logo from "../assets/Logo.png";
@@ -23,115 +30,152 @@ function Sidebar({open,closeMenu}){
 
 const { user } = useAuth();
 
+const menu = [
+  {
+    key: "dashboard",
+    title: "  Tableau de bord",
+    icon: <ChartBar />,
+    items: [
+      { label: "Dashboard", to: "/" }
+    ]
+  },
+  {
+    key: "administration",
+    title: "  Administration",
+    icon: <Users />,
+    items: [
+      { label: "Salariés", to: "/salaries" },
+      { label: "Sites de production", to: "/production-sites" },
+      { label: "Fournisseurs", to: "/fournisseurs" },
+      { label: "Dépenses", to: "/depenses" }
+    ]
+  },
+  {
+    key: "commercial",
+    title: "  Gestion commerciale",
+    icon: <Users />,
+    items: [
+      { label: "Clients", to: "/clients" },
+      { label: "Fournisseurs", to: "/fournisseurs" },
+      { label: "Commandes", to: "/commandes" },
+      { label: "Achats", to: "/achats" },
+      { label: "Ventes", to: "/ventes" },
+      { label: "Marchandises", to: "/marchandises" }
+    ]
+  },
+  {
+    key: "production",
+    title: "   Production",
+    icon: <Factory />,
+    items: [
+      { label: "Produits", to: "/produits" },
+      { label: "Matières premières", to: "/matierespremieres" },
+      { label: "Productions", to: "/productions" }
+    ]
+  },
+  {
+    key: "livraison",
+    title: "  Livraison",
+    icon: <Truck />,
+    items: [
+      { label: "Véhicules", to: "/vehicules" },
+      { label: "Livraisons", to: "/livraisons" }
+    ]
+  }
+];
+
+const [openMenus, setOpenMenus] = useState({
+    dashboard: true,
+    commercial: true,
+    production: false,
+    logistique: false,
+    finance: false,
+    administration: false
+});
+
+const toggleMenu = (key) => {
+    setOpenMenus(prev => ({
+        ...prev,
+        [key]: !prev[key]
+    }));
+};
+
+const [sidebarOpen, setSidebarOpen] = useState(false);
+
+const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+};
 
 return (
 
-    <aside
-    className={`sidebar ${open ? "open" : ""}`}
-    onClick={closeMenu}
-    >
+    <>
+    <div
+        className={open ? "overlay active" : "overlay"}
+        onClick={closeMenu}
+    />
 
+    <aside className={`sidebar ${open ? "open" : ""}`}>
 
-    <div className="logo-container">
+        <div className="logo-container">
+            <Factory size={40}/>
+            <span>MSB & FILS</span>
+        </div>
 
-        {/*<img
-        src={logo}
-        className="logo-image"
-        alt="MSB FILS"
-        />*/}
-        <Factory size={40} />
-        <span>
-        MSB & FILS
-        </span>
-    </div>
+        {menu.map(section => (
 
+            <div key={section.key} className="menu-section">
 
-    <nav>
+                <button
+                    className="menu-title"
+                    onClick={() => toggleMenu(section.key)}
+                >
 
-        <NavLink to="/">
-            <LayoutDashboard /> Accueil
-        </NavLink>
+                    <div className="menu-left">
 
-        <NavLink to="/clients">
-            <Users /> Clients
-        </NavLink>
+                        {section.icon}
 
-        <NavLink to="/fournisseurs">
-            <Users /> Fournisseurs
-        </NavLink>     
+                        <span>{section.title}</span>
 
-        
-        <NavLink to="/produits">
-            <Package size={20}/>
-            Produits
-        </NavLink>  
+                    </div>
 
-        <NavLink to="/marchandises">
-            <Package size={20}/>
-            Marchandises
-        </NavLink>   
+                    <span>
 
-        <NavLink to="/matierespremieres">
-            <FileText /> Matières premières
-        </NavLink>
+                        {openMenus[section.key] ? "▼" : "▶"}
 
-        <NavLink to="/vehicules">
-            <Truck /> Véhicules
-        </NavLink>
+                    </span>
 
-        <NavLink to="/livraisons">
-            <Truck /> Livraisons
-        </NavLink> 
+                </button>
 
-        <NavLink to="/production-sites">
-            <Factory /> Sites production
-        </NavLink>
+                {openMenus[section.key] && (
 
-        <NavLink to="/productions">
-            <Factory /> Productions
-        </NavLink>
+                    <div className="submenu">
 
-        <NavLink to="/commandes">
-            <ShoppingCart /> Commandes
-        </NavLink>
+                        {section.items.map(item => (
 
-        <NavLink to="/ventes">
-            <HandCoins /> Ventes
-        </NavLink>
+                            <NavLink
+                                key={item.to}
+                                to={item.to}
+                                onClick={()=>{
+                                    if(window.innerWidth<768){
+                                        closeMenu();
+                                    }
+                                }}
+                            >
+                                {item.label}
+                            </NavLink>
 
-        <NavLink to="/achats">
-            <ShoppingBag /> Achats
-        </NavLink>
+                        ))}
 
-        <NavLink to="/depenses">
-            <ShoppingBag /> Dépenses
-        </NavLink>
+                    </div>
 
-        <NavLink to="/salaries">
-            <Users /> Salariés
-        </NavLink>
-        
+                )}
 
-        {/*
-        <NavLink to="/factures">
-            <FileText /> Factures
-        </NavLink>
+            </div>
 
-        <NavLink to="/ca">
-            <HandCoins /> Chiffre d'Affaire
-        </NavLink>     
-        */}         
-
-        <NavLink to="/parametres">
-            <Settings /> Paramètres
-        </NavLink>
-
-
-    </nav>
-
+        ))}
 
     </aside>
-
+</>
 )
 
 }
