@@ -31,7 +31,7 @@ const [Marchandise,setMarchandise] = useState({
     description:"",
     unite:"",
 
-    prixAchat:"",
+    fournisseur:"",
     
     stock:"",
     stockMin:"",
@@ -67,6 +67,7 @@ async function getMarchandise(id){
     
     setMarchandise(data);
     setLoading(false);
+    console.log("marchandise : ", data);
 }
 
 async function getAllFournisseurs(){
@@ -126,7 +127,7 @@ useEffect(()=>{
             return;
         }
 
-        navigate("/matierespremieres");
+        navigate("/marchandises");
     }
 
 
@@ -272,7 +273,7 @@ return (
                         Fournisseur
                     </label>
                     <select
-                        value={fournisseur?.nom + " " + fournisseur?.prenom || ""}
+                        value={Marchandise?.id_fournisseur || ""}
                         name="fournisseur"
                         onChange={onChange}
                     >                        
@@ -306,6 +307,7 @@ return (
             />
         </div>
 
+        {/*
         <div className="grid">
 
             <div>
@@ -322,6 +324,7 @@ return (
             </div>
 
         </div>
+        */}
 
         <h3>
             Stock

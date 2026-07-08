@@ -260,6 +260,7 @@ return (
             onChange={handleChange}
         />
 
+{/**
         <div className="grid">
 
             <div>
@@ -272,9 +273,9 @@ return (
                     name="prixAchat"
                     onChange={handleChange}
                 />
-            </div>
+            </div>    
 
-        </div>
+        </div> */}
 
         <h3>
             Stock
