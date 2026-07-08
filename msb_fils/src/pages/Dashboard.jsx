@@ -6,6 +6,7 @@ import ProductionChart from "../components/ProductionChart";
 import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
 import ProductionMensuelSiteChart from "../components/ProductionMensuelSiteChart.jsx";
+import ChiffreAffaireMensuelChart from "../components/ChiffreAffaireMensuelChart.jsx";
 import { ShoppingCart } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
@@ -329,6 +330,8 @@ async function Prods_mois(){
     .from("vw_dashboard_production_mensuelle_site")
     .select("*");
 
+    
+
     setProdMois(data);
 }
 
@@ -403,6 +406,20 @@ async function LastDepense(){
     setLastDente(data);
 }
 
+// Productions du mois
+const [prodVenteMois, setProdVenteMois] = useState([]);
+async function ProdVente_mois(){
+    const { data } = await supabase
+    .from("vw_dashboard_production_vente_mensuelle_site")
+    .select("*");
+
+    const chartData = data.map(item => ({
+        ...item,
+        label: `${item.site} - ${item.mois}`
+    }));
+
+    setProdVenteMois(chartData);
+}
 
 
 useEffect(()=>{
@@ -423,6 +440,10 @@ useEffect(()=>{
     // production 
     Prods_mois();
 
+    // Chiffre d'affaires par mois 
+    Ventes_mois();
+    ProdVente_mois();
+
     loadTop10();
 },[]);
 
@@ -430,6 +451,16 @@ return (
 
 <div>    
 
+
+    <div className="cards">
+        <div className="card">            
+
+            <ChiffreAffaireMensuelChart
+                Data={prodVenteMois}
+            />
+
+        </div>  
+    </div>
 
     <div className="cards">
         <div className="card">            
@@ -448,7 +479,7 @@ return (
         </div>         
     </div>
 
-    <div className="cards">
+    {/*<div className="cards">
         <div className="card">            
 
             <ProductionMensuelSiteChart
@@ -456,7 +487,7 @@ return (
             />
 
         </div>  
-    </div>
+    </div>*/}
 
 
     <div className="cards">

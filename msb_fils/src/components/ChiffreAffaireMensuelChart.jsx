@@ -16,12 +16,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabase";
 
 
-function ProductionMensuelSiteChart({ ChartData }) {
+function ChiffreAffaireMensuelChart({ Data }) {
 
-    console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
+    //console.log("ChartData in chart : ", Data); // Log the ChartData to check its value
 
     // Ensure ChartData is an array, default to empty array if not
-    const data = Array.isArray(ChartData) ? ChartData : [];  
+    const data = Array.isArray(Data) ? Data : []; 
 
 
 
@@ -31,7 +31,7 @@ return (
 
 
         <h2 className="titre_graphe">
-            Production mensuelle
+            Chiffre d'affaire mensuel par site
         </h2>
 
 
@@ -53,20 +53,21 @@ return (
                     <CartesianGrid strokeDasharray="3 3" />
 
 
-                    <XAxis dataKey="mois"
-                        tickFormatter={(value, index) => {
-                            const item = data[index];
-                            return `${item.site}\n${value}`;
-                        }}
-                        angle={-25}
+                    <XAxis dataKey="label"
+                        tickFormatter={(value, index) =>
+                                `${value} ${data[index].label}`
+                            }
+                        angle={0}
                             textAnchor="end"
                             height={80}
-                            tickFormatter={(site)=>
-                                site
+                            tickFormatter={(nom)=>
+                                nom.length>35
+                                ? nom.substring(0,35)+"..."
+                                : nom
                             }/>
 
                     <YAxis
-                        datakey="montant"
+                        datakey="chiffre_affaire"
                         tickFormatter={(value) => `${(value / 1000000).toFixed(1)} M`}
                     />
 
@@ -85,8 +86,8 @@ return (
 
                     
                     <Bar 
-                        dataKey="cout_composants"
-                        name="Coût matériel"
+                        dataKey="chiffre_affaire"
+                        name="Chiffre d'affaire"
                         stroke="#2563eb"
                         fill="#584037"
                         strokeWidth={3}
@@ -100,25 +101,16 @@ return (
                         fill="#d85120"
                         strokeWidth={3}
                         dot={{r:5}} 
-                    /> 
+                    />  
 
                     <Bar 
-                        dataKey="cout_stockage"
-                        name="Coût stockage"
+                        dataKey="marge_brute"
+                        name="Marge brute"
                         stroke="#2563eb"
-                        fill="#24a372"
+                        fill="#11b835"
                         strokeWidth={3}
                         dot={{r:5}} 
-                    /> 
-
-                    <Bar 
-                        dataKey="cout_total"
-                        name="Coût total production"
-                        stroke="#2563eb"
-                        fill="#e01638"
-                        strokeWidth={3}
-                        dot={{r:5}} 
-                    />   
+                    />                   
 
 
 
@@ -139,4 +131,4 @@ return (
 }
 
 
-export default ProductionMensuelSiteChart;
+export default ChiffreAffaireMensuelChart;
