@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
+import { Trash2 } from "lucide-react";
 
 function ProductionCreate() {
   const navigate = useNavigate();
@@ -76,6 +77,7 @@ function ProductionCreate() {
       {
         matiere_id: "",
         quantite: "",
+        unite: "",
       },
     ];
 
@@ -174,6 +176,7 @@ function ProductionCreate() {
         production_id: insertedProduction.id,
         matiere_id: item.matiere_id,
         quantite: quantity,
+        unite: item.unite,
         //cout_unitaire: unitCost,
         //cout_total: quantity * unitCost,
       };
@@ -184,6 +187,10 @@ function ProductionCreate() {
 
     alert("Production enregistrée");
     navigate("/productions");
+  }
+
+  function removeProductLine(index) {
+    setMaterials(materials.filter((_, i) => i !== index));
   }
 
   useEffect(() => {
@@ -281,9 +288,12 @@ function ProductionCreate() {
 
         <h3>Matériaux utilisés</h3>
 
+
         {materials.map((m, index) => (
-          <div className="grid" key={index}>
-            <select
+          <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
+            <div>
+              <label>Matériel</label>
+              <select
               value={m.matiere_id || ""}
               onChange={(e) => updateMaterial(index, "matiere_id", e.target.value)}
             >
@@ -293,14 +303,70 @@ function ProductionCreate() {
                   {x.nom}
                 </option>
               ))}
-            </select>
+            </select>            
+            </div>
 
-            <input
-              type="float"
-              placeholder="Quantité"
-              value={m.quantite || ""}
-              onChange={(e) => updateMaterial(index, "quantite", e.target.value)}
-            />
+            <div>
+              <label>Quantité</label>
+              <input
+                type="number"
+                value={m.quantite || ""}
+                onChange={(e) => updateMaterial(index, "quantite", e.target.value)}
+              />
+              
+            </div>
+
+            <div>
+                <select
+                  name="unite"
+                  value={m.unite || ""}
+                  onChange={(e) => updateMaterial(index, "unite", e.target.value)}
+                >
+                  <option>
+                    --unité--
+                  </option>
+                  <option>
+                    Sac
+                  </option>
+                  <option>
+                    Kilogramme
+                  </option>
+                  <option>
+                    Litre
+                  </option>
+                  <option>
+                    Pièce
+                  </option>
+                  <option>
+                    KiloWatt
+                  </option>
+                  <option>
+                    Tonne
+                  </option>
+                  <option>
+                    Brouette
+                  </option>
+                  <option>
+                    Bidon 20 litre
+                  </option>
+                  <option>
+                    Fût 100 litre
+                  </option>
+
+
+                </select>
+            </div>
+
+
+            <div style={{ display: "flex", alignItems: "flex-end" }}>
+              <button
+                className="profileSupp"
+                type="button"
+                onClick={() => removeProductLine(index)}
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
           </div>
         ))}
 
@@ -313,10 +379,10 @@ function ProductionCreate() {
         {isAddedMateriel && (
           <div className="grid">
             <label>Coût total matière</label>
-            <output>{coutTotalMateriels}</output>
+            <output>{new Intl.NumberFormat("fr-FR").format(coutTotalMateriels)} FG</output>
 
             <label>Coût production</label>
-            <output>{coutTotalProduction}</output>
+            <output>{new Intl.NumberFormat("fr-FR").format(coutTotalProduction)} FG</output>
           </div>
         )}
 
