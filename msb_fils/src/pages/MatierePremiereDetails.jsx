@@ -24,9 +24,8 @@ function MatierePremiereDetails(){
         marque:"",
         unite:"",
 
-        prixAchat:"",
-        prixVente:"",
-        tva:"20",
+        fournisseur:"",
+        fournisseur_id:"",
 
         stock:"",
         stockMin:"",
@@ -99,102 +98,17 @@ function MatierePremiereDetails(){
                         Description : {MatierePremiere.description}
                     </p>
 
-                </div>
-
-                <div className="card">
-
-                    <h3>
-                        Dimensions
-                    </h3>
-
-                    <div>
-                        <label>Poids</label>
-                        <p>
-                            {MatierePremiere?.poids} {MatierePremiere?.unite_poids}
-                        </p>
-                    </div>
-
-                    <div>
-                        <label>Longueur</label>
-                        <p>
-                            {MatierePremiere?.longueur} {MatierePremiere?.unite_longueur}
-                        </p>
-                    </div>
-
-                    <div>
-                        <label>Largeur</label>
-                        <p>
-                            {MatierePremiere?.largeur} {MatierePremiere?.unite_largeur}
-                        </p>
-                    </div>
-
-                    <div>
-                        <label>Hauteur</label>
-                        <p>
-                            {MatierePremiere?.hauteur} {MatierePremiere?.unite_hauteur}
-                        </p>
-                    </div>
-
-
-                </div>
-
-            </div>
-
-            <div className="cards">
-
-                <div className="card">
-
-
-                    <h3>
-                        Production
-                    </h3>
-
-
-                    <ul>
-
-                        <li>
-                            Matière première : 
-                        </li>
-
-                        <li>
-                            Coût de production : 
-                        </li>
-
-                    </ul>
-
-
-                </div> 
-
-                <div className="card">
-
-                    <h3>
-                        Vente 
-                    </h3>
-
-
                     <p>
-                        Total : 
+                        Fournisseur : {MatierePremiere.fournisseur}
                     </p>
 
-
-                    <p>
-                        Coût de vente:
-                    </p>
-
-
                 </div>
 
+                
+
             </div>
 
-            <div className="cards">
-
-                <div className="card">
-                    <h3>
-                        Production
-                        </h3>
-                        <ProductionChart />
-                </div> 
-            </div>
+            
 
         </div>
 

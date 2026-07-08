@@ -81,6 +81,28 @@ const menu = [
       { label: "Véhicules", to: "/vehicules" },
       { label: "Livraisons", to: "/livraisons" }
     ]
+  },
+  {
+    key: "prestation",
+    title: "  Prestation de service",
+    icon: <Truck />,
+    items: [
+      { label: "Prestataires", to: "/" },
+      { label: "Prestation", to: "/" },
+      { label: "Conceptions", to: "/" },
+      { label: "Chantiers", to: "/" },
+    ]
+  },
+  {
+    key: "distribution",
+    title: "  Distribution",
+    icon: <Factory />,
+    items: [
+      { label: "Produits", to: "/" },
+      { label: "Conceptions", to: "/" },
+      { label: "Chantiers", to: "/" },
+      { label: "Plan et Réalisation", to: "/" }
+    ]
   }
 ];
 
