@@ -5,8 +5,8 @@ import { NavLink } from "react-router-dom";
 import ProductionChart from "../components/ProductionChart";
 import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
-import ProductionMensuelSiteChart from "../components/ProductionMensuelSiteChart.jsx";
-import ChiffreAffaireMensuelChart from "../components/ChiffreAffaireMensuelChart.jsx";
+import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
+import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import { ShoppingCart } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
@@ -421,6 +421,18 @@ async function ProdVente_mois(){
     setProdVenteMois(chartData);
 }
 
+// Productions du mois
+const [financeMois, setFinanceMois] = useState([]);
+async function FinanceByMois(){
+    const { data } = await supabase
+    .from("vw_dashboard_finance_mensuelle")
+    .select("*");
+
+    
+
+    setFinanceMois(data);
+}
+
 
 useEffect(()=>{
     getAllClients();  
@@ -443,6 +455,7 @@ useEffect(()=>{
     // Chiffre d'affaires par mois 
     Ventes_mois();
     ProdVente_mois();
+    FinanceByMois();
 
     loadTop10();
 },[]);
@@ -455,7 +468,17 @@ return (
     <div className="cards">
         <div className="card">            
 
-            <ChiffreAffaireMensuelChart
+            <ChiffreAffaireMensuelGlobalChart
+                Data={financeMois}
+            />
+
+        </div>  
+    </div>
+
+    <div className="cards">
+        <div className="card">            
+
+            <ChiffreAffaireMensuelBySiteChart
                 Data={prodVenteMois}
             />
 

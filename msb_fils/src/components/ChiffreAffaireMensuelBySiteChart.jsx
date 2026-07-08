@@ -57,7 +57,7 @@ return (
                         tickFormatter={(value, index) =>
                                 `${value} ${data[index].label}`
                             }
-                        angle={0}
+                        angle={-5}
                             textAnchor="end"
                             height={80}
                             tickFormatter={(nom)=>
