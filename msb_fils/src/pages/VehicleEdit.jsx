@@ -53,9 +53,10 @@ function VehicleEdit(){
     
             );
     
-            //console.log(selected);
-    
+            //console.log(selected);    
             setChauffeur(selected);
+            vehicule.user_id = selected.id;
+            vehicule.chauffeur = selected.fullname;
         }
     
         async function getAllChauffeur(){
@@ -80,8 +81,8 @@ function VehicleEdit(){
             const table = "vehicules";
     
             // set chauffeur id
-            vehicule.user_id = chauffeur.id;
-            vehicule.chauffeur = chauffeur.fullname;
+            vehicule.user_id = chauffeur?.id;
+            vehicule.chauffeur = chauffeur?.fullname;
     
             console.log(vehicule);
     
@@ -178,7 +179,7 @@ return (
                     />
 
                     <select
-                        value={vehicule.chauffeur || ""}
+                        value={vehicule?.user_id || ""}
                         name="chauffeur"
                         onChange={onChange}
                     >
