@@ -204,6 +204,12 @@ function handleChange(e) {
                     Fournisseur
                 </option>
                 <option>
+                    Prime de voyage
+                </option>
+                <option>
+                    Frait de route
+                </option>
+                <option>
                     Divers
                 </option>
 

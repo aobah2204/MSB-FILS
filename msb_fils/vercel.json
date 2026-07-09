@@ -1,0 +1,9 @@
+{
+  "$schema": "https://msb-fils.vercel.app/vercel.json",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
