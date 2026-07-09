@@ -101,7 +101,7 @@ const menu = [
       { label: "Produits", to: "/" },
       { label: "Conceptions", to: "/" },
       { label: "Chantiers", to: "/" },
-      { label: "Plan et Réalisation", to: "/" }
+      { label: "Plan et Réalisation", to: "/planbuilder" }
     ]
   }
 ];
@@ -182,6 +182,7 @@ return (
                                         closeMenu();
                                     }
                                 }}
+                                className="label"
                             >
                                 {item.label}
                             </NavLink>

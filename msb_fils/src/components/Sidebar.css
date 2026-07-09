@@ -28,7 +28,7 @@ nav{
     flex-direction:column;
     gap:8px;
     width:100%;
-
+    color:aliceblue;
 }
 
 nav a{
@@ -135,4 +135,12 @@ nav a{
 
     }
 
+}
+
+.label{
+    color: aliceblue;
+}
+
+.label::hover{
+    background-color: rgb(73, 112, 146);
 }

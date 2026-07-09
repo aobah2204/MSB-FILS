@@ -73,6 +73,7 @@ import Livraisons from './pages/Livraisons';
 import LivraisonCreate from './pages/LivraisonCreate';
 import LivraisonEdit from './pages/LivraisonEdit';
 import LivraisonDetails from './pages/LivraisonDetails';
+import PlanBuilder from './pages/PlanBuilder';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -334,6 +335,11 @@ function App() {
                 element={<LivraisonEdit />} />
           <Route path="details/:id"
                 element={<LivraisonDetails />} />
+        </Route>
+
+        {/** Plan builder routes */}
+        <Route path="planbuilder">
+          <Route index element={<PlanBuilder />} />          
         </Route>
 
         <Route path="depenses">
