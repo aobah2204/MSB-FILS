@@ -473,17 +473,15 @@ return (
             />
 
         </div>  
-    </div>
-
-    <div className="cards">
         <div className="card">            
 
             <ChiffreAffaireMensuelBySiteChart
                 Data={prodVenteMois}
             />
 
-        </div>  
+        </div> 
     </div>
+    
 
     <div className="cards">
         <div className="card">            
