@@ -275,7 +275,7 @@ return (
                 />
             </div>    
 
-        </div> */}
+        </div> 
 
         <h3>
             Stock
@@ -317,6 +317,7 @@ return (
 
 
         </div>
+        */}
 
         <h3>
             Dimensions

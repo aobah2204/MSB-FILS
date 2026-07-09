@@ -95,7 +95,7 @@ const menu = [
   },
   {
     key: "distribution",
-    title: "  Distribution",
+    title: "  Issa Distribution",
     icon: <Factory />,
     items: [
       { label: "Produits", to: "/" },
