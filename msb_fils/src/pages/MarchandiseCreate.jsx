@@ -23,11 +23,7 @@ const [Marchandise,setMarchandise] = useState({
     fournisseur: "",
     id_fournisseur: 0,
 
-    prixAchat:0,
     
-    stock:"",
-    stockMin:"",
-
     poids:"",
     unite_poids:"",
     longueur:"",
