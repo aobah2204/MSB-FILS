@@ -16,13 +16,34 @@ import {
     Redo2
 } from "lucide-react";
 
-import {Stage, Layer} from 'react-konva';
+import {Stage, Layer, Rect} from 'react-konva';
 
 function PlanBuilder() {
 
     const [tool, setTool] = useState("select");
 
     const [selectedObject, setSelectedObject] = useState(null);
+
+    const [objects, setObjects] = useState([]);
+
+    const handleStageClick = (e) => {
+
+        if (tool === "select") return;
+
+        const stage = e.target.getStage();
+        const pos = stage.getPointerPosition();
+
+        const newObject = {
+            id: Date.now(),
+            type: tool,
+            x: pos.x,
+            y: pos.y,
+            width: 120,
+            height: 20
+        };
+
+        setObjects(prev => [...prev, newObject]);
+    };
 
     return (
 
@@ -152,19 +173,61 @@ function PlanBuilder() {
 
                         <div className="grid_canvas">
 
-                            <Stage>
+                            <Stage
+                                width={1000}
+                                height={700}
+                                onMouseDown={handleStageClick}
+                            >
 
                                 <Layer>
 
-                                    {/* grille */}
+                                    {objects.map(obj => (
 
-                                    {/* murs */}
+                                        <Rect
+                                            key={obj.id}
 
-                                    {/* portes */}
+                                            x={obj.x}
+                                            y={obj.y}
 
-                                    {/* fenêtres */}
+                                            width={obj.width}
+                                            height={obj.height}
 
-                                    {/* textes */}
+                                            fill={
+                                                obj.type === "wall"
+                                                    ? "#555"
+                                                    : obj.type === "window"
+                                                    ? "#4FC3F7"
+                                                    : "#8BC34A"
+                                            }
+
+                                            draggable
+
+                                            onDragEnd={(e)=>{
+
+                                                setObjects(prev=>
+
+                                                    prev.map(o=>
+
+                                                        o.id===obj.id
+
+                                                        ?{
+                                                            ...o,
+                                                            x:e.target.x(),
+                                                            y:e.target.y()
+                                                        }
+
+                                                        :o
+
+                                                    )
+
+                                                );
+
+                                            }}
+
+                                        />
+
+                                    ))}
+
 
                                 </Layer>
 

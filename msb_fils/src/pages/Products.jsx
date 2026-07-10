@@ -129,7 +129,7 @@ function Products() {
                         <th>Catégorie</th>
                         {/*<th>Prix Achat</th>
                         <th>Prix Vente</th>*/}
-                        <th>Statut</th>
+                        <th>Actif</th>
                         <th>Actions</th>
                     </tr>
 
