@@ -56,7 +56,7 @@ function Ventes() {
     <div className="product-page">
       <h1>Liste des ventes</h1>
 
-      {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur'].includes(user?.role) && (
+      {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur', "Commercial"].includes(user?.role) && (
         <div>
           <NavLink to="/ventes/nouveau">
             <button className="profile" type="button">
@@ -90,7 +90,7 @@ function Ventes() {
                   <NavLink to={`/ventes/details/${sale.id}`}>
                     <button className="profile" type="button"><Eye size={20} /></button>
                   </NavLink>
-                  {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur'].includes(user?.role) && (
+                  {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur', "Commercial"].includes(user?.role) && (
                     <>
                       <NavLink to={`/ventes/modifier/${sale.id}`}>
                         <button className="profile" type="button"><Pencil size={20} /></button>

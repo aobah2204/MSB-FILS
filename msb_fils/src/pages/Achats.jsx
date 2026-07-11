@@ -50,7 +50,7 @@ function Achats() {
     <div className="product-page">
 
       <h1>Liste des achats</h1>
-      {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
+      {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
         user?.role
       ) && (
         <section>
@@ -86,7 +86,7 @@ function Achats() {
                 <td>{formatDate(achat.date_achat) || "—"}</td>
                 <td>{new Intl.NumberFormat("fr-FR").format(achat.montant_total) || 0 } FG</td>
                 <td>{achat.statut || "—"}</td>
-                {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
+                {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
                   user?.role
                 ) && (
                   <td>
