@@ -184,13 +184,6 @@ function Products() {
                 </tbody>
                 </table>
             </div>
-
-            
-
-        
-            
-
-
     </div> );
 }
 

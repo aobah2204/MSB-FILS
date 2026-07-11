@@ -108,9 +108,24 @@ function Fournisseurs() {
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Société</th>
-                        <th>Téléphone</th>
-                        <th>Email</th>
-                        <th>Action</th>
+                        {
+                        ["Administrateur","Responsable de production"]
+                        .includes(user?.role)
+                        &&
+                            <th>Téléphone</th>
+                        }
+                        {
+                        ["Administrateur","Responsable de production"]
+                        .includes(user?.role)
+                        &&
+                            <th>Email</th>
+                        }
+                        {
+                        ["Administrateur","Responsable de production"]
+                        .includes(user?.role)
+                        &&
+                            <th>Action</th>
+                        }
                     </tr>
 
                     </thead>
@@ -128,9 +143,20 @@ function Fournisseurs() {
 
                             <td>{Fournisseur.societe}</td>
 
-                            <td>{Fournisseur.telephone}</td>
+                            {
+                            ["Administrateur","Responsable de production"]
+                            .includes(user?.role)
+                            &&
 
-                            <td>{Fournisseur.email}</td>
+                                <td>{Fournisseur.telephone}</td>
+                            }
+                            {
+                            ["Administrateur","Responsable de production"]
+                            .includes(user?.role)
+                            &&
+
+                                <td>{Fournisseur.email}</td>
+                            }
 
                             {
                                 ["Administrateur","Responsable de production"]

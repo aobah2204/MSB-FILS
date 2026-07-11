@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
+import Select from "react-select";
+
+import { selectStyle } from "../components/selectStyle";
 
 function VenteCreate() {
   const navigate = useNavigate();
@@ -162,6 +165,15 @@ function VenteCreate() {
     navigate("/ventes");
   }
 
+  // Select filter and style 
+  const productOptions = products.map((p) => ({
+      value: p.id,
+      label: `${p.nom} - ${p.categorie}`,
+      product: p
+  }));
+
+  
+
   return (
     <div className="product-page">
       <h1>Nouvelle vente</h1>
@@ -192,16 +204,33 @@ function VenteCreate() {
         {productLines.map((line, index) => (
           <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
             <div>
-              <label>Produit</label>
-              <select
-                value={line.produit_id || ""}
-                onChange={(e) => updateProductLine(index, "produit_id", e.target.value)}                
-              >
-                <option value="">Choisir</option>
-                {products.map((p) => (
-                  <option key={p.id} value={p.id}>{p.nom} - {p.categorie}</option>
-                ))}
-              </select>
+                <label>Produit</label>
+
+                <Select className="list_select"
+                    options={productOptions}
+
+                    placeholder="Choisir un produit..."
+
+                    isSearchable
+
+                    styles={selectStyle}
+
+                    value={
+                        productOptions.find(
+                            option => option.value === line.produit_id
+                        ) || null
+                    }
+
+                    onChange={(selected) => {
+
+                        updateProductLine(
+                            index,
+                            "produit_id",
+                            selected.value
+                        );
+
+                    }}
+                />
             </div>
             <div>
               <label>Site de production</label>

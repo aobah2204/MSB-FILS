@@ -108,9 +108,24 @@ function Clients() {
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Société</th>
-                        <th>Téléphone</th>
-                        <th>Email</th>
-                        <th>Action</th>
+                         {
+                                ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                                &&
+                                <th>Téléphone</th>
+                        }
+                        {
+                                ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                                &&
+                                <th>Email</th>
+                        }
+                        {
+                                ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                                &&
+                                <th>Action</th>
+                        }
                     </tr>
 
                     </thead>
@@ -128,9 +143,20 @@ function Clients() {
 
                             <td>{client.societe}</td>
 
-                            <td>{client.telephone}</td>
+                            {
+                            ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                            &&
+                                <td>{client.telephone}</td>
+                            }
 
-                            <td>{client.email}</td>
+                             {
+                            ["Administrateur","Responsable de production"]
+                                .includes(user?.role)
+                            &&
+
+                                <td>{client.email}</td>
+                            }
 
                             {
                                 ["Administrateur","Responsable de production"]
