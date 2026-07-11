@@ -18,6 +18,7 @@ function VenteCreate() {
     date_vente: "",
     mode_paiement: "",
     description: "",
+    user_create_id: user?.id,
   });
 
   const [clients, setClients] = useState([]);
@@ -128,6 +129,7 @@ function VenteCreate() {
       mode_paiement: form.mode_paiement,
       description: form.description,
       montant_total: totalAmount,
+      user_create_id: user?.id,
     };
 
     const { data: insertedVente, error: insertError } = await supabase
