@@ -14,6 +14,7 @@ function CommandCreate() {
     date_commande: "",
     statut: "En cours",
     description: "",
+    user_create_id: user?.id,
   });
 
   const [clients, setClients] = useState([]);
@@ -96,6 +97,7 @@ function CommandCreate() {
       statut: form.statut,
       description: form.description,
       montant_total: totalAmount,
+      user_create_id: user?.id,
     };
 
     const { data: insertedCommande, error: insertError } = await supabase
