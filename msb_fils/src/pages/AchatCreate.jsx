@@ -16,6 +16,7 @@ function AchatCreate() {
     date_achat: new Date().toISOString().split("T")[0],
     statut: "En cours",
     description: "",
+    user_create_id: user?.id,
   });
 
   useEffect(() => {
@@ -89,6 +90,7 @@ function AchatCreate() {
             statut: formData.statut,
             description: formData.description,
             montant_total: totalAmount,
+            user_create_id: user?.id,
           },
         ])
         .select();
