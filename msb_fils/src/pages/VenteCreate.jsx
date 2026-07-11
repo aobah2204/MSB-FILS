@@ -236,7 +236,7 @@ function VenteCreate() {
       const linePayload = {
         vente_id: insertedVente.id,
         marchandise_id: line.marchandise_id,
-        fournisseur_id: line.fournisseur_id,
+        //fournisseur_id: line.fournisseur_id,
         quantite: Number(line.quantite),
         prix_unitaire: Number(line.prix_unitaire),
         montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
@@ -414,6 +414,8 @@ function VenteCreate() {
                     }}
                 />
             </div> 
+            
+            {/*
             <div>
               <label>Fournisseur</label>
               <select name="fournisseur_id" value={form.fournisseur_id} 
@@ -425,7 +427,8 @@ function VenteCreate() {
                   <option key={fournisseur.id} value={fournisseur.id}>{fournisseur.nom} {fournisseur.nom} - {fournisseur.societe}</option>
                 ))}
               </select>
-            </div>           
+            </div>  
+            */}         
 
             <div>
               <label>Quantité</label>
