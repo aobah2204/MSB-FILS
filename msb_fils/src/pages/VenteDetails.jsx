@@ -8,6 +8,7 @@ function VenteDetails() {
   const [sale, setSale] = useState(null);
   const [client, setClient] = useState(null);
   const [productLines, setProductLines] = useState([]);
+  const [marchandiseLines, setMarchandiseLines] = useState([]);
 
   async function loadSale() {
     const { data, error } = await supabase.from("ventes").select("*").eq("id", id).maybeSingle();
@@ -25,12 +26,21 @@ function VenteDetails() {
       setClient(clientData);
     }
 
+    // Produits
     const { data: linesData } = await supabase
       .from("venteproduits")
       .select("*, products(nom)")
       .eq("vente_id", id);
 
     setProductLines(linesData || []);
+
+    // Marchandises
+    const { data: linesMData } = await supabase
+      .from("ventemarchandises")
+      .select("*, marchandises(nom)")
+      .eq("vente_id", id);
+
+    setMarchandiseLines(linesMData || []);
   }
 
   function formatDate(value) {
@@ -77,6 +87,34 @@ function VenteDetails() {
               {productLines.map((line) => (
                 <tr key={line.id}>
                   <td>{line.products?.nom || "—"}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <h3>Marchandises vendues</h3>
+      {marchandiseLines.length === 0 ? (
+        <p>Aucune marchandise.</p>
+      ) : (
+        <div className="table-container">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Marchandises</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total ligne</th>
+              </tr>
+            </thead>
+            <tbody>
+              {marchandiseLines.map((line) => (
+                <tr key={line.id}>
+                  <td>{line.marchandises?.nom || "—"}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
