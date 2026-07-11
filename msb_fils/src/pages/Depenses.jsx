@@ -50,7 +50,7 @@ function Depenses() {
     <div className="product-page">
 
       <h1>Liste des Dépenses</h1>
-      {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
+      {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
         user?.role
       ) && (
         <section>
@@ -88,7 +88,7 @@ function Depenses() {
                 <td>{formatDate(Depense.date_depense) || "—"}</td>
                 <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant) || 0 } FG</td>
                 <td>{Depense.statut || "—"}</td>
-                {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur"].includes(
+                {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
                   user?.role
                 ) && (
                   <td>

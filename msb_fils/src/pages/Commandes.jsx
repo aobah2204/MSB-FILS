@@ -101,7 +101,7 @@ function Commandes() {
     <div className="product-page">
       <h1>Liste des commandes</h1>
 
-      {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur'].includes(user?.role) && (
+      {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur', "Commercial"].includes(user?.role) && (
         <div>
           <NavLink to="/commandes/nouveau">
             <button className="profile" type="button">
@@ -135,7 +135,7 @@ function Commandes() {
                   <NavLink to={`/commandes/details/${order.id}`}>
                     <button className="profile" type="button"><Eye size={20} /></button>
                   </NavLink>
-                  {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur'].includes(user?.role) && (
+                  {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur', "Commercial"].includes(user?.role) && (
                     <>
                       <NavLink to={`/commandes/modifier/${order.id}`}>
                         <button className="profile" type="button"><Pencil size={20} /></button>

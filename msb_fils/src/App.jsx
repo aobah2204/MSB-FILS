@@ -276,10 +276,10 @@ function App() {
         <Route path="commandes">
           <Route index element={<Commandes />} />
           <Route path="nouveau"
-                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
                 element={<CommandCreate />} />
           <Route path="modifier/:id"
-                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
                 element={<CommandEdit />} />
           <Route path="details/:id"
                 element={<CommandDetails />} />
@@ -345,7 +345,7 @@ function App() {
         <Route path="depenses">
           <Route index element={<Depenses />} />
           <Route path="nouveau"
-                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
                 element={<DepenseCreate />} />
           {/*<Route path="modifier/:id"
                 roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
