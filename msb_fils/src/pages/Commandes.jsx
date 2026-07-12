@@ -44,9 +44,9 @@ function Commandes() {
     const clientMap = Object.fromEntries(clients.map((client) => [client.id, `${client.nom} ${client.prenom}`]));
     const [selectedCommand, setSelectedCommande] = useState();
 
-    function selectCommande(id) {
+    async function selectCommande(order) {
 
-        const commande = orders.find(c => c.id === id);
+        const commande = orders.find(c => c.id === order.id);
 
         if (!commande) {
             console.error("Commande introuvable");
@@ -55,47 +55,111 @@ function Commandes() {
 
         setSelectedCommande(commande);
         //console.log("selected commande : ", selectedCommand);
-        getOrderLines();
+        //getOrderLines(order);
 
-        genererBonCommande(commande);
+        genererBonCommande(order);
     }
 
-    async function getOrderLines(){
+    async function getOrderLines(commande){
 
-        /*const Lines = await supabase.from("produitcommandes").select("*").eq("commande_id", selectedCommand.id);
-        if(Lines.count > 0){
+        const {data: Lines} = await supabase.from("commandeproduits").select("*").eq("commande_id", commande?.id);
+        if(Lines){
             setProduitsCommande(Lines);
-        }*/
+        }
+        console.log("commande lignes : ", Lines)
+        setProduitsCommande(Lines);
+        return Lines
     }
 
-    function genererBonCommande(order) {
+    function formatMontant(value) {
 
-    const doc = new jsPDF();
+        return new Intl.NumberFormat("fr-FR", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(Number(value));
 
-    doc.setFontSize(20);
-    doc.text("BON DE COMMANDE", 70, 20);
+    }
 
-    doc.setFontSize(12);
+    async function genererBonCommande(order) {
 
-    doc.text("Client : " + (clientMap[order.client_id] || "—"), 15, 40);
-    doc.text("Date : " + (order.date_commande || "—"), 15, 48);
-    doc.text("Référence : " + (order.reference || "—"), 15, 56);
+      const {data: Lines} = await supabase.from("commandeproduits").select("*, products(nom, reference)").eq("commande_id", order?.id);
+      if(Lines){
+          setProduitsCommande(Lines);
+      }
 
-    autoTable(doc, {
-        startY: 70,
-        head: [["Produit", "Quantité", "Prix", "Total"]],
-        body: [
-            produitsCommande.map(p => [
-                p.id || "—",
-                p.quantite || 0,    
-                p.prix_unitaire || 0,
-                p.montant_ligne || 0
-            ])
-        ]
-    });
+      const doc = new jsPDF();
 
-    doc.save("BonCommande.pdf");
-}
+      doc.setFont("helvetica");
+      doc.setFontSize(10);
+      doc.text("BON DE COMMANDE", 70, 20);
+
+      doc.setFontSize(12);
+
+      doc.text("Client : " + (clientMap[order.client_id] || "—"), 15, 40);
+      doc.text("Date : " + (order.date_commande.split("T")[0] || "—"), 15, 48);
+      doc.text("Référence : " + (order.reference || "—"), 15, 56);
+
+      // Calcul du total
+      const totalCommande = Lines.reduce(
+          (sum, line) => sum + Number(line.montant_ligne || 0),
+          0
+      );
+
+      autoTable(doc, {
+          startY: 70,
+          head: [["Produit", "Quantité", "Prix", "Total"]],
+          body: 
+              Lines.map(p => [
+                  `${p.products.reference} - ${p.products.nom}`  || "—",
+                  p.quantite || 0,    
+                  p.prix_unitaire || 0,
+                  p.montant_ligne || 0
+              ]),
+
+          theme: "grid",
+
+          headStyles: {
+
+              fillColor: [37, 99, 235],
+              halign: "center",
+              fontStyle: "bold"
+
+          },
+
+          styles: {
+
+              valign: "middle"
+
+          },
+
+          columnStyles: {
+
+              0: { halign: "left" },      // Produit
+              1: { halign: "center" },    // Quantité
+              2: { halign: "right" },     // Prix
+              3: { halign: "right" }      // Total
+
+          },
+
+          foot: [[
+              "",
+              "",
+              "TOTAL",
+              totalCommande + " GNF"
+          ]],
+
+          footStyles: {
+
+              fillColor: [240, 240, 240],
+              textColor: 0,
+              fontStyle: "bold"
+
+          }
+
+      });
+
+      doc.save("BonCommande.pdf");
+  }
 
   return (
     <div className="product-page">
@@ -143,7 +207,7 @@ function Commandes() {
                       <button className="profileSupp" type="button" onClick={() => deleteOrder(order)}>
                         <Trash2 size={20} />
                       </button>
-                      <button className="profile" onClick={() => selectCommande(order.id)}>
+                      <button className="profile" onClick={() => selectCommande(order)}>
                             <FileText size={20} />
                       </button>
                     </>
