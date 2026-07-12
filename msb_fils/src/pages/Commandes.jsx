@@ -95,9 +95,23 @@ function Commandes() {
 
       doc.setFontSize(12);
 
-      doc.text("Client : " + (clientMap[order.client_id] || "—"), 15, 40);
-      doc.text("Date : " + (order.date_commande.split("T")[0] || "—"), 15, 48);
-      doc.text("Référence : " + (order.reference || "—"), 15, 56);
+      d// Titres
+        doc.text("FOURNISSEUR", leftX, 35);
+        doc.text("CLIENT", rightX, 35);
+
+        doc.setFont("helvetica", "normal");
+
+        // Fournisseur
+        doc.text("MSB & FILS", leftX, 43);
+        doc.text("Conakry - Guinée", leftX, 49);
+        doc.text("Tel : +224 620 00 00 00", leftX, 55);
+        doc.text("Email : contact@msbfils.com", leftX, 61);
+
+        // Client
+        doc.text(clientMap[order.client_id] || "-", rightX, 43);
+        doc.text(order.adresse_client || "-", rightX, 49);
+        doc.text(order.telephone_client || "-", rightX, 55);
+        doc.text(order.email_client || "-", rightX, 61);
 
       // Calcul du total
       const totalCommande = Lines.reduce(
@@ -159,7 +173,7 @@ function Commandes() {
       });
 
       doc.save("BonCommande.pdf");
-  }
+    }
 
   return (
     <div className="product-page">

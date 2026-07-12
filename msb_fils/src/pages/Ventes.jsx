@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Eye, Pencil, Trash2, HandCoins } from "lucide-react";
+import { Eye, Pencil, Trash2, HandCoins, FileText } from "lucide-react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function Ventes() {
   const { user } = useAuth();
@@ -52,6 +54,194 @@ function Ventes() {
     return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("fr-FR");
   }
 
+  const [selectedVente, setSelectedVente] = useState();
+  async function selectVente(sale) {
+
+        const vente = sales.find(c => c.id === sale.id);
+
+        if (!vente) {
+            console.error("Commande introuvable");
+            return;
+        }       
+
+        setSelectedVente(vente);
+        //console.log("selected commande : ", selectedCommand);
+        //getOrderLines(order);
+
+        genererFacture(vente);
+  }
+
+  const [produitsVente, setProduitsVente] = useState([]);
+  const [marchandisesVente, setMarchandisesVente] = useState([]);
+  async function genererFacture(order) {
+  
+        const [{data: LinesP}, {data: LinesM}] = await Promise.all([
+          await supabase.from("venteproduits").select("*, products(nom, reference)").eq("vente_id", order?.id),
+          await supabase.from("ventemarchandises").select("*, marchandises(nom, reference)").eq("vente_id", order?.id),
+        ])
+
+        if(LinesP){
+            setProduitsVente(LinesP);
+        }
+        if(LinesM){
+            setMarchandisesVente(LinesM);
+        }
+  
+        const doc = new jsPDF();  
+        
+        doc.text("Facture "+order?.reference, 70, 20);
+  
+        doc.setFontSize(12);
+  
+        const leftX = 15;
+        const rightX = 120;
+
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+
+        // Titres
+        doc.text("FOURNISSEUR", leftX, 35);
+        doc.text("CLIENT", rightX, 35);
+
+        doc.setFont("helvetica", "normal");
+
+        // Fournisseur
+        doc.text("MSB & FILS", leftX, 43);
+        doc.text("Conakry - Guinée", leftX, 49);
+        doc.text("Tel : +224 620 00 00 00", leftX, 55);
+        doc.text("Email : contact@msbfils.com", leftX, 61);
+
+        // Client
+        doc.text(clientMap[order.client_id] || "-", rightX, 43);
+        doc.text(order.adresse_client || "-", rightX, 49);
+        doc.text(order.telephone_client || "-", rightX, 55);
+        doc.text(order.email_client || "-", rightX, 61);
+  
+        // Calcul du total
+        const totalP = LinesP.reduce(
+            (sum, line) => sum + Number(line.montant_ligne || 0),
+            0
+        );
+
+        // Calcul du total
+        const totalM = LinesM.reduce(
+            (sum, line) => sum + Number(line.montant_ligne || 0),
+            0
+        );
+
+        const totalVente = totalM +  totalP;
+  
+        // Produits
+        autoTable(doc, {
+            startY: 70,
+            head: [["Produit", "Quantité", "Prix", "Total"]],
+            body: 
+                LinesP.map(p => [
+                    `${p.products.reference} - ${p.products.nom}`  || "—",
+                    p.quantite || 0,    
+                    p.prix_unitaire || 0,
+                    p.montant_ligne || 0
+                ]),
+  
+            theme: "grid",
+  
+            headStyles: {
+  
+                fillColor: [37, 99, 235],
+                halign: "center",
+                fontStyle: "bold"
+  
+            },
+  
+            styles: {
+  
+                valign: "middle"
+  
+            },
+  
+            columnStyles: {
+  
+                0: { halign: "left" },      // Produit
+                1: { halign: "center" },    // Quantité
+                2: { halign: "right" },     // Prix
+                3: { halign: "right" }      // Total
+  
+            },
+  
+            foot: [[
+                "",
+                "",
+                "TOTAL",
+                totalP + " GNF"
+            ]],
+  
+            footStyles: {
+  
+                fillColor: [240, 240, 240],
+                textColor: 0,
+                fontStyle: "bold"
+  
+            }
+  
+        });
+
+        // Marchandises
+        autoTable(doc, {
+            startY: 70,
+            head: [["Marchandise", "Quantité", "Prix", "Total"]],
+            body: 
+                LinesM.map(p => [
+                    `${p.products.reference} - ${p.products.nom}`  || "—",
+                    p.quantite || 0,    
+                    p.prix_unitaire || 0,
+                    p.montant_ligne || 0
+                ]),
+  
+            theme: "grid",
+  
+            headStyles: {
+  
+                fillColor: [37, 99, 235],
+                halign: "center",
+                fontStyle: "bold"
+  
+            },
+  
+            styles: {
+  
+                valign: "middle"
+  
+            },
+  
+            columnStyles: {
+  
+                0: { halign: "left" },      // Produit
+                1: { halign: "center" },    // Quantité
+                2: { halign: "right" },     // Prix
+                3: { halign: "right" }      // Total
+  
+            },
+  
+            foot: [[
+                "",
+                "",
+                "TOTAL",
+                totalM + " GNF"
+            ]],
+  
+            footStyles: {
+  
+                fillColor: [240, 240, 240],
+                textColor: 0,
+                fontStyle: "bold"
+  
+            }
+  
+        });
+  
+        doc.save("Facture_vente_"+order.reference+".pdf");
+  }
+
   return (
     <div className="product-page">
       <h1>Liste des ventes</h1>
@@ -97,6 +287,9 @@ function Ventes() {
                       </NavLink>
                       <button className="profileSupp" type="button" onClick={() => deleteSale(sale)}>
                         <Trash2 size={20} />
+                      </button>
+                      <button className="profile" onClick={() => selectVente(sale)}>
+                            <FileText size={20} />
                       </button>
                     </>
                   )}
