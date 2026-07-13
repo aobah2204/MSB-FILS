@@ -130,17 +130,18 @@ function Ventes() {
         );
 
         const totalVente = totalM +  totalP;
+        
   
         // Produits
         autoTable(doc, {
-            startY: 70,
+            startY: 75,
             head: [["Produit", "Quantité", "Prix", "Total"]],
             body: 
                 LinesP.map(p => [
-                    `${p.products.reference} - ${p.products.nom}`  || "—",
+                    `${p.products?.reference} - ${p.products?.nom}`  || "—",
                     p.quantite || 0,    
-                    p.prix_unitaire || 0,
-                    p.montant_ligne || 0
+                    new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
+                    new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
                 ]),
   
             theme: "grid",
@@ -172,7 +173,7 @@ function Ventes() {
                 "",
                 "",
                 "TOTAL",
-                totalP + " GNF"
+                new Intl.NumberFormat("en-US").format(totalP) + " GNF"
             ]],
   
             footStyles: {
@@ -185,16 +186,24 @@ function Ventes() {
   
         });
 
+        // position de fin
+        const y = doc.lastAutoTable.finalY + 10;
+
+        doc.setFontSize(13);
+        doc.setFont("helvetica", "bold");
+
+        doc.text("Marchandises", 15, y);
+
         // Marchandises
         autoTable(doc, {
-            startY: 70,
+            startY: y + 5,
             head: [["Marchandise", "Quantité", "Prix", "Total"]],
             body: 
                 LinesM.map(p => [
-                    `${p.products.reference} - ${p.products.nom}`  || "—",
+                    `${p.marchandises.reference} - ${p.marchandises.nom}`  || "—",
                     p.quantite || 0,    
-                    p.prix_unitaire || 0,
-                    p.montant_ligne || 0
+                    new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
+                    new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
                 ]),
   
             theme: "grid",
@@ -226,7 +235,7 @@ function Ventes() {
                 "",
                 "",
                 "TOTAL",
-                totalM + " GNF"
+                new Intl.NumberFormat("en-US").format(totalM) + " GNF"
             ]],
   
             footStyles: {
@@ -238,6 +247,21 @@ function Ventes() {
             }
   
         });
+
+        const totalFacture = new Intl.NumberFormat("en-US").format(totalP + totalM);
+
+        const z = doc.lastAutoTable.finalY + 15;
+
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+
+        doc.text(
+            "TOTAL GENERAL : " +
+            totalFacture +
+            " GNF",
+            110,
+            z
+        );
   
         doc.save("Facture_vente_"+order.reference+".pdf");
   }

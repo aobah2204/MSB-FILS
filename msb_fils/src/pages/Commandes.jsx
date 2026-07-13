@@ -94,8 +94,12 @@ function Commandes() {
       doc.text("BON DE COMMANDE", 70, 20);
 
       doc.setFontSize(12);
+      
+      const leftX = 15;
+        const rightX = 120;
 
-      d// Titres
+
+       // Titres
         doc.text("FOURNISSEUR", leftX, 35);
         doc.text("CLIENT", rightX, 35);
 
@@ -126,8 +130,8 @@ function Commandes() {
               Lines.map(p => [
                   `${p.products.reference} - ${p.products.nom}`  || "—",
                   p.quantite || 0,    
-                  p.prix_unitaire || 0,
-                  p.montant_ligne || 0
+                  new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
+                  new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
               ]),
 
           theme: "grid",
@@ -159,7 +163,7 @@ function Commandes() {
               "",
               "",
               "TOTAL",
-              totalCommande + " GNF"
+              new Intl.NumberFormat("en-US").format(totalCommande) + " GNF"
           ]],
 
           footStyles: {
