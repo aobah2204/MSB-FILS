@@ -11,12 +11,13 @@ function Commandes() {
     const { user } = useAuth();
     const [orders, setOrders] = useState([]);
     const [clients, setClients] = useState([]);
+    const [client, setClient] = useState();
     const [produitsCommande, setProduitsCommande] = useState([]);
 
     async function loadData() {
         const [{ data: ordersData }, { data: clientsData }] = await Promise.all([
         supabase.from("commandes").select("*").order("date_commande", { ascending: false }),
-        supabase.from("clients").select("id, nom, prenom"),
+        supabase.from("clients").select("id, nom, prenom, adresse, telephone, societe, email"),
         ]);
 
         setOrders(ordersData || []);
@@ -42,6 +43,11 @@ function Commandes() {
   }
 
     const clientMap = Object.fromEntries(clients.map((client) => [client.id, `${client.nom} ${client.prenom}`]));
+    const clientMapAdress = Object.fromEntries(clients.map((client) => [client.id, `${client.adresse}`]));
+    const clientMapTel = Object.fromEntries(clients.map((client) => [client.id, `${client.telephone}`]));
+    const clientMapSoc = Object.fromEntries(clients.map((client) => [client.id, `${client.societe}`]));
+    const clientMapMail = Object.fromEntries(clients.map((client) => [client.id, `${client.email}`]));
+
     const [selectedCommand, setSelectedCommande] = useState();
 
     async function selectCommande(order) {
@@ -56,6 +62,7 @@ function Commandes() {
         setSelectedCommande(commande);
         //console.log("selected commande : ", selectedCommand);
         //getOrderLines(order);
+        const clt = clients.map(c => c.client_id === order.client_id);
 
         genererBonCommande(order);
     }
@@ -87,6 +94,10 @@ function Commandes() {
           setProduitsCommande(Lines);
       }
 
+      // Client 
+      const {data: clientData } = await supabase.from("clients").select("*").eq("id",order.client_id);
+      setClient(clientData);
+
       const doc = new jsPDF();
 
       doc.setFont("helvetica");
@@ -94,7 +105,7 @@ function Commandes() {
       doc.text("BON DE COMMANDE", 70, 20);
 
       doc.setFontSize(12);
-      
+
       const leftX = 15;
         const rightX = 120;
 
@@ -113,9 +124,10 @@ function Commandes() {
 
         // Client
         doc.text(clientMap[order.client_id] || "-", rightX, 43);
-        doc.text(order.adresse_client || "-", rightX, 49);
-        doc.text(order.telephone_client || "-", rightX, 55);
-        doc.text(order.email_client || "-", rightX, 61);
+        doc.text(clientMapAdress[order.client_id] || "-", rightX, 49);
+        doc.text(clientMapTel[order.client_id] || "-", rightX, 55);
+        doc.text(clientMapSoc[order.client_id] || "-", rightX, 61);
+        doc.text(clientMapMail[order.client_id] || "-", rightX, 67);
 
       // Calcul du total
       const totalCommande = Lines.reduce(

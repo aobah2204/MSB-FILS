@@ -14,7 +14,7 @@ function Ventes() {
   async function loadData() {
     const [{ data: salesData }, { data: clientsData }] = await Promise.all([
       supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
-      supabase.from("clients").select("id, nom, prenom"),
+      supabase.from("clients").select("id, nom, prenom, adresse, telephone, email, societe"),
     ]);
 
     setSales(salesData || []);
@@ -39,10 +39,15 @@ function Ventes() {
     loadData();
   }
 
-  const clientMap = Object.fromEntries(clients.map((client) => [client.id, `${client.nom} ${client.prenom}`]));
+    const clientMap = Object.fromEntries(clients.map((client) => [client.id, `${client.nom} ${client.prenom}`]));
+    const clientMapAdress = Object.fromEntries(clients.map((client) => [client.id, `${client.adresse}`]));
+    const clientMapTel = Object.fromEntries(clients.map((client) => [client.id, `${client.telephone}`]));
+    const clientMapSoc = Object.fromEntries(clients.map((client) => [client.id, `${client.societe}`]));
+    const clientMapMail = Object.fromEntries(clients.map((client) => [client.id, `${client.email}`]));
 
   async function ClientFullName(id){
-    const client = await supabase.from("clients").select("nom, prenom").eq("id",id);
+    const client = await supabase.from("clients").select("nom, prenom, adresse, telephone, email, societe").eq("id",id);
+
     return client.nom + " "+ client.prenom
 
   }
@@ -113,9 +118,10 @@ function Ventes() {
 
         // Client
         doc.text(clientMap[order.client_id] || "-", rightX, 43);
-        doc.text(order.adresse_client || "-", rightX, 49);
-        doc.text(order.telephone_client || "-", rightX, 55);
-        doc.text(order.email_client || "-", rightX, 61);
+        doc.text(clientMapAdress[order.client_id] || "-", rightX, 49);
+        doc.text(clientMapTel[order.client_id] || "-", rightX, 55);
+        doc.text(clientMapSoc[order.client_id] || "-", rightX, 61);
+        doc.text(clientMapMail[order.client_id] || "-", rightX, 67);
   
         // Calcul du total
         const totalP = LinesP.reduce(
