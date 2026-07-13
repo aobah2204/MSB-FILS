@@ -5,6 +5,7 @@ import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import logo from "../assets/Logo.png";
 
 function Commandes() {
 
@@ -100,8 +101,18 @@ function Commandes() {
 
       const doc = new jsPDF();
 
+      // Logo
+      doc.addImage(
+          logo,
+          "PNG",
+          15,   // X
+          10,   // Y
+          30,   // largeur
+          30    // hauteur
+      );
+
       doc.setFont("helvetica");
-      doc.setFontSize(10);
+      doc.setFontSize(22);
       doc.text("BON DE COMMANDE", 70, 20);
 
       doc.setFontSize(12);

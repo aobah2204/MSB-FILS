@@ -5,6 +5,8 @@ import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import logo from "../assets/Logo.png";
+
 
 function Ventes() {
   const { user } = useAuth();
@@ -93,10 +95,21 @@ function Ventes() {
         }
   
         const doc = new jsPDF();  
+        doc.setFontSize(22);
+
+        // Logo
+        doc.addImage(
+                  logo,
+                  "PNG",
+                  15,   // X
+                  10,   // Y
+                  30,   // largeur
+                  30    // hauteur
+              );
         
         doc.text("Facture "+order?.reference, 70, 20);
   
-        doc.setFontSize(12);
+        
   
         const leftX = 15;
         const rightX = 120;
