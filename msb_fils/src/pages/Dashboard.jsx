@@ -187,6 +187,19 @@ async function getAllMarchandises(){
     setNbrMarchandises(data.length);
 }
 
+const [livraisons, setLivraisons] = useState([]);
+const [NbrLivraison, setNbrLivraisons] = useState();
+
+async function getAllLivraisons(){
+
+    const { data } = await supabase
+        .from("livraisons")
+        .select("*");
+    
+    setLivraisons(data);
+    setNbrLivraisons(data.length);
+}
+
 async function getAllVehicules(){
 
     const { data } = await supabase
@@ -469,6 +482,9 @@ useEffect(()=>{
     ProdVente_mois();
     FinanceByMois();
 
+    // Livraisons
+    getAllLivraisons();
+
     loadTop10();
 },[]);
 
@@ -618,12 +634,20 @@ return (
         </NavLink>
     </div>
 
-    <h3> <ShoppingCart /> Ventes </h3>
+    <h3> <ShoppingCart /> Ventes & Livraisons</h3>
     <div className="cards grid-4">
+
         <NavLink to="/ventes">
             <div className="card">
                 <h3>Total des ventes</h3>
                 <p>{NbreVentes}</p>
+            </div>
+        </NavLink>
+
+        <NavLink to="/livraisons">
+            <div className="card">
+                <h3>Total des livraisons</h3>
+                <p>{NbrLivraison}</p>
             </div>
         </NavLink>
 
