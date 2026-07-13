@@ -174,6 +174,19 @@ async function getAllProducts(){
     setNbreProduct(data.length);
 }
 
+const [marchandises, setMarchandises] = useState([]);
+const [NbrMarchandise, setNbrMarchandises] = useState();
+
+async function getAllMarchandises(){
+
+    const { data } = await supabase
+        .from("marchandises")
+        .select("*");
+    
+    setMarchandises(data);
+    setNbrMarchandises(data.length);
+}
+
 async function getAllVehicules(){
 
     const { data } = await supabase
@@ -426,9 +439,7 @@ const [financeMois, setFinanceMois] = useState([]);
 async function FinanceByMois(){
     const { data } = await supabase
     .from("vw_dashboard_finance_mensuelle")
-    .select("*");
-
-    
+    .select("*");   
 
     setFinanceMois(data);
 }
@@ -436,7 +447,8 @@ async function FinanceByMois(){
 
 useEffect(()=>{
     getAllClients();  
-    getAllProducts();  
+    getAllProducts(); 
+    getAllMarchandises(); 
     getAllVehicules();
     getAllFournisseurs();
     getAllMatPrems();
@@ -524,6 +536,13 @@ return (
             <div>
                 <h3>Produits</h3>
                 <p>{NbreProduit}</p>
+            </div>
+        </NavLink>
+
+        <NavLink to="/marchandises" className="card">
+            <div>
+                <h3>Marchandises</h3>
+                <p>{NbrMarchandise}</p>
             </div>
         </NavLink>  
 
