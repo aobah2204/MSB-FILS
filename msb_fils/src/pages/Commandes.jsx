@@ -188,7 +188,7 @@ function Commandes() {
 
       });
 
-      doc.save("BonCommande.pdf");
+      doc.save("BonCommande_"+order.reference+".pdf");
     }
 
   return (
