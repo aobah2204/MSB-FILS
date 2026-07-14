@@ -106,6 +106,7 @@ function AchatCreate() {
       const lines = productLines.map((line) => ({
         achat_id: achatId,
         matiere_id: line.matiere_id,
+        description: line.description,
         quantite: line.quantite,
         unite: line.unite,
         prix_unitaire: line.prix_unitaire,
@@ -197,6 +198,7 @@ function AchatCreate() {
                 <tr>
                   <th>Matière</th>
                   <th>Quantité</th>
+                  <th>Description</th>
                   <th>Unité</th>
                   <th>Prix unitaire</th>
                   <th>Total ligne</th>
@@ -211,6 +213,7 @@ function AchatCreate() {
                         value={line.matiere_id}
                         onChange={(e) => updateProductLine(index, "matiere_id", e.target.value)}
                         required
+                        
                       >
                         <option value="">Sélectionner</option>
                         {matieres.map((m) => (
@@ -225,6 +228,13 @@ function AchatCreate() {
                         type="number"
                         value={line.quantite}
                         onChange={(e) => updateProductLine(index, "quantite", parseFloat(e.target.value))}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={line.description}
+                        onChange={(e) => updateProductLine(index, "description", e.target.value)}
                       />
                     </td>
                     <td>                        

@@ -264,8 +264,15 @@ function VenteCreate() {
   // Select filter and style 
   const marchandiseOptions = marchandises.map((p) => ({
       value: p.id,
-      label: `${p.nom} - ${p.categorie}`,
+      label: `${p.nom} - ${p.categorie} - ${p.description}`,
       product: p
+  }));
+
+  // Select filter and style 
+  const clientsOptions = clients.map((c) => ({
+      value: c.id,
+      label: `${c.nom} - ${c.prenom}`,
+      client: c
   }));
 
   
@@ -277,8 +284,37 @@ function VenteCreate() {
         <label>Référence</label>
         <input name="reference" value={form.reference} onChange={handleFormChange} />
 
-        <label>Client</label>
-        <select name="client_id" value={form.client_id} onChange={handleFormChange} required>
+          {/*
+          <div className="grid" style={{ marginBottom: "20px", gap: "10px" }}>
+            <div>
+              <label>Client</label>
+              <Select className="list_select"
+                    
+                    options={clientsOptions}
+
+                    placeholder="Choisir un client..."
+
+                    isSearchable
+
+                    name="client_id"
+
+                    key={form.client_id}
+
+                    styles={selectStyle}
+
+                    value={
+                        clientsOptions.find(
+                            option => option.value === form.client_id
+                        ) || null
+                    }
+
+                    onChange={handleClientChange}
+                />
+                </div>
+            </div>
+            */}
+
+        <select name="client_id" value={form.client_id} onChange={handleFormChange} required isSearchable>
           <option value="">Choisir un client</option>
           {clients.map((client) => (
             <option key={client.id} value={client.id}>{client.nom} {client.prenom}</option>
@@ -377,9 +413,11 @@ function VenteCreate() {
           </div>
         ))}
 
-        <button className="profile" type="button" onClick={addProductLine}>
-          + Ajouter produit
-        </button>
+        <div>
+          <button className="profile" type="button" onClick={addProductLine}>
+            + Ajouter produit
+          </button>
+        </div>
 
         <h3>Marchandises</h3>
 
@@ -466,9 +504,11 @@ function VenteCreate() {
           </div>
         ))}
 
-        <button className="profile" type="button" onClick={addMarchandiseLine}>
-          + Ajouter marchandise
-        </button>
+        <div>
+          <button className="profile" type="button" onClick={addMarchandiseLine}>
+            + Ajouter marchandise
+          </button>
+        </div>
 
         <div className="profile" style={{ backgroundColor: "#a8415b"}}>
           <label><strong>Montant total :</strong></label>
