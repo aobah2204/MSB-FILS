@@ -37,6 +37,28 @@ border-radius:20px;
 
 }
 
+.profileEdit{
+
+background:rgb(7, 102, 36);
+color:white;
+
+padding:10px 20px;
+
+border-radius:20px;
+
+}
+
+.profileView{
+
+background:rgb(38, 147, 197);
+color:white;
+
+padding:10px 20px;
+
+border-radius:20px;
+
+}
+
 .table-container{
 
 overflow-x:auto;

@@ -321,12 +321,12 @@ function Ventes() {
                 <td>{sale.mode_paiement || "—"}</td>
                 <td>
                   <NavLink to={`/ventes/details/${sale.id}`}>
-                    <button className="profile" type="button"><Eye size={20} /></button>
+                    <button className="profileView" type="button"><Eye size={20} /></button>
                   </NavLink>
                   {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur', "Commercial"].includes(user?.role) && (
                     <>
                       <NavLink to={`/ventes/modifier/${sale.id}`}>
-                        <button className="profile" type="button"><Pencil size={20} /></button>
+                        <button className="profileEdit" type="button"><Pencil size={20} /></button>
                       </NavLink>
                       <button className="profileSupp" type="button" onClick={() => deleteSale(sale)}>
                         <Trash2 size={20} />

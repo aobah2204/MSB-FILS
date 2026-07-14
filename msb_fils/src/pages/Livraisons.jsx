@@ -170,14 +170,14 @@ function Livraisons() {
                         
                         <td>
                             <NavLink to={`/Livraisons/details/${livraison.id}`}>
-                                <button className="profile"><Eye size={20} /></button>
+                                <button className="profileView"><Eye size={20} /></button>
                             </NavLink>
                             {
                             ["Administrateur","Responsable de production", "Magasinier"]
                             .includes(user?.role)
                             &&
                             <NavLink to={`/livraisons/modifier/${livraison.id}`}>
-                                <button className="profile"><Pencil size={20} /></button>
+                                <button className="profileEdit"><Pencil size={20} /></button>
                             </NavLink>
                             }
 

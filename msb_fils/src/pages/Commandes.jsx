@@ -238,12 +238,12 @@ function Commandes() {
                 <td>{order.statut || "En cours"}</td>
                 <td>
                   <NavLink to={`/commandes/details/${order.id}`}>
-                    <button className="profile" type="button"><Eye size={20} /></button>
+                    <button className="profileView" type="button"><Eye size={20} /></button>
                   </NavLink>
                   {['Administrateur', 'Responsable de production', 'Superviseur', 'Coordinateur', "Commercial"].includes(user?.role) && (
                     <>
                       <NavLink to={`/commandes/modifier/${order.id}`}>
-                        <button className="profile" type="button"><Pencil size={20} /></button>
+                        <button className="profileEdit" type="button"><Pencil size={20} /></button>
                       </NavLink>
                       <button className="profileSupp" type="button" onClick={() => deleteOrder(order)}>
                         <Trash2 size={20} />

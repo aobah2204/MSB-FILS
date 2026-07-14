@@ -164,11 +164,11 @@ function Fournisseurs() {
                                 &&
                                 <td>
                                     <NavLink to={`/fournisseurs/details/${Fournisseur.id}`}>
-                                        <button className="profile"><Eye size={20} /></button>
+                                        <button className="profileView"><Eye size={20} /></button>
                                     </NavLink>
                                     
                                     <NavLink to={`/fournisseurs/modifier/${Fournisseur.id}`}>
-                                        <button className="profile"><UserPen size={20} /></button>
+                                        <button className="profileEdit"><UserPen size={20} /></button>
                                     </NavLink>
                                     
                                     <button className="profileSupp" onClick={() => DeleteFournisseur(Fournisseur)}> <UserRoundX size={20} /></button>
