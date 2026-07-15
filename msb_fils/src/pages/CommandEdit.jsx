@@ -117,7 +117,7 @@ function CommandEdit() {
       return;
     }
 
-    await supabase.from("commandeproduits").delete().eq("commande_id", id);
+    //await supabase.from("commandeproduits").delete().eq("commande_id", id);
 
     for (const line of productLines) {
       if (!line.produit_id || !line.quantite) continue;

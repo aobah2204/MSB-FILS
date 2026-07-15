@@ -94,7 +94,7 @@ useEffect(()=>{
 
 },[id]);
 
-    async function UpdateMarchandise(Marchandise){
+async function UpdateMarchandise(Marchandise){
 
         setMarchandise(Marchandise);
 
@@ -136,7 +136,7 @@ useEffect(()=>{
         }
 
         navigate("/marchandises");
-    }
+}
 
 
 
@@ -153,7 +153,7 @@ function handleChange(e){
 
 }
 
-    function onChange(e){
+function onChange(e){
 
 
         const selected = fournisseurs.find(
@@ -165,7 +165,7 @@ function handleChange(e){
         console.log(selected);
 
         setFournisseur(selected);
-    }
+}
 
 
 function enregistrer(e){
