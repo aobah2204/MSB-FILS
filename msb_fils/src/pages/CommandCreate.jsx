@@ -216,10 +216,12 @@ function CommandCreate() {
           </div>
         ))}
 
-        <button className="profile" type="button" onClick={addProductLine}>
-          + Ajouter produit
-        </button>
-
+        <div>
+          <button className="profile" type="button" onClick={addProductLine}>
+            + Ajouter produit
+          </button>
+        </div>
+        
         <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
           <label><strong>Montant total :</strong></label>
           <output style={{ fontSize: "18px", fontWeight: "bold" }}>{totalAmount}</output> Fg
