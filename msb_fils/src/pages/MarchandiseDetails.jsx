@@ -22,11 +22,7 @@ function MarchandiseDetails(){
         categorie:"",
         description:"",
         marque:"",
-        unite:"",
-
-        prixAchat:"",
-        prixVente:"",
-        tva:"20",
+        unite:"",        
 
         stock:"",
         stockMin:"",
@@ -39,8 +35,11 @@ function MarchandiseDetails(){
         unite_largeur: "",
         hauteur:"",
         unite_hauteur: "",
+        epaisseur:"",
+        unite_epaisseur:"",
+        diametre:"",
+        unite_diametre:"",
 
-        codeBarre:"",
         actif:true
 
     });

@@ -44,6 +44,10 @@ const [Marchandise,setMarchandise] = useState({
     unite_largeur: "",
     hauteur:"",
     unite_hauteur: "",
+    epaisseur:"",
+    unite_epaisseur:"",
+    diametre:"",
+    unite_diametre:"",
 
     actif:true
 
@@ -117,6 +121,10 @@ useEffect(()=>{
             unite_largeur: Marchandise.unite_largeur,
             hauteur: Marchandise.hauteur,
             unite_hauteur: Marchandise.unite_hauteur,
+            epaisseur:Marchandise.epaisseur,
+            unite_epaisseur:Marchandise.unite_epaisseur,
+            diametre:Marchandise.diametre,
+            unite_diametre:Marchandise.unite_diametre,
             actif: Marchandise.actif
         })
         // IMPORTANT :
@@ -500,6 +508,90 @@ return (
                     name="unite_hauteur"
                     value="Unité de mésure"
                     value={Marchandise.unite_hauteur}
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+
+            <div className="grid">
+
+                <input
+                    placeholder="épaisseur"
+                    name="epaisseur"
+                    value={Marchandise.epaisseur}
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_epaisseur"
+                    value="Unité de mésure"
+                    value={Marchandise.unite_epaisseur}
+                    onChange={handleChange}
+                >
+                    <option value="">
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+
+            <div className="grid">
+
+                <input
+                    placeholder="Diamètre"
+                    name="diametre"
+                    value={Marchandise.diametre}
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_diametre"
+                    value="Unité de mésure"
+                    value={Marchandise.unite_diametre}
                     onChange={handleChange}
                 >
                     <option value="">

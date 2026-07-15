@@ -32,6 +32,10 @@ const [Marchandise,setMarchandise] = useState({
     unite_largeur:"",
     hauteur:"",
     unite_hauteur:"",
+    epaisseur:"",
+    unite_epaisseur:"",
+    diametre:"",
+    unite_diametre:"",
 
     actif:true
 
@@ -432,13 +436,91 @@ return (
             <div className="grid">
 
                 <input
-                    placeholder="Hauteur/épaisseur"
+                    placeholder="Hauteur"
                     name="hauteur"
                     onChange={handleChange}
                 />
 
                 <select
                     name="unite_hauteur"
+                    onChange={handleChange}
+                >
+                    <option>
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+
+            <div className="grid">
+
+                <input
+                    placeholder="épaisseur"
+                    name="epaisseur"
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_epaisseur"
+                    onChange={handleChange}
+                >
+                    <option>
+                    -- Choisir l'unité --
+                    </option>
+                    
+                    <option>
+                        millimètre
+                    </option>
+
+                    <option>
+                        centimètre
+                    </option>
+
+                    <option>
+                        décimètre
+                    </option>
+
+                    <option>
+                        mètre
+                    </option>
+
+                    <option>
+                        Kilomètre
+                    </option>
+
+                </select>
+            </div>
+
+            <div className="grid">
+
+                <input
+                    placeholder="diametre"
+                    name="diametre"
+                    onChange={handleChange}
+                />
+
+                <select
+                    name="unite_diametre"
                     onChange={handleChange}
                 >
                     <option>
