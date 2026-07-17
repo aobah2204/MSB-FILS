@@ -3,13 +3,59 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabase";
 
 function DepenseDetails() {
+
   const { id } = useParams();
   const navigate = useNavigate();
-  const [Depense, setDepense] = useState(null);
-  const [fournisseur, setFournisseur] = useState(null);
-  const [site, setSite] = useState(null);
-  const [vehicule, setVehicule] = useState(null);
-  const [salarie, setSalarie] = useState();
+  const [Depense, setDepense] = useState({
+    id:"",
+    date_depense: "",
+    libelle: "",
+    montant: 0,
+    categorie: "",
+    type_liaison: "",
+    site_id: "",
+    vehicule_id: "",
+    utilisateur_id: ""
+  });
+  const [fournisseur, setFournisseur] = useState({
+    id:"",
+    nom:"",
+    prenom:"",
+    societe:"",
+    telephone:"",
+    adresse:"",
+    email:""
+  });
+  const [site, setSite] = useState({
+    nom:"",
+    adresse:"",
+    responsable:"",
+    telephone:"",
+    capacite:"",
+    surface:"",
+    equipements:"",
+    statut:true,
+    resp_id: 0
+  });
+  const [vehicule, setVehicule] = useState({
+    id: "",
+    marque:"",
+    modele:"",
+    immatriculation:"",
+    annee:"",
+    chauffeur:"",
+    kilometrage:"",
+    carburant:"",
+    user_id: 0,
+  });
+  const [salarie, setSalarie] = useState({
+    id: "",
+    fullname:"",
+    telephone: "",
+    email:"",
+    role: "",
+    adresse: "",
+  });
 
   async function loadDepense() {
     const { data, error } = await supabase.from("depenses").select("*").eq("id", id).maybeSingle();
@@ -21,42 +67,44 @@ function DepenseDetails() {
     }
 
     setDepense(data);
+    console.log("Depense : ", Depense);
 
     if (data.fournisseur_id) {
-      const { data: fournisseurData } = await supabase
+      const { fournisseurData } = await supabase
         .from("fournisseurs")
-        .select("nom, prenom, adresse")
+        .select("*")
         .eq("id", data.fournisseur_id)
         .maybeSingle();
       setFournisseur(fournisseurData);
     }
 
     if (data.site_id) {
-      const { data: siteData } = await supabase
+      const { siteData } = await supabase
         .from("siteproduction")
-        .select("nom, adresse")
+        .select("*")
         .eq("id", data.site_id)
         .maybeSingle();
       setSite(siteData);
     }
 
     if (data.vehicule_id) {
-      const { data: vehiculeData } = await supabase
+      const { vehiculeData } = await supabase
         .from("vehicules")
-        .select("marque, immatriculation")
+        .select("*")
         .eq("id", data.vehicule_id)
         .maybeSingle();
       setFournisseur(vehiculeData);
+      console.log("Vehicule : ",vehiculeData)
     }
 
     if (data.utilisateur_id) {
-      const { data: userData } = await supabase
+      const { userData } = await supabase
         .from("utilisateurs")
-        .select("fullname")
+        .select("*")
         .eq("id", data.utilisateur_id)
         .maybeSingle();
       setSalarie(userData);
-      console.log(userData)
+      console.log(userData);
     }
 
   }
@@ -83,7 +131,7 @@ function DepenseDetails() {
         <p>
           <strong>Référence :</strong> {Depense.reference || "—"}
         </p>
-        {site?.nom && 
+        {site?.id && 
         <p>
           <strong>Site associé :</strong> {site?.nom + " "+ site?.adresse || "—"}
         </p>
@@ -93,7 +141,7 @@ function DepenseDetails() {
           <strong>Véhicule associé :</strong> {vehicule?.marque + " "+ vehicule?.immatriculation || "—"}
         </p>
         }
-        {fournisseur?.nom &&
+        {fournisseur?.id &&
         <p>
           <strong>Fournisseur associé :</strong> {fournisseur?.nom + " "+ fournisseur?.prenom + " : "+ fournisseur?.adresse || "—"}
         </p>

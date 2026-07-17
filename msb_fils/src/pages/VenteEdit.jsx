@@ -18,6 +18,7 @@ function VenteEdit() {
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
   const [productLines, setProductLines] = useState([]);
+  const [marchandiseLines, setMarchandiseLines] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadData() {
@@ -67,6 +68,18 @@ function VenteEdit() {
     ]);
   }
 
+  function addMarchandiseLine() {
+    setMarchandiseLines([
+      ...marchandiseLines,
+      {
+        marchandise_id: "",
+        fournisseur_id: "",
+        quantite: 0,
+        prix_unitaire: 0,
+      },
+    ]);
+  }
+
   function updateProductLine(index, field, value) {
     const copy = [...productLines];
     const numValue = field !== "produit_id" ? Number(value) : value;
@@ -81,9 +94,39 @@ function VenteEdit() {
     setProductLines(copy);
   }
 
+  function updateMarchandiseLine(index, field, value) {
+      const copy = [...marchandiseLines];
+
+      const numValue =
+          field !== "marchandise_id" && field !== "fournisseur_id"
+              ? Number(value)
+              : value;
+
+      copy[index][field] = numValue;
+
+      // Si le marchandise ou le fournisseur change, on recherche le bon produit
+      if (field === "marchandise_id" || field === "fournisseur_id") {
+
+          const selectedMarchandise= marchandises.find(
+              (p) =>
+                  String(p.id) === String(copy[index].marchandise_id) &&
+                  String(p.site_id) === String(copy[index].fournisseur_id)
+          );
+
+          copy[index].prix_unitaire = Number(selectedMarchandise?.prixVente ?? 0);
+      }
+
+      setMarchandiseLines(copy);
+  }
+
   function removeProductLine(index) {
     setProductLines(productLines.filter((_, i) => i !== index));
   }
+
+  function removeMarchandiseLine(index) {
+    setMarchandiseLines(marchandiseLines.filter((_, i) => i !== index));
+  }
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -117,7 +160,7 @@ function VenteEdit() {
       return;
     }
 
-    await supabase.from("venteproduits").delete().eq("vente_id", id);
+    // await supabase.from("venteproduits").delete().eq("vente_id", id);
 
     for (const line of productLines) {
       if (!line.produit_id || !line.quantite) continue;
@@ -143,6 +186,36 @@ function VenteEdit() {
           .eq("id", line.id);
         if (updateLineError) {
           alert("Erreur lors de la modification du produit : " + updateLineError.message);
+          return;
+        }
+      }
+    }
+
+    // Ajout marchandise ventes 
+    for (const line of marchandiseLines) {
+      if (!line.marchandise_id || !line.quantite) continue;
+
+      const linePayload = {
+        vente_id: insertedVente.id,
+        marchandise_id: line.marchandise_id,
+        fournisseur_id: line.fournisseur_id,
+        quantite: Number(line.quantite),
+        prix_unitaire: Number(line.prix_unitaire),
+        montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
+      };
+
+      const { error: lineError } = await supabase.from("ventemarchandises").insert(linePayload);
+
+      if (lineError) {
+        alert("Erreur lors de l'ajout des marchandises de la ventes : " + lineError.message);
+        return;
+      }else {
+        const { error: updateLineError } = await supabase
+          .from("ventemarchandises")
+          .update(linePayload)
+          .eq("id", line.id);
+        if (updateLineError) {
+          alert("Erreur lors de la modification de la marchandise : " + updateLineError.message);
           return;
         }
       }
