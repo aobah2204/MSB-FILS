@@ -64,7 +64,7 @@ function VehicleCreate(){
         const { data } = await supabase
                 .from("utilisateurs")            
                 .select("*")
-                .eq("role","Chauffeur");
+                .in("role", ["Chauffeur", "Prestataire"]);
 
         if (!data) return alert("Aucun chauffeurs");
 
