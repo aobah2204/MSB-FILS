@@ -75,6 +75,12 @@ import LivraisonEdit from './pages/LivraisonEdit';
 import LivraisonDetails from './pages/LivraisonDetails';
 import PlanBuilder from './pages/PlanBuilder';
 
+import Prestations from './pages/Prestations';
+import PrestationCreate from './pages/PrestationCreate';
+import PrestationEdit from './pages/PrestationEdit';
+import PrestationDetails from './pages/PrestationDetails';
+
+
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -335,6 +341,19 @@ function App() {
                 element={<LivraisonEdit />} />
           <Route path="details/:id"
                 element={<LivraisonDetails />} />
+        </Route>
+
+        {/** Prestations */}
+        <Route path="prestations">
+          <Route index element={<Prestations />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<PrestationCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<PrestationEdit />} />
+          <Route path="details/:id"
+                element={<PrestationDetails />} />
         </Route>
 
         {/** Plan builder routes */}
