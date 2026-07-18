@@ -207,7 +207,7 @@ function handleChange(e) {
                     Prime de voyage
                 </option>
                 <option>
-                    Frait de route
+                    Frais de route
                 </option>
                 <option>
                     Divers
