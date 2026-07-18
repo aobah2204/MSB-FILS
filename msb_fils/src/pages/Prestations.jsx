@@ -22,7 +22,7 @@ const prestation = {
     reference:"",
     prestataire_id:"",
     vehicule_id:"",
-    date_Prestation:"",
+    date_prestation:"",
     statut:"",
     adresse_Prestation:"",
     montant:""    
@@ -139,7 +139,7 @@ function Prestations() {
                     <tr className="header_Table">
                         <th>Reférence</th>
                         <th>Vente info</th>
-                        <th>Véhicule</th>
+                        <th>Prestataire</th>
                         <th>Date</th>
                         <th>Adresse</th> 
                         <th>Montant</th>
@@ -147,7 +147,6 @@ function Prestations() {
                     </tr>
 
                     </thead>
-
 
                     <tbody>
 
@@ -159,9 +158,9 @@ function Prestations() {
 
                         <td>{Prestation.vente_id || "--"}</td>
 
-                        <td>{Prestation.vehicule_id || "--"}</td>
+                        <td>{Prestation.prestataire_id || "--"}</td>
 
-                        <td>{Prestation?.date_Prestation.split('T')[0]}</td>
+                        <td>{Prestation?.date_prestation.split('T')[0]}</td>
 
                         <td>{Prestation.addresse}</td>
 

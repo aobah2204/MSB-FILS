@@ -36,11 +36,11 @@ function PrestationCreate(){
         vente_id: "",
         //vehicule_id: "",
         prestataire_id: "",
-        date_Prestation: "",
+        date_prestation: "",
         statut: "",
         montant: "",
-        addresse: "",
-        libelle: ""
+        adresse: "",
+        description: ""
 
     });
 
@@ -308,7 +308,7 @@ return (
 
                 <input
                     type="text"
-                    name="libelle"
+                    name="description"
                     onChange={handleChange}
                 />
             </div>
@@ -320,7 +320,7 @@ return (
 
                 <input
                     type="text"
-                    name="addresse"
+                    name="adresse"
                     onChange={handleChange}
                 />
             </div>
@@ -331,7 +331,7 @@ return (
 
                 <input
                     type="date"
-                    name="date_Prestation"
+                    name="date_prestation"
                     onChange={handleChange}
                 />
             </div>
@@ -365,7 +365,10 @@ return (
                         En cours
                     </option>
                     <option>
-                        Livré
+                        Effectuée
+                    </option>
+                    <option>
+                        Annulée
                     </option>
 
                 </select>     

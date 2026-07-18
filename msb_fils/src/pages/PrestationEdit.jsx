@@ -23,15 +23,18 @@ function PrestationEdit(){
 
     const [ventes, setVentes] = useState([]);
     const [vehicules, setVehicules] = useState([]);
+    const [prestataires, setPrestataires] = useState([]);
 
     async function loadData() {
-        const [{ data: ventesData }, { data: vehiculesData }] = await Promise.all([
+        const [{ data: ventesData }, { data: vehiculesData }, { data: prestasData }] = await Promise.all([
         supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
         supabase.from("vehicules").select("id, marque, immatriculation, chauffeur"),
+        supabase.from("utilisateurs").select("*"),
         ]);
 
         setVentes(ventesData || []);
         setVehicules(vehiculesData || []);
+        setPrestataires(prestasData || []);
     }
 
 
@@ -41,11 +44,12 @@ function PrestationEdit(){
         reference:"",
             vente_id: "",
             vehicule_id: "",
-            date_Prestation: "",
+            prestataire_id: "",
+            date_prestation: "",
             statut: "",
             montant: "",
-            addresse: "",
-            libelle: ""
+            adresse: "",
+            description: ""
     });
 
 
@@ -54,7 +58,7 @@ function PrestationEdit(){
     // Select Prestation
     async function getPrestation(id){
 
-        const table = "Prestations";
+        const table = "prestations";
         const { data } = await supabase
             .from(table)
             .select("*")
@@ -77,7 +81,7 @@ useEffect(()=>{
 
         setPrestation(Prestation);
 
-        const table = "Prestations";
+        const table = "prestations";
 
         if (!Prestation) return;
 
@@ -85,22 +89,12 @@ useEffect(()=>{
         .from(table)
         .update({
             reference: Prestation.reference,
-            nom: Prestation.nom,
-            categorie: Prestation.categorie,
+            vente_id: Prestation.vente_id,
+            prestataire_id: Prestation.prestataire_id,
+            type: Prestation.type,
             description: Prestation.description,
-            unite: Prestation.unite,
-            prixAchat: Prestation.prixAchat,            
-            stock: Prestation.stock,
-            stockMin: Prestation.stockMin,
-            poids: Prestation.poids,
-            unite_poids: Prestation.unite_poids,
-            longueur: Prestation.longueur,
-            unite_longueur: Prestation.unite_longueur,
-            largeur: Prestation.largeur,
-            unite_largeur: Prestation.unite_largeur,
-            hauteur: Prestation.hauteur,
-            unite_hauteur: Prestation.unite_hauteur,
-            actif: Prestation.actif
+            date_prestation: Prestation.date_prestation,
+            statut: Prestation.statut
         })
         // IMPORTANT :
         .eq("id", Prestation.id);
@@ -151,6 +145,18 @@ useEffect(()=>{
 
         );
         setVente(selected);
+    }
+
+    {/** Get all prestataires */}
+    const [prestataire,setPrestataire] = useState(null);
+    function onChangePrestataire(e){
+
+        const selected = prestataires.find(
+
+            f => f.id == e.target.value
+
+        );
+        setPrestataire(selected);
     }
 
     async function getClient(id){
@@ -227,11 +233,10 @@ return (
                             ))
                         }
 
-
                     </select>
                 </div>
 
-
+                {/*
                 <div>
                     <label>
                         Véhicule
@@ -259,6 +264,34 @@ return (
 
                     </select>
                 </div> 
+                */}
+                <div>
+                    <label>
+                        Prestataire
+                    </label>
+                    <select
+                        value={Prestation?.prestataire_id}
+                        name="prestataire_id"
+                        onChange={onChangePrestataire}
+                    >
+                        <option value="">
+                        -- selectionner le prestataire --
+                        </option>
+                        {
+                            prestataires.map((prestataire)=>(
+
+                                <option
+                                    key={prestataire.id}
+                                    value={prestataire.id}
+                                >
+                                    {prestataire?.fullname} {prestataire?.adresse} - {prestataire?.telephone}
+                                </option>
+                            ))
+                        }
+
+
+                    </select>
+                </div> 
 
 
                 <div>
@@ -267,9 +300,9 @@ return (
                     </label>
 
                     <input
-                    value={Prestation?.libelle}
+                    value={Prestation?.description}
                         type="text"
-                        name="libelle"
+                        name="description"
                         onChange={handleChange}
                     />
                 </div>
@@ -281,8 +314,8 @@ return (
 
                     <input
                         type="text"
-                        name="addresse"
-                        value={Prestation.addresse}
+                        name="adresse"
+                        value={Prestation?.adresse}
                         onChange={handleChange}
                     />
                 </div>
@@ -295,8 +328,8 @@ return (
 
                     <input
                         type="date"
-                        name="date_Prestation"
-                        value={Prestation.date_Prestation.split('T')[0]}
+                        name="date_prestation"
+                        value={Prestation?.date_prestation.split('T')[0]}
                         onChange={handleChange}
                     />
                 </div>
@@ -331,7 +364,10 @@ return (
                                 En cours
                             </option>
                             <option>
-                                Livré
+                                Effectuée
+                            </option>
+                            <option>
+                                Annulée
                             </option>
 
                         </select>     

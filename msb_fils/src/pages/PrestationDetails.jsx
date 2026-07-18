@@ -20,11 +20,12 @@ function PrestationDetails(){
         reference:"",
         vente_id: "",
         vehicule_id: "",
-        date_Prestation: "",
+        prestataire_id: "",
+        date_prestation: "",
         statut: "",
         montant: "",
         addresse: "",
-        libelle: ""
+        description: ""
 
     });
 
@@ -32,7 +33,7 @@ function PrestationDetails(){
     async function getPrestation(){
 
         const { data } = await supabase
-            .from("Prestations")
+            .from("prestations")
             .select("*")
             .eq("id",id)            
             .maybeSingle();
@@ -40,13 +41,16 @@ function PrestationDetails(){
         if (!data) return alert("Aucune Prestation");
 
         getVenteInfo(data?.vente_id);
-        getVehiculeInfo(data?.vehicule_id);
+        //getVehiculeInfo(data?.vehicule_id);
+        getPrestaInfo(data?.prestataire_id);
         setPrestation(data);        
     }
 
     const [vente , setVente] = useState();
     const [vehicule, setVehicule] = useState();
     const [lignes, setLignes] = useState([]);
+    const [prestataire, setPrestataire] = useState();
+
 
     async function loadData(id) {
         const [{ data: ventesData }, { data: vehiculesData } , { data: lignesData }] = await Promise.all([
@@ -92,6 +96,18 @@ function PrestationDetails(){
         setVehicule(data);
     }
 
+    async function getPrestaInfo(id){
+
+        const { data } = await supabase
+            .from("utilisateurs")
+            .select("*")
+            .eq("id",id)            
+            .maybeSingle();
+
+        if (!data) return alert("Aucune prestataire correspondante à la Prestation", Prestation?.prestataire_id);
+        setPrestataire(data);
+    }
+
 
     // s'exécute une seule fois au chargement
     useEffect(() => {
@@ -122,16 +138,20 @@ function PrestationDetails(){
 
 
                     <p>
-                        {Prestation?.libelle}
+                        {Prestation?.description}
                     </p>
 
 
                     <p>
-                        Date : {Prestation.date_Prestation.split('T')[0]}
+                        Date : {Prestation.date_prestation.split('T')[0]}
                     </p>
 
                     <p>
-                        Adresse : {Prestation.addresse}
+                        Adresse : {Prestation.adresse}
+                    </p>
+
+                    <p>
+                        Status : {Prestation.statut}
                     </p>
 
                 </div>
@@ -139,20 +159,20 @@ function PrestationDetails(){
                 <div className="card">
 
                     <h3>
-                        Véhicule
+                        Prestataire
                     </h3>
 
                     <div>
-                        <label>Immatriculation</label>
+                        <label>Nom et prénom</label>
                         <p>
-                            {vehicule?.immatriculation} {vehicule?.marque}
+                            {prestataire?.fullname} {prestataire?.addresse}
                         </p>
                     </div>
 
                     <div>
-                        <label>Chauffeur</label>
+                        <label>Contact</label>
                         <p>
-                            {vehicule?.chauffeur} 
+                            {prestataire?.telephone} 
                         </p>
                     </div>                    
 
