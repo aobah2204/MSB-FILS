@@ -67,10 +67,10 @@ function DepenseDetails() {
     }
 
     setDepense(data);
-    console.log("Depense : ", Depense);
+    console.log("Depense : ", data);
 
     if (data.fournisseur_id) {
-      const { fournisseurData } = await supabase
+      const { data: fournisseurData } = await supabase
         .from("fournisseurs")
         .select("*")
         .eq("id", data.fournisseur_id)
@@ -79,7 +79,7 @@ function DepenseDetails() {
     }
 
     if (data.site_id) {
-      const { siteData } = await supabase
+      const { data: siteData } = await supabase
         .from("siteproduction")
         .select("*")
         .eq("id", data.site_id)
@@ -88,17 +88,17 @@ function DepenseDetails() {
     }
 
     if (data.vehicule_id) {
-      const { vehiculeData } = await supabase
+      const { data: vehiculeData } = await supabase
         .from("vehicules")
         .select("*")
         .eq("id", data.vehicule_id)
         .maybeSingle();
-      setFournisseur(vehiculeData);
+      setVehicule(vehiculeData);
       console.log("Vehicule : ",vehiculeData)
     }
 
     if (data.utilisateur_id) {
-      const { userData } = await supabase
+      const { data: userData } = await supabase
         .from("utilisateurs")
         .select("*")
         .eq("id", data.utilisateur_id)
@@ -131,22 +131,22 @@ function DepenseDetails() {
         <p>
           <strong>Référence :</strong> {Depense.reference || "—"}
         </p>
-        {site?.id && 
+        {Depense?.site_id !== 0  && 
         <p>
           <strong>Site associé :</strong> {site?.nom + " "+ site?.adresse || "—"}
         </p>
         }
-        {vehicule?.marque &&
+        {Depense?.vehicule_id !== 0 &&
         <p>
           <strong>Véhicule associé :</strong> {vehicule?.marque + " "+ vehicule?.immatriculation || "—"}
         </p>
         }
-        {fournisseur?.id &&
+        {Depense?.fournisseur_id !== 0 &&
         <p>
           <strong>Fournisseur associé :</strong> {fournisseur?.nom + " "+ fournisseur?.prenom + " : "+ fournisseur?.adresse || "—"}
         </p>
         }
-        {salarie?.fullname &&
+        {Depense?.utilisateur_id !== 0 &&
         <p>
           <strong>Salarié associé :</strong> {salarie?.fullname || "—"}
         </p>
