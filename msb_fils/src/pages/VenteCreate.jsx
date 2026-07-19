@@ -153,6 +153,14 @@ function VenteCreate() {
     setSite(copy);
   }
 
+  function updateClient(field, value){
+    const copy = [...form];
+    const numValue = field !== "client_id" ? Number(value) : value;
+
+    copy[field] = numValue;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+ 
   function updateFournisseurLine(field, value) {
     const copy = [...marchandiseLines];
     const numValue = field !== "fournisseur_id" ? Number(value) : value;
@@ -276,6 +284,13 @@ function VenteCreate() {
       client: c
   }));
 
+  const handleFormChangeClient = (selectedOption) => {
+      setForm((prev) => ({
+          ...prev,
+          client_id: selectedOption ? selectedOption.value : null,
+      }));
+  };
+
   
 
   return (
@@ -285,23 +300,19 @@ function VenteCreate() {
         <label>Référence</label>
         <input name="reference" value={form.reference} onChange={handleFormChange} />
 
-          {/*
-          <div className="grid" style={{ marginBottom: "20px", gap: "10px" }}>
-            <div>
-              <label>Client</label>
-              <Select className="list_select"
-                    
+          <label>CLients</label>
+          <div>              
+
+                <Select className="list_select"
                     options={clientsOptions}
 
                     placeholder="Choisir un client..."
 
                     isSearchable
 
-                    name="client_id"
-
-                    key={form.client_id}
-
                     styles={selectStyle}
+
+                    name="client_id"
 
                     value={
                         clientsOptions.find(
@@ -309,18 +320,19 @@ function VenteCreate() {
                         ) || null
                     }
 
-                    onChange={handleClientChange}
+                    onChange={handleFormChangeClient}
                 />
-                </div>
-            </div>
-            */}
 
-        <select name="client_id" value={form.client_id} onChange={handleFormChange} required isSearchable>
+            </div>
+
+        {/*
+        <select name="client_id" value={form.client_id} onChange={handleFormChange} required>
           <option value="">Choisir un client</option>
           {clients.map((client) => (
             <option key={client.id} value={client.id}>{client.nom} {client.prenom}</option>
           ))}
         </select>
+        */}
 
         <label>Date vente</label>
         <input type="date" name="date_vente" value={form.date_vente} onChange={handleFormChange} />

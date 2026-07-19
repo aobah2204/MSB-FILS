@@ -95,6 +95,11 @@ import IssaAchatCreate from './pages/ISSA_DISTRIBUTION/IssaAchatCreate';
 import IssaAchatDetails from './pages/ISSA_DISTRIBUTION/IssaAchatDetails';
 import IssaAchatEdit from './pages/ISSA_DISTRIBUTION/IssaAchatEdit';
 
+// ISSA Distribution ventes
+import IssaVentes from './pages/ISSA_DISTRIBUTION/IssaVentes';
+import IssaVenteCreate from './pages/ISSA_DISTRIBUTION/IssaVenteCreate';
+import IssaVenteEdit from './pages/ISSA_DISTRIBUTION/IssaVenteEdit';
+import IssaVenteDetails from './pages/ISSA_DISTRIBUTION/IssaVenteDetails';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -370,7 +375,7 @@ function App() {
                 element={<PrestationDetails />} />
         </Route>
 
-        {/** ISSA DISTRIBUTION */}
+        {/** ISSA DISTRIBUTION Produits */}
         <Route path="issaproduits">
           <Route index element={<IssaProduits />} />
           <Route path="nouveau"
@@ -382,7 +387,7 @@ function App() {
           <Route path="details/:id"
                 element={<IssaProduitDetails />} />
         </Route>
-        {/** Achats  */}
+        {/** ISSA DISTRIBUTION Achats  */}
         <Route path="issaachats">
           <Route index element={<IssaAchats />} />
           <Route path="nouveau"
@@ -393,6 +398,18 @@ function App() {
                 element={<IssaAchatEdit />} />
           <Route path="details/:id"
                 element={<IssaAchatDetails />} />
+        </Route>
+        {/** ISSA DISTRIBUTION Ventes  */}
+        <Route path="issaventes">
+          <Route index element={<IssaVentes />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<IssaVenteCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<IssaVenteEdit />} />
+          <Route path="details/:id"
+                element={<IssaVenteDetails />} />
         </Route>
 
         {/** Plan builder routes */}

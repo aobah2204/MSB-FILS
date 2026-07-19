@@ -100,7 +100,7 @@ const menu = [
     items: [
       { label: "ISSA Produits", to: "/issaproduits" },
       { label: "ISSA Achats", to: "/issaachats" },
-      { label: "ISSA Ventes", to: "/" },
+      { label: "ISSA Ventes", to: "/issaventes" },
       //{ label: "Plan et Réalisation", to: "/planbuilder" }
     ]
   }
