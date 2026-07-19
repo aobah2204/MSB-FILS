@@ -80,6 +80,12 @@ import PrestationCreate from './pages/PrestationCreate';
 import PrestationEdit from './pages/PrestationEdit';
 import PrestationDetails from './pages/PrestationDetails';
 
+// ISSA DISTRIBUTION 
+import IssaProduits from './pages/ISSA_DISTRIBUTION/IssaProduits';
+import IssaProduitCreate from './pages/ISSA_DISTRIBUTION/IssaProduitCreate';
+import IssaProduitEdit from './pages/ISSA_DISTRIBUTION/IssaProduitEdit';
+import IssaProduitDetails from './pages/ISSA_DISTRIBUTION/IssaProduitDetails';
+
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -354,6 +360,19 @@ function App() {
                 element={<PrestationEdit />} />
           <Route path="details/:id"
                 element={<PrestationDetails />} />
+        </Route>
+
+        {/** ISSA DISTRIBUTION */}
+        <Route path="issaproduits">
+          <Route index element={<IssaProduits />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<IssaProduitCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<IssaProduitEdit />} />
+          <Route path="details/:id"
+                element={<IssaProduitDetails />} />
         </Route>
 
         {/** Plan builder routes */}

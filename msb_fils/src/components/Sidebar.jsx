@@ -98,9 +98,9 @@ const menu = [
     title: "  Issa Distribution",
     icon: <Factory />,
     items: [
-      { label: "Produits", to: "/" },
-      { label: "Conceptions", to: "/" },
-      { label: "Chantiers", to: "/" },
+      { label: "ISSA Produits", to: "/issaproduits" },
+      { label: "ISSA Achats", to: "/" },
+      { label: "ISSA Ventes", to: "/" },
       { label: "Plan et Réalisation", to: "/planbuilder" }
     ]
   }
