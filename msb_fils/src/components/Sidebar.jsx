@@ -101,7 +101,7 @@ const menu = [
       { label: "ISSA Produits", to: "/issaproduits" },
       { label: "ISSA Achats", to: "/issaachats" },
       { label: "ISSA Ventes", to: "/" },
-      { label: "Plan et Réalisation", to: "/planbuilder" }
+      //{ label: "Plan et Réalisation", to: "/planbuilder" }
     ]
   }
 ];
