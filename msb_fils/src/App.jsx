@@ -69,12 +69,15 @@ import Marchandises from './pages/Marchandises';
 import MarchandiseCreate from './pages/MarchandiseCreate';
 import MarchandiseEdit from './pages/MarchandiseEdit';
 import MarchandiseDetails from './pages/MarchandiseDetails';
+
+// Livraisons
 import Livraisons from './pages/Livraisons';
 import LivraisonCreate from './pages/LivraisonCreate';
 import LivraisonEdit from './pages/LivraisonEdit';
 import LivraisonDetails from './pages/LivraisonDetails';
 import PlanBuilder from './pages/PlanBuilder';
 
+// Prestations
 import Prestations from './pages/Prestations';
 import PrestationCreate from './pages/PrestationCreate';
 import PrestationEdit from './pages/PrestationEdit';
@@ -86,6 +89,11 @@ import IssaProduitCreate from './pages/ISSA_DISTRIBUTION/IssaProduitCreate';
 import IssaProduitEdit from './pages/ISSA_DISTRIBUTION/IssaProduitEdit';
 import IssaProduitDetails from './pages/ISSA_DISTRIBUTION/IssaProduitDetails';
 
+// Issa Distribution achats
+import IssaAchats from './pages/ISSA_DISTRIBUTION/IssaAchats';
+import IssaAchatCreate from './pages/ISSA_DISTRIBUTION/IssaAchatCreate';
+import IssaAchatDetails from './pages/ISSA_DISTRIBUTION/IssaAchatDetails';
+import IssaAchatEdit from './pages/ISSA_DISTRIBUTION/IssaAchatEdit';
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -373,6 +381,18 @@ function App() {
                 element={<IssaProduitEdit />} />
           <Route path="details/:id"
                 element={<IssaProduitDetails />} />
+        </Route>
+        {/** Achats  */}
+        <Route path="issaachats">
+          <Route index element={<IssaAchats />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<IssaAchatCreate />} />
+          <Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<IssaAchatEdit />} />
+          <Route path="details/:id"
+                element={<IssaAchatDetails />} />
         </Route>
 
         {/** Plan builder routes */}

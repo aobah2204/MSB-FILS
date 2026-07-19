@@ -59,6 +59,17 @@ border-radius:20px;
 
 }
 
+.profile_back{
+
+background:rgb(187, 70, 70);
+color:white;
+
+padding:10px 20px;
+
+border-radius:20px;
+
+}
+
 .table-container{
 
 overflow-x:auto;

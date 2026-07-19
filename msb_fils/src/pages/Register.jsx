@@ -191,10 +191,13 @@ return (
 
             </select>            
 
-            <div>
+            <div className="grid">
                 <button>
                     Créer un compte
-                </button>            
+                </button> 
+                <button className="profile_back" type="button" onClick={() => navigate("/")}>
+                    Annuler
+                </button>           
             </div> 
 
         </form>

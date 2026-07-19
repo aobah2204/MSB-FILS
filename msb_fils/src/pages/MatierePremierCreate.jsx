@@ -498,9 +498,12 @@ return (
             Matière active
         </label>
 
-        <div>
+        <div className="grid">
             <button className="profile">
                 Créer Matière
+            </button>
+            <button className="profile_back" type="button" onClick={() => navigate("/matierespremieres")}>
+                Annuler
             </button>
         </div>
 
