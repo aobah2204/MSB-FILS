@@ -8,6 +8,7 @@ function AchatCreate() {
   const { user } = useAuth();
   const [fournisseurs, setFournisseurs] = useState([]);
   const [matieres, setMatieres] = useState([]);
+  const [achats, setAchats] = useState([]);
   const [productLines, setProductLines] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [formData, setFormData] = useState({
@@ -27,9 +28,12 @@ function AchatCreate() {
     try {
       const { data: fournisseursData } = await supabase.from("fournisseurs").select("id, nom, prenom");
       const { data: matieresData } = await supabase.from("matierespremieres").select("id, nom, prixAchat");
+      const { data: achatsData } = await supabase.from("achats").select("*");
 
       setFournisseurs(fournisseursData || []);
       setMatieres(matieresData || []);
+      setAchats(achatsData || []);
+
     } catch (error) {
       console.error("Erreur lors du chargement des données :", error);
     }
@@ -137,7 +141,7 @@ function AchatCreate() {
             <label>Référence</label>
             <input
               type="text"
-              value={formData.reference}
+              value={formData.reference || "MSB_ACHAT_000"+ (achats.length + 1) }
               onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
             />
           </div>
