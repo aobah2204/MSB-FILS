@@ -267,7 +267,9 @@ function Ventes() {
   
         });
 
-        const totalFacture = new Intl.NumberFormat("en-US").format(totalP + totalM);
+        const montantpaye = new Intl.NumberFormat("en-US").format(order.montant_paye);
+        const resteapaye = new Intl.NumberFormat("en-US").format(totalP + totalM - order.montant_paye);
+        const totalFacture = new Intl.NumberFormat("en-US").format(order.montant_total);
 
         const z = doc.lastAutoTable.finalY + 15;
 
@@ -275,11 +277,27 @@ function Ventes() {
         doc.setFont("helvetica", "bold");
 
         doc.text(
-            "TOTAL GENERAL : " +
-            totalFacture +
+            "Montant Payé : " +
+            montantpaye +
             " GNF",
-            110,
+            15,
             z
+        );
+
+        doc.text(
+            "Rest à Payer : " +
+            (resteapaye) +
+            " GNF",
+            15,
+            z+15
+        );
+
+        doc.text(
+            "Montant total : " +
+            (totalFacture) +
+            " GNF",
+            15,
+            z+30
         );
   
         doc.save("Facture_vente_"+order.reference+".pdf");
