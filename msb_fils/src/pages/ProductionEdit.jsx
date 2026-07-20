@@ -324,10 +324,10 @@ function ProductionEdit() {
 
         <div className="grid">
           <label>Coût total matière</label>
-          <output>{coutTotalMateriels}</output>
+          <output>{new Intl.NumberFormat("fr-FR").format(coutTotalMateriels)} GNF</output>
 
           <label>Coût production</label>
-          <output>{coutTotalProduction}</output>
+          <output>{new Intl.NumberFormat("fr-FR").format(coutTotalProduction)} GNF</output>
         </div>
 
         <br />
