@@ -275,6 +275,14 @@ function ProductionEdit() {
           onChange={handleProductionChange}
         />
 
+        <label>Coût de production (main d'œuvre)</label>
+        <input
+          type="float"
+          name="cout_production"
+          value={production.cout_production || ""}
+          onChange={handleProductionChange}
+        />
+
 
         {/*
         <label>Description</label>
