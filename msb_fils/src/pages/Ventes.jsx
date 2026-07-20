@@ -305,9 +305,10 @@ function Ventes() {
             <tr>
               <th>Référence</th>
               <th>Client</th>
-              <th>Date</th>
-              <th>Total</th>
+              <th>Date</th>              
               <th>Mode paiement</th>
+              <th>Total à payer</th>
+              <th>Reste à payer</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -316,9 +317,10 @@ function Ventes() {
               <tr key={sale.id}>
                 <td>{sale.reference || "—"}</td>
                 <td>{clientMap[sale.client_id] || "—"}</td>
-                <td>{formatDate(sale.date_vente) || "—"}</td>
-                <td>{new Intl.NumberFormat("fr-FR").format(sale.montant_total) || 0} FG </td>
+                <td>{formatDate(sale.date_vente) || "—"}</td>                
                 <td>{sale.mode_paiement || "—"}</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(sale.montant_total) || 0} FG </td>
+                <td>{new Intl.NumberFormat("fr-FR").format(sale.montant_total - sale.montant_paye) || 0} FG </td>
                 <td>
                   <NavLink to={`/ventes/details/${sale.id}`}>
                     <button className="profileView" type="button"><Eye size={20} /></button>

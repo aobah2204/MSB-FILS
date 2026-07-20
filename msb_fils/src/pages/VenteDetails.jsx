@@ -67,6 +67,9 @@ function VenteDetails() {
         <p><strong>Date :</strong> {formatDate(sale.date_vente) || "—"}</p>
         <p><strong>Mode de paiement :</strong> {sale.mode_paiement || "—"}</p>
         <p><strong>Description :</strong> {sale.description || "—"}</p>
+        <br/>
+        <p><strong>Montant payé : </strong>{new Intl.NumberFormat("fr-FR").format(sale.montant_paye) || 0} GNF</p>
+        <p><strong>Reste à payer : </strong>{new Intl.NumberFormat("fr-FR").format(sale.montant_total - sale.montant_paye) || 0} GNF</p>
       </div>
 
       <h3>Produits vendus</h3>

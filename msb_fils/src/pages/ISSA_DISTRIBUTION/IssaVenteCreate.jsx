@@ -26,16 +26,24 @@ function IssaVenteCreate() {
   const [productLines, setProductLines] = useState([]);
   const [marchandiseLines, setMarchandiseLines] = useState([]);
   const [sites, setSites] = useState([]);
+  const [fournisseurs, setFournisseurs] = useState([]);
+
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadOptions() {
-    const [{ data: clientsData }, { data: productsData }] = await Promise.all([
+    const [{ data: clientsData }, { data: productsData }, { data: sitesData }, { data: marchandiseData }, { data: fournisseursData}] = await Promise.all([
       supabase.from("clients").select("id, nom, prenom"),
-      supabase.from("issaproducts").select("id, nom, categorie, prixVente"),
+      supabase.from("products").select("id, nom, categorie, prixVente"),
+      supabase.from("siteproduction").select("id, nom, adresse"),
+      supabase.from("marchandises").select("id, nom, categorie, description"),
+      supabase.from("fournisseurs").select("id, nom, prenom, societe"),
     ]);
 
     setClients(clientsData || []);
+    setFournisseurs(fournisseursData || []);
     setProducts(productsData || []);
+    setSites(sitesData || []);
+    setMarchandises(marchandiseData || []);
   }
 
   useEffect(() => {
@@ -46,9 +54,11 @@ function IssaVenteCreate() {
     const totalP = productLines.reduce((sum, line) => {
       return sum + (Number(line.quantite || 0) * Number(line.prix_unitaire || 0));
     }, 0);
-    
-    setTotalAmount(totalP );
-  }, [productLines]);
+    const totalM = marchandiseLines.reduce((sum, line) => {
+      return sum + (Number(line.quantite || 0) * Number(line.prix_unitaire || 0));
+    }, 0);
+    setTotalAmount(totalP + totalM);
+  }, [productLines, marchandiseLines]);
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -66,6 +76,17 @@ function IssaVenteCreate() {
     ]);
   }
 
+  function addMarchandiseLine() {
+    setMarchandiseLines([
+      ...marchandiseLines,
+      {
+        marchandise_id: "",
+        fournisseur_id: "",
+        quantite: 0,
+        prix_unitaire: 0,
+      },
+    ]);
+  }
   
   function updateProductLine(index, field, value) {
       const copy = [...productLines];
@@ -92,12 +113,72 @@ function IssaVenteCreate() {
       setProductLines(copy);
   }
 
+  function updateMarchandiseLine(index, field, value) {
+      const copy = [...marchandiseLines];
+
+      const numValue =
+          field !== "marchandise_id" && field !== "fournisseur_id"
+              ? Number(value)
+              : value;
+
+      copy[index][field] = numValue;
+
+      // Si le marchandise ou le fournisseur change, on recherche le bon produit
+      if (field === "marchandise_id" || field === "fournisseur_id") {
+
+          const selectedMarchandise= marchandises.find(
+              (p) =>
+                  String(p.id) === String(copy[index].marchandise_id) &&
+                  String(p.site_id) === String(copy[index].fournisseur_id)
+          );
+
+          copy[index].prix_unitaire = Number(selectedMarchandise?.prixVente ?? 0);
+      }
+
+      setMarchandiseLines(copy);
+  }
+
+  function updateSiteLine(field, value) {
+    const copy = [...productLines];
+    const numValue = field !== "site_id" ? Number(value) : value;
+
+    copy[field] = numValue;
+
+    if(field === "site_id"){
+      const selectedSite = sites.find((p) => String(p.id) === String(value));
+    }
+
+    setSite(copy);
+  }
+
+  function updateClient(field, value){
+    const copy = [...form];
+    const numValue = field !== "client_id" ? Number(value) : value;
+
+    copy[field] = numValue;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+ 
+  function updateFournisseurLine(field, value) {
+    const copy = [...marchandiseLines];
+    const numValue = field !== "fournisseur_id" ? Number(value) : value;
+
+    copy[field] = numValue;
+
+    if(field === "fournisseur_id"){
+      const selectedFour = fournisseurs.find((p) => String(p.id) === String(value));
+    }
+
+    setFournisseur(copy);
+  }
 
   function removeProductLine(index) {
     setProductLines(productLines.filter((_, i) => i !== index));
   }
 
-  
+  function removeMarchandiseLine(index) {
+    setMarchandiseLines(marchandiseLines.filter((_, i) => i !== index));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -151,8 +232,28 @@ function IssaVenteCreate() {
         alert("Erreur lors de l'ajout du produit : " + lineError.message);
         return;
       }
-    }
+    } 
     
+    // Ajout marchandise ventes 
+    for (const line of marchandiseLines) {
+      if (!line.marchandise_id || !line.quantite) continue;
+
+      const linePayload = {
+        vente_id: insertedVente.id,
+        marchandise_id: line.marchandise_id,
+        fournisseur_id: line.fournisseur_id,
+        quantite: Number(line.quantite),
+        prix_unitaire: Number(line.prix_unitaire),
+        montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
+      };
+
+      const { error: lineError } = await supabase.from("issaventemarchandises").insert(linePayload);
+
+      if (lineError) {
+        alert("Erreur lors de l'ajout des marchandises de la ventes : " + lineError.message);
+        return;
+      }
+    }
 
     alert("Vente enregistrée");
     navigate("/issaventes");
@@ -162,6 +263,13 @@ function IssaVenteCreate() {
   const productOptions = products.map((p) => ({
       value: p.id,
       label: `${p.nom} - ${p.categorie}`,
+      product: p
+  }));
+
+  // Select filter and style 
+  const marchandiseOptions = marchandises.map((p) => ({
+      value: p.id,
+      label: `${p.nom} - ${p.categorie} - ${p.description}`,
       product: p
   }));
 
@@ -265,7 +373,18 @@ function IssaVenteCreate() {
                     }}
                 />
             </div>
-            
+            <div>
+              <label>Site de production</label>
+              <select name="site_id" value={form.site_id} 
+                value={line.site_id || ""}
+                onChange={(e) => updateProductLine(index, "site_id", e.target.value)}
+                required>
+                <option value="">Choisir le site de production</option>
+                {sites.map((site) => (
+                  <option key={site.id} value={site.id}>{site.nom}</option>
+                ))}
+              </select>
+            </div>
 
             <div>
               <label>Quantité</label>
@@ -306,6 +425,97 @@ function IssaVenteCreate() {
         <div>
           <button className="profile" type="button" onClick={addProductLine}>
             + Ajouter produit
+          </button>
+        </div>
+
+        <h3>Marchandises</h3>
+
+        {marchandiseLines.map((line, index) => (
+          <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
+            <div>
+                <label>Marchandise</label>
+
+                <Select className="list_select"
+                    options={marchandiseOptions}
+
+                    placeholder="Choisir une marchandise..."
+
+                    isSearchable
+
+                    styles={selectStyle}
+
+                    value={
+                        marchandiseOptions.find(
+                            option => option.value === line.marchandise_id
+                        ) || null
+                    }
+
+                    onChange={(selected) => {
+
+                        updateMarchandiseLine(
+                            index,
+                            "marchandise_id",
+                            selected.value
+                        );
+
+                    }}
+                />
+            </div> 
+            
+            
+            <div>
+              <label>Fournisseur</label>
+              <select name="fournisseur_id" value={form.fournisseur_id} 
+                value={line.fournisseur_id || ""}
+                onChange={(e) => updateMarchandiseLine(index, "fournisseur_id", e.target.value)}
+                required>
+                <option value="">Choisir le fournisseur</option>
+                {fournisseurs.map((fournisseur) => (
+                  <option key={fournisseur.id} value={fournisseur.id}>{fournisseur.nom} {fournisseur.nom} - {fournisseur.societe}</option>
+                ))}
+              </select>
+            </div>  
+                     
+
+            <div>
+              <label>Quantité</label>
+              <input
+                type="number"
+                value={line.quantite || ""}
+                onChange={(e) => updateMarchandiseLine(index, "quantite", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label>Prix unitaire</label>
+              <input
+                type="number"
+                onChange={(e) => updateMarchandiseLine(index, "prix_unitaire", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label>Total ligne</label>
+              <output>
+                {new Intl.NumberFormat("fr-FR").format(Number(line.quantite || 0) * Number(line.prix_unitaire || 0))} FG
+              </output>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "flex-end" }}>
+              <button
+                className="profileSupp"
+                type="button"
+                onClick={() => removeMarchandiseLine(index)}
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <button className="profile" type="button" onClick={addMarchandiseLine}>
+            + Ajouter marchandise
           </button>
         </div>
 

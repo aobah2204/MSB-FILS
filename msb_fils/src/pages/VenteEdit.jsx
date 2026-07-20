@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { supabase } from "../supabase";
+import Select from "react-select";
+import { selectStyle } from "../components/selectStyle";
 
 function VenteEdit() {
   const { id } = useParams();
@@ -13,32 +15,39 @@ function VenteEdit() {
     date_vente: "",
     mode_paiement: "",
     description: "",
+    montant_paye: "",
   });
 
   const [clients, setClients] = useState([]);
+  const [fournisseurs, setFournisseurs] = useState([]);
   const [products, setProducts] = useState([]);
+  const [marchandises, setMarchandises] = useState([]);
+  const [sites, setSites] = useState([]);
   const [productLines, setProductLines] = useState([]);
   const [marchandiseLines, setMarchandiseLines] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadData() {
-    const [{ data: venteData }, { data: clientsData }, { data: productsData }, { data: linesData }] = await Promise.all([
+    const [{ data: venteData }, { data: clientsData }, { data: fournisseursData }, { data: productsData },
+       { data: marchandisesData }, { data: linesData }, { data: linesMData}, { data: sitesData }] = await Promise.all([
       supabase.from("ventes").select("*").eq("id", id).maybeSingle(),
-      supabase.from("clients").select("id, nom"),
-      supabase.from("products").select("id, nom, prixVente"),
+      supabase.from("clients").select("id, nom, prenom"),
+      supabase.from("fournisseurs").select("id, nom, prenom"),
+      supabase.from("products").select("id, nom, categorie"),
+      supabase.from("marchandises").select("id, nom, categorie, description"),
       supabase.from("venteproduits").select("*").eq("vente_id", id),
+      supabase.from("ventemarchandises").select("*").eq("vente_id", id),
+      supabase.from("siteproduction").select("*"),
     ]);
 
     setClients(clientsData || []);
     setProducts(productsData || []);
-
-    if (venteData) {
-      setForm(venteData);
-    }
-
-    if (linesData && linesData.length > 0) {
-      setProductLines(linesData);
-    }
+    setMarchandiseLines(linesMData || []);
+    setFournisseurs(fournisseursData || []);
+    setProductLines(linesData || []);
+    setForm(venteData || []);
+    setMarchandises(marchandisesData || []);
+    setSites(sitesData || []);
   }
 
   useEffect(() => {
@@ -49,8 +58,11 @@ function VenteEdit() {
     const total = productLines.reduce((sum, line) => {
       return sum + (Number(line.quantite || 0) * Number(line.prix_unitaire || 0));
     }, 0);
-    setTotalAmount(total);
-  }, [productLines]);
+    const totalM = marchandiseLines.reduce((sum, line) => {
+      return sum + (Number(line.quantite || 0) * Number(line.prix_unitaire || 0));
+    }, 0);
+    setTotalAmount(total + totalM);
+  }, [productLines, marchandiseLines]);
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -148,6 +160,7 @@ function VenteEdit() {
       mode_paiement: form.mode_paiement,
       description: form.description,
       montant_total: totalAmount,
+      montant_paye: form.montant_paye,
     };
 
     const { error: updateError } = await supabase
@@ -225,6 +238,48 @@ function VenteEdit() {
     navigate("/ventes");
   }
 
+  // Select filter and style 
+  const productOptions = products.map((p) => ({
+      value: p.id,
+      label: `${p.nom} - ${p.categorie}`,
+      product: p
+  }));
+
+  // Select filter and style 
+  const marchandiseOptions = marchandises.map((p) => ({
+      value: p.id,
+      label: `${p.nom} - ${p.categorie} - ${p.description}`,
+      marchandise: p
+  }));
+
+  // Select filter and style 
+  const clientsOptions = clients.map((c) => ({
+      value: c.id,
+      label: `${c.nom} - ${c.prenom}`,
+      client: c
+  }));
+
+  // Select filter and style 
+  const fournisseursOptions = fournisseurs.map((c) => ({
+      value: c.id,
+      label: `${c.nom} - ${c.prenom}`,
+      fournisseur: c
+  }));
+
+  const handleFormChangeClient = (selectedOption) => {
+      setForm((prev) => ({
+          ...prev,
+          client_id: selectedOption ? selectedOption.value : null,
+      }));
+  };
+
+  const handleFormChangeFournisseur = (selectedOption) => {
+      setForm((prev) => ({
+          ...prev,
+          fournisseur_id: selectedOption ? selectedOption.value : null,
+      }));
+  };
+
   return (
     <div className="product-page">
       <h1>Modifier la vente</h1>
@@ -232,6 +287,7 @@ function VenteEdit() {
         <label>Référence</label>
         <input name="reference" value={form.reference || ""} onChange={handleFormChange} />
 
+        {/*
         <label>Client</label>
         <select name="client_id" value={form.client_id || ""} onChange={handleFormChange} required>
           <option value="">Choisir un client</option>
@@ -239,20 +295,50 @@ function VenteEdit() {
             <option key={client.id} value={client.id}>{client.nom}</option>
           ))}
         </select>
+        */}
+        <label>CLients</label>
+        <div>              
+
+            <Select className="list_select"
+                options={clientsOptions}
+
+                placeholder="Choisir un client..."
+
+                isSearchable
+
+                styles={selectStyle}
+
+                name="client_id"
+
+                value={
+                    clientsOptions.find(
+                        option => option.value === form.client_id
+                    ) || null
+                }
+
+                onChange={handleFormChangeClient}
+            />
+
+        </div>
 
         <label>Date vente</label>
-        <input type="date" name="date_vente" value={form.date_vente || ""} onChange={handleFormChange} />
+        <input type="date" name="date_vente" value={form.date_vente.split('T')[0] || ""} onChange={handleFormChange} />
 
         <label>Mode de paiement</label>
         <input name="mode_paiement" value={form.mode_paiement || ""} onChange={handleFormChange} />
 
         <label>Description</label>
         <input name="description" value={form.description || ""} onChange={handleFormChange} />
+        <label>Montant payé</label>
+        <input name="montant_paye" value={form.montant_paye} onChange={handleFormChange} />
 
         <h3>Produits</h3>
 
         {productLines.map((line, index) => (
           <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
+
+            
+            {/*
             <div>
               <label>Produit</label>
               <select
@@ -262,6 +348,49 @@ function VenteEdit() {
                 <option value="">Choisir</option>
                 {products.map((p) => (
                   <option key={p.id} value={p.id}>{p.nom}</option>
+                ))}
+              </select>
+            </div>
+            */}
+
+            <div>
+                <label>Produit</label>
+
+                <Select className="list_select"
+                    options={productOptions}
+
+                    placeholder="Choisir un produit..."
+
+                    isSearchable
+
+                    styles={selectStyle}
+
+                    value={
+                        productOptions.find(
+                            option => option.value === line.produit_id
+                        ) || null
+                    }
+
+                    onChange={(selected) => {
+
+                        updateProductLine(
+                            index,
+                            "produit_id",
+                            selected.value
+                        );
+
+                    }}
+                />
+            </div>
+            <div>
+              <label>Site de production</label>
+              <select name="site_id" value={form.site_id} 
+                value={line.site_id || ""}
+                onChange={(e) => updateProductLine(index, "site_id", e.target.value)}
+                required>
+                <option value="">Choisir le site de production</option>
+                {sites.map((site) => (
+                  <option key={site.id} value={site.id}>{site.nom}</option>
                 ))}
               </select>
             </div>
@@ -306,6 +435,126 @@ function VenteEdit() {
         <button className="profile" type="button" onClick={addProductLine}>
           + Ajouter produit
         </button>
+
+        <h3>Marchandises</h3>
+
+        {marchandiseLines.map((line, index) => (
+          <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
+            <div>
+                <label>Marchandise</label>
+
+                <Select className="list_select"
+                    options={marchandiseOptions}
+
+                    placeholder="Choisir une marchandise..."
+
+                    isSearchable
+
+                    styles={selectStyle}
+
+                    value={
+                        marchandiseOptions.find(
+                            option => option.value === line.marchandise_id
+                        ) || null
+                    }
+
+                    onChange={(selected) => {
+
+                        updateMarchandiseLine(
+                            index,
+                            "marchandise_id",
+                            selected.value
+                        );
+
+                    }}
+                />
+            </div> 
+            
+            {/*
+            <div>
+              <label>Fournisseur</label>
+              <select name="fournisseur_id" value={form.fournisseur_id} 
+                value={line.fournisseur_id || ""}
+                onChange={(e) => updateMarchandiseLine(index, "fournisseur_id", e.target.value)}
+                required>
+                <option value="">Choisir le fournisseur</option>
+                {fournisseurs.map((fournisseur) => (
+                  <option key={fournisseur.id} value={fournisseur.id}>{fournisseur.nom} {fournisseur.nom} - {fournisseur.societe}</option>
+                ))}
+              </select>
+            </div> 
+            */}
+
+            <div>
+              <label>Fournisseur</label>
+              <div>              
+
+                  <Select className="list_select"
+                      options={fournisseursOptions}
+
+                      placeholder="Choisir un fournisseur..."
+
+                      isSearchable
+
+                      styles={selectStyle}
+
+                      name="fournisseur_id"
+
+                      value={
+                          fournisseursOptions.find(
+                              option => option.value === form.fournisseur_id
+                          ) || null
+                      }
+
+                      onChange={handleFormChangeFournisseur}
+                  />
+
+              </div> 
+            </div>
+                     
+
+            <div>
+              <label>Quantité</label>
+              <input
+                type="number"
+                value={line.quantite || ""}
+                onChange={(e) => updateMarchandiseLine(index, "quantite", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label>Prix unitaire</label>
+              <input
+                type="number"
+                value={line.prix_unitaire || ""}
+                onChange={(e) => updateMarchandiseLine(index, "prix_unitaire", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label>Total ligne</label>
+              <output>
+                {new Intl.NumberFormat("fr-FR").format(Number(line.quantite || 0) * Number(line.prix_unitaire || 0))} FG
+              </output>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "flex-end" }}>
+              <button
+                className="profileSupp"
+                type="button"
+                onClick={() => removeMarchandiseLine(index)}
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <button className="profile" type="button" onClick={addMarchandiseLine}>
+            + Ajouter marchandise
+          </button>
+        </div>
 
         <div className="profile" style={{ backgroundColor: "#a8415b"}}>
           <label><strong>Montant total :</strong></label>

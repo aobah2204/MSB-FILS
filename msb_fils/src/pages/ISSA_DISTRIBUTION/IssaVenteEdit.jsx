@@ -20,27 +20,27 @@ function IssaVenteEdit() {
 
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
+  const [marchandises, setMarchandises] = useState([]);
   const [productLines, setProductLines] = useState([]);
+  const [marchandiseLines, setMarchandiseLines] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadData() {
-    const [{ data: venteData }, { data: clientsData }, { data: productsData }, { data: linesData }] = await Promise.all([
+    const [{ data: venteData }, { data: clientsData }, { data: productsData }, { data: marchandisesData }, { data: linesData }, {data: linesMData}] = await Promise.all([
       supabase.from("issaventes").select("*").eq("id", id).maybeSingle(),
       supabase.from("clients").select("id, nom, prenom"),
-      supabase.from("issaproducts").select("id, nom, prixVente"),
+      supabase.from("products").select("id, nom, prixVente"),
+      supabase.from("marchandises").select("id, nom, prixVente"),
       supabase.from("issaventeproduits").select("*").eq("vente_id", id),
+      supabase.from("issaventemarchandises").select("*").eq("vente_id", id),
     ]);
 
     setClients(clientsData || []);
     setProducts(productsData || []);
+    setMarchandises(marchandisesData || []);
+    setProductLines(linesData || []);
+    setForm(venteData || []);
 
-    if (venteData) {
-      setForm(venteData);
-    }
-
-    if (linesData && linesData.length > 0) {
-      setProductLines(linesData);
-    }
   }
 
   useEffect(() => {
@@ -51,8 +51,11 @@ function IssaVenteEdit() {
     const total = productLines.reduce((sum, line) => {
       return sum + (Number(line.quantite || 0) * Number(line.prix_unitaire || 0));
     }, 0);
-    setTotalAmount(total);
-  }, [productLines]);
+    const totalM = marchandiseLines.reduce((sum, line) => {
+      return sum + (Number(line.quantite || 0) * Number(line.prix_unitaire || 0));
+    }, 0);
+    setTotalAmount(total + totalM);
+  }, [productLines, marchandiseLines]);
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -70,6 +73,17 @@ function IssaVenteEdit() {
     ]);
   }
 
+  function addMarchandiseLine() {
+    setMarchandiseLines([
+      ...marchandiseLines,
+      {
+        marchandise_id: "",
+        fournisseur_id: "",
+        quantite: 0,
+        prix_unitaire: 0,
+      },
+    ]);
+  }
 
   function updateProductLine(index, field, value) {
     const copy = [...productLines];
@@ -85,9 +99,37 @@ function IssaVenteEdit() {
     setProductLines(copy);
   }
 
+  function updateMarchandiseLine(index, field, value) {
+      const copy = [...marchandiseLines];
+
+      const numValue =
+          field !== "marchandise_id" && field !== "fournisseur_id"
+              ? Number(value)
+              : value;
+
+      copy[index][field] = numValue;
+
+      // Si le marchandise ou le fournisseur change, on recherche le bon produit
+      if (field === "marchandise_id" || field === "fournisseur_id") {
+
+          const selectedMarchandise= marchandises.find(
+              (p) =>
+                  String(p.id) === String(copy[index].marchandise_id) &&
+                  String(p.site_id) === String(copy[index].fournisseur_id)
+          );
+
+          copy[index].prix_unitaire = Number(selectedMarchandise?.prixVente ?? 0);
+      }
+
+      setMarchandiseLines(copy);
+  }
 
   function removeProductLine(index) {
     setProductLines(productLines.filter((_, i) => i !== index));
+  }
+
+  function removeMarchandiseLine(index) {
+    setMarchandiseLines(marchandiseLines.filter((_, i) => i !== index));
   }
 
   
@@ -154,10 +196,53 @@ function IssaVenteEdit() {
       }
     }
 
+    // Ajout marchandise ventes 
+    for (const line of marchandiseLines) {
+      if (!line.marchandise_id || !line.quantite) continue;
+
+      const linePayload = {
+        vente_id: insertedVente.id,
+        marchandise_id: line.marchandise_id,
+        fournisseur_id: line.fournisseur_id,
+        quantite: Number(line.quantite),
+        prix_unitaire: Number(line.prix_unitaire),
+        montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
+      };
+
+      const { error: lineError } = await supabase.from("issaventemarchandises").insert(linePayload);
+
+      if (lineError) {
+        alert("Erreur lors de l'ajout des marchandises de la ventes : " + lineError.message);
+        return;
+      }else {
+        const { error: updateLineError } = await supabase
+          .from("issaventemarchandises")
+          .update(linePayload)
+          .eq("id", line.id);
+        if (updateLineError) {
+          alert("Erreur lors de la modification de la marchandise : " + updateLineError.message);
+          return;
+        }
+      }
+    }
 
     alert("Vente mise à jour");
     navigate("/issaventes");
   }
+
+  // Select filter and style 
+  const productOptions = products.map((p) => ({
+      value: p.id,
+      label: `${p.nom} - ${p.categorie}`,
+      product: p
+  }));
+
+  // Select filter and style 
+  const marchandiseOptions = marchandises.map((p) => ({
+      value: p.id,
+      label: `${p.nom} - ${p.categorie} - ${p.description}`,
+      product: p
+  }));
 
   // Select filter and style 
   const clientsOptions = clients.map((c) => ({
@@ -170,6 +255,13 @@ function IssaVenteEdit() {
       setForm((prev) => ({
           ...prev,
           client_id: selectedOption ? selectedOption.value : null,
+      }));
+  };
+
+  const handleFormChangeFournisseur = (selectedOption) => {
+      setForm((prev) => ({
+          ...prev,
+          fournisseur_id: selectedOption ? selectedOption.value : null,
       }));
   };
 
@@ -281,6 +373,98 @@ function IssaVenteEdit() {
         <button className="profile" type="button" onClick={addProductLine}>
           + Ajouter produit
         </button>
+
+        <h3>Marchandises</h3>
+
+        {marchandiseLines.map((line, index) => (
+          <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
+            <div>
+                <label>Marchandise</label>
+
+                <Select className="list_select"
+                    options={marchandiseOptions}
+
+                    placeholder="Choisir une marchandise..."
+
+                    isSearchable
+
+                    styles={selectStyle}
+
+                    value={
+                        marchandiseOptions.find(
+                            option => option.value === line.marchandise_id
+                        ) || null
+                    }
+
+                    onChange={(selected) => {
+
+                        updateMarchandiseLine(
+                            index,
+                            "marchandise_id",
+                            selected.value
+                        );
+
+                    }}
+                />
+            </div> 
+            
+            
+            <div>
+              <label>Fournisseur</label>
+              <select name="fournisseur_id" value={form.fournisseur_id} 
+                value={line.fournisseur_id || ""}
+                onChange={(e) => updateMarchandiseLine(index, "fournisseur_id", e.target.value)}
+                required>
+                <option value="">Choisir le fournisseur</option>
+                {fournisseurs.map((fournisseur) => (
+                  <option key={fournisseur.id} value={fournisseur.id}>{fournisseur.nom} {fournisseur.nom} - {fournisseur.societe}</option>
+                ))}
+              </select>
+            </div>  
+                     
+
+            <div>
+              <label>Quantité</label>
+              <input
+                type="number"
+                value={line.quantite || ""}
+                onChange={(e) => updateMarchandiseLine(index, "quantite", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label>Prix unitaire</label>
+              <input
+                type="number"
+                value={line.prix_unitaire || ""}
+                onChange={(e) => updateMarchandiseLine(index, "prix_unitaire", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label>Total ligne</label>
+              <output>
+                {new Intl.NumberFormat("fr-FR").format(Number(line.quantite || 0) * Number(line.prix_unitaire || 0))} FG
+              </output>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "flex-end" }}>
+              <button
+                className="profileSupp"
+                type="button"
+                onClick={() => removeMarchandiseLine(index)}
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <button className="profile" type="button" onClick={addMarchandiseLine}>
+            + Ajouter marchandise
+          </button>
+        </div>
 
         <div className="profile" style={{ backgroundColor: "#a8415b"}}>
           <label><strong>Montant total :</strong></label>

@@ -18,11 +18,13 @@ function VenteCreate() {
     site_id: "",
     date_vente: "",
     mode_paiement: "",
+    montant_paye: 0,
     description: "",
     user_create_id: user?.id,
   });
 
   const [clients, setClients] = useState([]);
+  const [ventes, setVentes] = useState([]);
   const [products, setProducts] = useState([]);
   const [marchandises, setMarchandises] = useState([]);
   const [productLines, setProductLines] = useState([]);
@@ -32,12 +34,14 @@ function VenteCreate() {
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadOptions() {
-    const [{ data: clientsData }, { data: productsData }, { data: sitesData }, { data: marchandiseData }, { data: fournisseursData}] = await Promise.all([
+    const [{ data: clientsData }, { data: productsData }, { data: sitesData }, 
+      { data: marchandiseData }, { data: fournisseursData}, { data: venteData}] = await Promise.all([
       supabase.from("clients").select("id, nom, prenom"),
       supabase.from("products").select("id, nom, categorie, prixVente"),
       supabase.from("siteproduction").select("id, nom, adresse"),
       supabase.from("marchandises").select("id, nom, categorie, description"),
       supabase.from("fournisseurs").select("id, nom, prenom, societe"),
+      supabase.from("ventes").select("*"),
     ]);
 
     setClients(clientsData || []);
@@ -45,6 +49,7 @@ function VenteCreate() {
     setProducts(productsData || []);
     setSites(sitesData || []);
     setMarchandises(marchandiseData || []);
+    setVentes(venteData || []);
   }
 
   useEffect(() => {
@@ -200,6 +205,7 @@ function VenteCreate() {
       client_id: form.client_id,
       date_vente: form.date_vente || new Date().toISOString().slice(0, 10),
       mode_paiement: form.mode_paiement,
+      montant_paye: form.montant_paye,
       description: form.description,
       montant_total: totalAmount,
       user_create_id: user?.id,
@@ -284,6 +290,13 @@ function VenteCreate() {
       client: c
   }));
 
+  // Select filter and style 
+  const fournisseursOptions = fournisseurs.map((c) => ({
+      value: c.id,
+      label: `${c.nom} - ${c.prenom}`,
+      fournisseur: c
+  }));
+
   const handleFormChangeClient = (selectedOption) => {
       setForm((prev) => ({
           ...prev,
@@ -291,39 +304,47 @@ function VenteCreate() {
       }));
   };
 
-  
+  const handleFormChangeFournisseur = (selectedOption) => {
+      setForm((prev) => ({
+          ...prev,
+          fournisseur_id: selectedOption ? selectedOption.value : null,
+      }));
+  };  
 
   return (
     <div className="product-page">
       <h1>Nouvelle vente</h1>
       <form className="product-form" onSubmit={handleSubmit}>
-        <label>Référence</label>
-        <input name="reference" value={form.reference} onChange={handleFormChange} />
 
-          <label>CLients</label>
+        <div className="grid">
+          <div>
+            <label>Référence</label>
+            <input name="reference" value={form.reference || "MSB_VENTE_000"+ ventes.length } onChange={handleFormChange} />
+          </div>
           <div>              
+            <label>CLients</label>
+              <Select className="list_select"
+                  options={clientsOptions}
 
-                <Select className="list_select"
-                    options={clientsOptions}
+                  placeholder="Choisir un client..."
 
-                    placeholder="Choisir un client..."
+                  isSearchable
 
-                    isSearchable
+                  styles={selectStyle}
 
-                    styles={selectStyle}
+                  name="client_id"
 
-                    name="client_id"
+                  value={
+                      clientsOptions.find(
+                          option => option.value === form.client_id
+                      ) || null
+                  }
 
-                    value={
-                        clientsOptions.find(
-                            option => option.value === form.client_id
-                        ) || null
-                    }
+                  onChange={handleFormChangeClient}
+              />
 
-                    onChange={handleFormChangeClient}
-                />
-
-            </div>
+          </div>
+        </div> 
 
         {/*
         <select name="client_id" value={form.client_id} onChange={handleFormChange} required>
@@ -333,18 +354,28 @@ function VenteCreate() {
           ))}
         </select>
         */}
+        <div className="grid">
+          <div>
+            <label>Date vente</label>
+            <input type="date" name="date_vente" value={form.date_vente} onChange={handleFormChange} />
+          </div>
+          <div>
+            <label>Mode de paiement</label>
+            <input name="mode_paiement" value={form.mode_paiement} onChange={handleFormChange} />
+          </div>
+        </div> 
 
-        <label>Date vente</label>
-        <input type="date" name="date_vente" value={form.date_vente} onChange={handleFormChange} />
-
-        <label>Mode de paiement</label>
-        <input name="mode_paiement" value={form.mode_paiement} onChange={handleFormChange} />
-
-        <label>Description</label>
-        <input name="description" value={form.description} onChange={handleFormChange} />
+        <div className="grids">
+          <label>Description</label>
+          <input name="description" value={form.description} onChange={handleFormChange} />
+        </div>
+        <div className="grids">
+          <label>Montant payé</label>
+          <input name="montant_paye" value={form.montant_paye} onChange={handleFormChange} />
+        </div>
         
 
-        <h3>Produits</h3>
+        <h3>Liste des produits de la vente</h3>
 
         {productLines.map((line, index) => (
           <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
@@ -432,7 +463,7 @@ function VenteCreate() {
           </button>
         </div>
 
-        <h3>Marchandises</h3>
+        <h3>Liste des marchandises de la vente</h3>
 
         {marchandiseLines.map((line, index) => (
           <div className="grid" key={index} style={{ marginBottom: "20px", gap: "10px" }}>
@@ -466,7 +497,7 @@ function VenteCreate() {
                 />
             </div> 
             
-            
+            {/*
             <div>
               <label>Fournisseur</label>
               <select name="fournisseur_id" value={form.fournisseur_id} 
@@ -478,7 +509,35 @@ function VenteCreate() {
                   <option key={fournisseur.id} value={fournisseur.id}>{fournisseur.nom} {fournisseur.nom} - {fournisseur.societe}</option>
                 ))}
               </select>
-            </div>  
+            </div> 
+            */}
+
+            <div>
+              <label>Fournisseur</label>
+              <div>              
+
+                  <Select className="list_select"
+                      options={fournisseursOptions}
+
+                      placeholder="Choisir un fournisseur..."
+
+                      isSearchable
+
+                      styles={selectStyle}
+
+                      name="fournisseur_id"
+
+                      value={
+                          fournisseursOptions.find(
+                              option => option.value === form.fournisseur_id
+                          ) || null
+                      }
+
+                      onChange={handleFormChangeFournisseur}
+                  />
+
+              </div> 
+            </div> 
                      
 
             <div>
