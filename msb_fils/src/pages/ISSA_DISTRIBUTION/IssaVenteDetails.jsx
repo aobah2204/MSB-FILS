@@ -8,6 +8,7 @@ function IssaVenteDetails() {
   const [sale, setSale] = useState(null);
   const [client, setClient] = useState(null);
   const [productLines, setProductLines] = useState([]);
+  const [marchandiseLines, setMarchandiseLines] = useState([]);
 
   async function loadSale() {
     const { data, error } = await supabase.from("issaventes").select("*").eq("id", id).maybeSingle();
@@ -28,10 +29,18 @@ function IssaVenteDetails() {
     // Produits
     const { data: linesData } = await supabase
       .from("issaventeproduits")
-      .select("*, issaproducts(nom)")
+      .select("*, products(nom, categorie, description)")
       .eq("vente_id", id);
 
     setProductLines(linesData || []);
+
+    // Marchandise
+    const { data: linesMData } = await supabase
+      .from("issaventemarchandises")
+      .select("*, marchandises(nom, categorie, description)")
+      .eq("vente_id", id);
+
+    setMarchandiseLines(linesMData || []);
 
   }
 
@@ -78,7 +87,7 @@ function IssaVenteDetails() {
             <tbody>
               {productLines.map((line) => (
                 <tr key={line.id}>
-                  <td>{line.issaproducts?.nom || "—"}</td>
+                  <td>{line.products?.nom || "—"}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
@@ -89,6 +98,33 @@ function IssaVenteDetails() {
         </div>
       )}
 
+      <h3>Marchandises vendus</h3>
+      {marchandiseLines.length === 0 ? (
+        <p>Aucune marchandise.</p>
+      ) : (
+        <div className="table-container">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Marchandise</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total ligne</th>
+              </tr>
+            </thead>
+            <tbody>
+              {marchandiseLines.map((line) => (
+                <tr key={line.id}>
+                  <td>{line.marchandises?.nom || "—"}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       
 
       <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
