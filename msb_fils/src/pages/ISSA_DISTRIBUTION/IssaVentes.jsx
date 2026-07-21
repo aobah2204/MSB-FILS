@@ -82,12 +82,16 @@ function IssaVentes() {
   const [marchandisesVente, setMarchandisesVente] = useState([]);
   async function genererFacture(order) {
   
-        const [{data: LinesP}] = await Promise.all([
-          await supabase.from("issaventeproduits").select("*, issaproducts(nom, reference)").eq("vente_id", order?.id),
+        const [{data: LinesP}, {data: LinesM}] = await Promise.all([
+          await supabase.from("issaventeproduits").select("*, products(nom, description)").eq("vente_id", order?.id),
+          await supabase.from("issaventemarchandises").select("*, marchandises(nom, description)").eq("vente_id", order?.id),
         ])
 
         if(LinesP){
             setProduitsVente(LinesP);
+        } 
+        if(LinesM){
+            setMarchandisesVente(LinesM);
         }        
   
         const doc = new jsPDF();  
@@ -137,9 +141,13 @@ function IssaVentes() {
             (sum, line) => sum + Number(line.montant_ligne || 0),
             0
         );
+        const totalM = LinesM.reduce(
+            (sum, line) => sum + Number(line.montant_ligne || 0),
+            0
+        );
 
 
-        const totalVente = totalP;
+        const totalVente = totalP + totalM;
         
   
         // Produits
@@ -148,7 +156,7 @@ function IssaVentes() {
             head: [["Produit", "Quantité", "Prix", "Total"]],
             body: 
                 LinesP.map(p => [
-                    `${p.issaproducts?.reference} - ${p.issaproducts?.nom}`  || "—",
+                    `${p.products?.nom} - ${p.products?.description}`  || "—",
                     p.quantite || 0,    
                     new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
                     new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
@@ -199,12 +207,67 @@ function IssaVentes() {
         // position de fin
         const y = doc.lastAutoTable.finalY + 10;
 
+        // Marchandises
+        autoTable(doc, {
+            startY: y,
+            head: [["marchandise", "Quantité", "Prix", "Total"]],
+            body: 
+                LinesM.map(p => [
+                    `${p.marchandises?.nom} - ${p.marchandises?.description}`  || "—",
+                    p.quantite || 0,    
+                    new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
+                    new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
+                ]),
+  
+            theme: "grid",
+  
+            headStyles: {
+  
+                fillColor: [37, 99, 235],
+                halign: "center",
+                fontStyle: "bold"
+  
+            },
+  
+            styles: {
+  
+                valign: "middle"
+  
+            },
+  
+            columnStyles: {
+  
+                0: { halign: "left" },      // Produit
+                1: { halign: "center" },    // Quantité
+                2: { halign: "right" },     // Prix
+                3: { halign: "right" }      // Total
+  
+            },
+  
+            foot: [[
+                "",
+                "",
+                "TOTAL",
+                new Intl.NumberFormat("en-US").format(totalM) + " GNF"
+            ]],
+  
+            footStyles: {
+  
+                fillColor: [240, 240, 240],
+                textColor: 0,
+                fontStyle: "bold"
+  
+            }
+  
+        });
+        
+
         doc.setFontSize(13);
         doc.setFont("helvetica", "bold");
 
         
 
-        const totalFacture = new Intl.NumberFormat("en-US").format(totalP);
+        const totalFacture = new Intl.NumberFormat("en-US").format(totalP + totalM);
 
         const z = doc.lastAutoTable.finalY + 15;
 

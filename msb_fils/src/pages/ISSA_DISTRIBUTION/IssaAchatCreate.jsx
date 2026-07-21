@@ -7,6 +7,7 @@ function IssaAchatCreate() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [fournisseurs, setFournisseurs] = useState([]);
+  const [achats, setAchats] = useState([]);
   const [produits, setProduits] = useState([]);
   const [marchandises, setMarchandises] = useState([]);
   const [productLines, setProductLines] = useState([]);
@@ -30,10 +31,12 @@ function IssaAchatCreate() {
       const { data: fournisseursData } = await supabase.from("fournisseurs").select("*");
       const { data: produitsData } = await supabase.from("products").select("*");
       const { data: marchandisesData } = await supabase.from("marchandises").select("*");
+      const { data: achatsData } = await supabase.from("issaachats").select("*");
 
       setFournisseurs(fournisseursData || []);
       setProduits(produitsData || []);
       setMarchandises(marchandisesData || []);
+      setAchats(achatsData || []);
 
     } catch (error) {
       console.error("Erreur lors du chargement des données :", error);
@@ -121,7 +124,7 @@ function IssaAchatCreate() {
         .from("issaachats")
         .insert([
           {
-            reference: formData.reference,
+            reference: "ISSA_ACHT_000"+(achats.length + 1),
             fournisseur_id: formData.fournisseur_id,
             date_achat: formData.date_achat,
             statut: formData.statut,
@@ -152,6 +155,11 @@ function IssaAchatCreate() {
 
       const { error: linesErrorP } = await supabase.from("issaachatsproduits").insert(linesP);
 
+      if (linesErrorP) {
+        alert("Erreur lors de l'ajout des produits"+ linesErrorP.message);
+        return;
+      }
+
       // Insert marchandise lines
       const linesM = marchandiseLines.map((line) => ({
         achat_id: achatId,
@@ -165,8 +173,8 @@ function IssaAchatCreate() {
 
       const { error: linesErrorM } = await supabase.from("issaachatsmarchandises").insert(linesM);
 
-      if (linesErrorP || linesErrorM) {
-        alert("Erreur lors de l'ajout des produits/marchandises");
+      if (linesErrorM) {
+        alert("Erreur lors de l'ajout des marchandises", linesErrorM.message);
         return;
       }
 
@@ -187,7 +195,7 @@ function IssaAchatCreate() {
             <label>Référence</label>
             <input
               type="text"
-              value={formData.reference}
+              value={formData.reference || "ISSA_ACHT_000"+(achats.length + 1)}
               onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
             />
           </div>
@@ -202,7 +210,7 @@ function IssaAchatCreate() {
               <option value="">Sélectionner un fournisseur</option>
               {fournisseurs.map((f) => (
                 <option key={f.id} value={f.id}>
-                  {f.nom} {f.prenom}
+                  {f.nom} {f.prenom} {f.societe}
                 </option>
               ))}
             </select>
@@ -268,7 +276,7 @@ function IssaAchatCreate() {
                         <option value="">Sélectionner</option>
                         {produits.map((m) => (
                           <option key={m.id} value={m.id}>
-                            {m.nom}
+                            {m.nom} {m.categorie} {m.description}
                           </option>
                         ))}
                       </select>
@@ -396,7 +404,7 @@ function IssaAchatCreate() {
                         <option value="">Sélectionner</option>
                         {marchandises.map((m) => (
                           <option key={m.id} value={m.id}>
-                            {m.nom}
+                            {m.nom} {m.categorie} {m.description}
                           </option>
                         ))}
                       </select>

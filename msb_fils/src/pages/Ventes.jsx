@@ -83,8 +83,8 @@ function Ventes() {
   async function genererFacture(order) {
   
         const [{data: LinesP}, {data: LinesM}] = await Promise.all([
-          await supabase.from("venteproduits").select("*, products(nom, reference)").eq("vente_id", order?.id),
-          await supabase.from("ventemarchandises").select("*, marchandises(nom, reference)").eq("vente_id", order?.id),
+          await supabase.from("venteproduits").select("*, products(nom, description)").eq("vente_id", order?.id),
+          await supabase.from("ventemarchandises").select("*, marchandises(nom, description)").eq("vente_id", order?.id),
         ])
 
         if(LinesP){
@@ -157,7 +157,7 @@ function Ventes() {
             head: [["Produit", "Quantité", "Prix", "Total"]],
             body: 
                 LinesP.map(p => [
-                    `${p.products?.reference} - ${p.products?.nom}`  || "—",
+                    `${p.products?.nom} - ${p.products?.description}`  || "—",
                     p.quantite || 0,    
                     new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
                     new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
@@ -219,7 +219,7 @@ function Ventes() {
             head: [["Marchandise", "Quantité", "Prix", "Total"]],
             body: 
                 LinesM.map(p => [
-                    `${p.marchandises.reference} - ${p.marchandises.nom}`  || "—",
+                    `${p.marchandises.nom} - ${p.marchandises.description}`  || "—",
                     p.quantite || 0,    
                     new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
                     new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0

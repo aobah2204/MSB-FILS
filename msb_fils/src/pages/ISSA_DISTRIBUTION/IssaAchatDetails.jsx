@@ -8,6 +8,7 @@ function IssaAchatDetails() {
   const [achat, setAchat] = useState(null);
   const [fournisseur, setFournisseur] = useState(null);
   const [productLines, setProductLines] = useState([]);
+  const [marchandiseLines, setMarchandiseLines] = useState([]);
 
   async function loadAchat() {
     const { data, error } = await supabase.from("issaachats").select("*").eq("id", id).maybeSingle();
@@ -29,12 +30,21 @@ function IssaAchatDetails() {
       setFournisseur(fournisseurData);
     }
 
+    // Produits
     const { data: linesData } = await supabase
       .from("issaachatsproduits")
-      .select("*, issaproducts(nom)")
+      .select("*, products(nom)")
       .eq("achat_id", id);
 
     setProductLines(linesData || []);
+
+    // Marchandises
+    const { data: linesMData } = await supabase
+      .from("issaachatsmarchandises")
+      .select("*, marchandises(nom)")
+      .eq("achat_id", id);
+
+    setMarchandiseLines(linesMData || []);
   }
 
   function formatDate(value) {
@@ -73,15 +83,15 @@ function IssaAchatDetails() {
         </p>
       </div>
 
-      <h3>Matières premières achetées</h3>
+      <h3>Produits achetées</h3>
       {productLines.length === 0 ? (
-        <p>Aucune matière.</p>
+        <p>Aucune produit.</p>
       ) : (
         <div className="table-container">
           <table className="data-table">
             <thead>
               <tr>
-                <th>Matière</th>
+                <th>Produit</th>
                 <th>Quantité</th>
                 <th>Description</th>
                 <th>Prix unitaire</th>
@@ -91,7 +101,37 @@ function IssaAchatDetails() {
             <tbody>
               {productLines.map((line) => (
                 <tr key={line.id}>
-                  <td>{line.matierespremieres?.nom || "—"}</td>
+                  <td>{line.products?.nom || "—"}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
+                  <td>{line.description || "--"}</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
+                  <td>{new Intl.NumberFormat("fr-FR").format(line.montant_ligne) || 0} FG</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <h3>Marchandise achetées</h3>
+      {marchandiseLines.length === 0 ? (
+        <p>Aucune marchandise.</p>
+      ) : (
+        <div className="table-container">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Marchandise</th>
+                <th>Quantité</th>
+                <th>Description</th>
+                <th>Prix unitaire</th>
+                <th>Total ligne</th>
+              </tr>
+            </thead>
+            <tbody>
+              {marchandiseLines.map((line) => (
+                <tr key={line.id}>
+                  <td>{line.marchandises?.nom || "—"}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.quantite) || 0}</td>
                   <td>{line.description || "--"}</td>
                   <td>{new Intl.NumberFormat("fr-FR").format(line.prix_unitaire) || 0} FG</td>
