@@ -201,7 +201,7 @@ function VenteCreate() {
     }
 
     const ventePayload = {
-      reference: form.reference,
+      reference: "MSB_VENTE_000"+ (ventes.length+1),
       client_id: form.client_id,
       date_vente: form.date_vente || new Date().toISOString().slice(0, 10),
       mode_paiement: form.mode_paiement,
@@ -319,7 +319,7 @@ function VenteCreate() {
         <div className="grid">
           <div>
             <label>Référence</label>
-            <input name="reference" value={form.reference} onChange={handleFormChange} />
+            <input name="reference" value={form.reference || "MSB_VENTE_000"+ (ventes.length+1) } onChange={handleFormChange} />
           </div>
           <div>              
             <label>CLients</label>

@@ -110,7 +110,7 @@ function handleChange(e) {
         .from("depenses")
         .insert([
           {
-            reference: formData.reference,
+            reference: "MSB_DPS_000"+(depenses.length + 1),
             libelle: formData.libelle,
             categorie: formData.categorie,
             fournisseur_id: formData.fournisseur_id,
@@ -150,7 +150,7 @@ function handleChange(e) {
             <input
               type="text"
               name="reference"
-              value={formData.reference}
+              value={formData.reference || "MSB_DPS_000"+(depenses.length + 1)}
               onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
             />
           </div>
