@@ -19,6 +19,7 @@ function IssaVenteEdit() {
   });
 
   const [clients, setClients] = useState([]);
+  const [fournisseurs, setFournisseurs] = useState([]);
   const [products, setProducts] = useState([]);
   const [marchandises, setMarchandises] = useState([]);
   const [productLines, setProductLines] = useState([]);
@@ -26,19 +27,23 @@ function IssaVenteEdit() {
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadData() {
-    const [{ data: venteData }, { data: clientsData }, { data: productsData }, { data: marchandisesData }, { data: linesData }, {data: linesMData}] = await Promise.all([
+    const [{ data: venteData }, { data: clientsData }, { data: fournisseursData }, { data: productsData }, 
+        { data: marchandisesData }, { data: linesData }, {data: linesMData}] = await Promise.all([
       supabase.from("issaventes").select("*").eq("id", id).maybeSingle(),
       supabase.from("clients").select("id, nom, prenom"),
-      supabase.from("products").select("id, nom, prixVente"),
-      supabase.from("marchandises").select("id, nom, prixVente"),
+      supabase.from("fournisseurs").select("*"),
+      supabase.from("products").select("*"),
+      supabase.from("marchandises").select("*"),
       supabase.from("issaventeproduits").select("*").eq("vente_id", id),
       supabase.from("issaventemarchandises").select("*").eq("vente_id", id),
     ]);
 
     setClients(clientsData || []);
+    setFournisseurs(fournisseursData || []);
     setProducts(productsData || []);
     setMarchandises(marchandisesData || []);
     setProductLines(linesData || []);
+    setMarchandiseLines(linesMData || []);
     setForm(venteData || []);
 
   }
@@ -328,7 +333,7 @@ function IssaVenteEdit() {
               >
                 <option value="">Choisir</option>
                 {products.map((p) => (
-                  <option key={p.id} value={p.id}>{p.nom}</option>
+                  <option key={p.id} value={p.id}>{p.nom} - {p.categorie} - {p.description} </option>
                 ))}
               </select>
             </div>
