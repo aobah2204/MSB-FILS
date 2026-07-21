@@ -27,16 +27,19 @@ function IssaVenteCreate() {
   const [marchandiseLines, setMarchandiseLines] = useState([]);
   const [sites, setSites] = useState([]);
   const [fournisseurs, setFournisseurs] = useState([]);
+  const [ventes, setVentes] = useState([]);
 
   const [totalAmount, setTotalAmount] = useState(0);
 
   async function loadOptions() {
-    const [{ data: clientsData }, { data: productsData }, { data: sitesData }, { data: marchandiseData }, { data: fournisseursData}] = await Promise.all([
+    const [{ data: clientsData }, { data: productsData }, { data: sitesData }, { data: marchandiseData },
+         { data: fournisseursData}, { data: ventesData }] = await Promise.all([
       supabase.from("clients").select("id, nom, prenom"),
       supabase.from("products").select("id, nom, categorie, prixVente"),
       supabase.from("siteproduction").select("id, nom, adresse"),
       supabase.from("marchandises").select("id, nom, categorie, description"),
       supabase.from("fournisseurs").select("id, nom, prenom, societe"),
+      supabase.from("issaventes").select("*"),
     ]);
 
     setClients(clientsData || []);
@@ -44,6 +47,7 @@ function IssaVenteCreate() {
     setProducts(productsData || []);
     setSites(sitesData || []);
     setMarchandises(marchandiseData || []);
+    setVentes(ventesData || []);
   }
 
   useEffect(() => {
@@ -194,7 +198,7 @@ function IssaVenteCreate() {
     }
 
     const ventePayload = {
-      reference: form.reference,
+      reference: "ISSA_DIST_VTE_000"+ (ventes.length+1),
       client_id: form.client_id,
       date_vente: form.date_vente || new Date().toISOString().slice(0, 10),
       mode_paiement: form.mode_paiement,
@@ -293,7 +297,7 @@ function IssaVenteCreate() {
       <h1>Nouvelle vente</h1>
       <form className="product-form" onSubmit={handleSubmit}>
         <label>Référence</label>
-        <input name="reference" value={form.reference} onChange={handleFormChange} />
+        <input name="reference" value={form.reference || "ISSA_DIST_VTE_000" + (ventes.length+1)} onChange={handleFormChange} />
 
 
         <label>CLients</label>
