@@ -319,7 +319,7 @@ function VenteCreate() {
         <div className="grid">
           <div>
             <label>Référence</label>
-            <input name="reference" value={form.reference || "MSB_VENTE_000"+ (ventes.length+1) } onChange={handleFormChange} />
+            <input name="reference" value={form.reference} onChange={handleFormChange} />
           </div>
           <div>              
             <label>CLients</label>

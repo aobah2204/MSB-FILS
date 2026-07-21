@@ -11,6 +11,7 @@ function DepenseCreate() {
   const [sites, setSites] = useState([]);
   const [vehicules, setVehicules] = useState([]);
   const [salaries, setSalaries] = useState([]);
+  const [depenses, setDepenses] = useState([]);
 
   const [salarie, setSalarie] = useState();
 
@@ -22,7 +23,7 @@ function DepenseCreate() {
     site_id: 0,
     vehicule_id: 0,
     utilisateur_id: 0,
-    date_depense: new Date().toISOString().split("T")[0],
+    date_depense: "",
     statut: "Payé",
     mode_paiement: "",
     montant: "",
@@ -51,11 +52,13 @@ function DepenseCreate() {
       const { data: sitesData } = await supabase.from("siteproduction").select("id, nom");
       const { data: vehiculesData } = await supabase.from("vehicules").select("id, immatriculation, marque");
       const { data: salariesData } = await supabase.from("utilisateurs").select("id, fullname");
+      const { data: depensesData } = await supabase.from("depenses").select("*");
 
       setFournisseurs(fournisseursData || []);
       setSites(sitesData || []);
       setVehicules(vehiculesData || []);
-      setSalaries(salariesData);
+      setSalaries(salariesData || []);
+      setDepenses(depensesData || []);
 
     } catch (error) {
       console.error("Erreur lors du chargement des données :", error);
@@ -146,6 +149,7 @@ function handleChange(e) {
             <label>Référence</label>
             <input
               type="text"
+              name="reference"
               value={formData.reference}
               onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
             />
@@ -221,8 +225,9 @@ function handleChange(e) {
             <label>Date de la dépense</label>
             <input
               type="date"
-              value={formData.date_Depense}
-              onChange={(e) => setFormData({ ...formData, date_Depense: e.target.value })}
+              name="date_depense"
+              value={formData.date_depense.split('T')[0]}
+              onChange={(e) => setFormData({ ...formData, date_depense: e.target.value })}
             />
           </div>          
 
@@ -230,6 +235,7 @@ function handleChange(e) {
             <label>Libellé</label>
             <textarea
               value={formData.libelle}
+              name="libelle"
               onChange={(e) => setFormData({ ...formData, libelle: e.target.value })}
             />
           </div>
@@ -239,6 +245,7 @@ function handleChange(e) {
                 <label>Montant</label>
                 <input
                 type="number"
+                name="montant"
                 value={formData.montant}
                 onChange={(e) => setFormData({ ...formData, montant: e.target.value })}
                 />
@@ -248,6 +255,7 @@ function handleChange(e) {
                 <label>Mode de paiement</label>
                 <input
                 type="text"
+                name="mode_paiement"
                 value={formData.mode_paiement}
                 onChange={(e) => setFormData({ ...formData, mode_paiement: e.target.value })}
                 />
@@ -257,6 +265,7 @@ function handleChange(e) {
                 <label>Statut</label>
                 <select
                 value={formData.statut}
+                name="statut"
                 onChange={(e) => setFormData({ ...formData, statut: e.target.value })}
                 >
                 <option>Payé</option>
