@@ -208,9 +208,10 @@ function VehicleDetails(){
                     <table className="data-table">
                         <thead className="header_Table">
                             <tr>
+                            <th>Date</th>
                             <th>Référence</th>
                             <th>catégorie</th>
-                            <th>Date</th>
+                            <th>Libellé</th>                            
                             <th>Montant total</th>
                             <th>Statut</th>
                             </tr>
@@ -218,9 +219,10 @@ function VehicleDetails(){
                         <tbody>
                             {depenses.map((Depense) => (
                             <tr key={Depense.id}>
+                                <td>{formatDate(Depense.date_depense) || "—"}</td>
                                 <td>{Depense.reference || "—"}</td>
                                 <td>{Depense.categorie}</td>
-                                <td>{formatDate(Depense.date_depense) || "—"}</td>
+                                <td>{Depense.libelle}</td>
                                 <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant) || 0 } FG</td>
                                 <td>{Depense.statut || "—"}</td>                            
                             </tr>
