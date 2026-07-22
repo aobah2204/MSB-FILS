@@ -376,9 +376,13 @@ function IssaVenteEdit() {
           </div>
         ))}
 
-        <button className="profile" type="button" onClick={addProductLine}>
-          + Ajouter produit
-        </button>
+        
+        <div>
+          <button className="profile" type="button" onClick={addProductLine}>
+            + Ajouter produit
+          </button>
+        </div>
+
 
         <h3>Marchandises</h3>
 
