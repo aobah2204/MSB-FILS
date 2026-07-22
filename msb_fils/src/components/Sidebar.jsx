@@ -87,10 +87,10 @@ const menu = [
     title: "  Prestation de service",
     icon: <Truck />,
     items: [
-      { label: "Nos Prestataires", to: "/prestations" },
-      { label: "Nos Prestations", to: "/" },
-      { label: "Conceptions", to: "/" },
-      { label: "Chantiers", to: "/" },
+      { label: "Nos Prestations", to: "/prestations" },
+      { label: "Nos Prestataires", to: "/" },      
+      //{ label: "Conceptions", to: "/" },
+      //{ label: "Chantiers", to: "/" },
     ]
   },
   {

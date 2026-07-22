@@ -9,6 +9,7 @@ function ClientDetails() {
   const [client, setClient] = useState(null);
   const [totalCommandes, setTotalCommandes] = useState(0);
   const [totalVentes, setTotalVentes] = useState(0);
+  
 
   async function loadClientData() {
     try {
@@ -94,7 +95,7 @@ function ClientDetails() {
             textAlign: "center",
           }}
         >
-          <h4 style={{ margin: "0 0 10px 0", color: "#2e7d32" }}>Total Commandes</h4>
+          <h4 style={{ margin: "0 0 10px 0", color: "#2e7d32" }}>Total Commandes chez MSB </h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#1b5e20" }}>
             {new Intl.NumberFormat("fr-FR").format(totalCommandes.toFixed(2))} Fg
           </p>
@@ -109,7 +110,7 @@ function ClientDetails() {
             textAlign: "center",
           }}
         >
-          <h4 style={{ margin: "0 0 10px 0", color: "#e65100" }}>Total Ventes</h4>
+          <h4 style={{ margin: "0 0 10px 0", color: "#e65100" }}>Total Achats chez MSB</h4>
           <p style={{ margin: "0", fontSize: "24px", fontWeight: "bold", color: "#bf360c" }}>
             {new Intl.NumberFormat("fr-FR").format(totalVentes.toFixed(2))} Fg
           </p>
