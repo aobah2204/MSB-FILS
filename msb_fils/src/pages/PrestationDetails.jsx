@@ -41,7 +41,7 @@ function PrestationDetails(){
         if (!data) return alert("Aucune Prestation");
 
         //getVenteInfo(data?.vente_id);
-        //getVehiculeInfo(data?.vehicule_id);
+        getVehiculeInfo(data?.vehicule_id);
         //getPrestaInfo(data?.prestataire_id);
         setPrestation(data);        
     }
@@ -166,53 +166,45 @@ function PrestationDetails(){
                     <div>
                         <label>Cout de la livraison</label>
                         <p>
-                            {prestataire?.montant} {prestataire?.addresse}
+                            {new Intl.NumberFormat("fr-FR").format(Prestation?.montant) } GNF
                         </p>
                     </div>
 
                     <div>
                         <label>Coût du carburant</label>
                         <p>
-                            {prestataire?.montant_carburant} 
+                            {new Intl.NumberFormat("fr-FR").format(Prestation?.montant_carburant) } GNF
                         </p>
-                    </div>
-
-                    <div>
-                        <label>Coût du carburant</label>
-                        <p>
-                            {prestataire?.montant_carburant} 
-                        </p>
-                    </div>                    
+                    </div>                                      
 
                 </div>
 
                 <div className="card">
 
                     <h3>
-                        Vente
+                        Véhicule
                     </h3>
 
                     <div>
-                        <label>Réference</label>
+                        <label>Immatriculation</label>
                         <p>
-                            {vente?.reference}
+                            {vehicule?.reference}
                         </p>
                     </div>
+                    
                     <div>
-                        <label>Description</label>
+                        <label>Chauffeur</label>
                         <p>
-                            {vente?.description}
+                            {vehicule?.chauffeur}
                         </p>
                     </div>
 
                     <div>
-                        <label>Date</label>
+                        <label>Prime voyage</label>
                         <p>
-                            {vente?.date_vente.split('T')[0]} 
+                            {new Intl.NumberFormat("fr-FR").format(Prestation?.prime_voyage) } GNF
                         </p>
-                    </div>
-
-                                  
+                    </div>                                 
 
                 </div>
                 
