@@ -105,6 +105,8 @@ function PrestationCreate(){
         }
         */
         
+        Prestation.reference = "MSB_PREST_000"+(prestations.length + 1);
+        
         const { error } = await supabase.from(table).insert(Prestation);
         
         if(!error){
