@@ -168,6 +168,12 @@ function DepenseDetails() {
         <p>
           <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(Depense.montant) || 0} FG
         </p>
+        <p>
+          <strong>Montant payé :</strong> {new Intl.NumberFormat("fr-FR").format(Depense.montant_paye) || 0} FG
+        </p>
+        <p>
+          <strong>Rest à payer :</strong> {new Intl.NumberFormat("fr-FR").format(Depense.montant - Depense.montant_paye) || 0} FG
+        </p>
       </div>
 
       <button className="profile" type="button" onClick={() => navigate("/Depenses")}>

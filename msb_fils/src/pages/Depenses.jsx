@@ -75,6 +75,8 @@ function Depenses() {
               <th>libelle</th>
               <th>Date</th>
               <th>Montant total</th>
+              <th>Montant payé</th>
+              <th>Reste à payé</th>
               <th>Statut</th>
               <th>Action</th>
             </tr>
@@ -87,6 +89,8 @@ function Depenses() {
                 <td>{Depense.libelle}</td>                
                 <td>{formatDate(Depense.date_depense) || "—"}</td>
                 <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant) || 0 } FG</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant_paye) || 0 } FG</td>
+                <td>{new Intl.NumberFormat("fr-FR").format(Depense.montant - Depense.montant_paye) || 0 } FG</td>
                 <td>{Depense.statut || "—"}</td>
                 {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
                   user?.role

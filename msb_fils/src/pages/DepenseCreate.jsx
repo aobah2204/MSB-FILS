@@ -27,6 +27,7 @@ function DepenseCreate() {
     statut: "Payé",
     mode_paiement: "",
     montant: "",
+    montant_paye: "",
     justificatif: "",
     type_liaison: "GENERAL",
   });
@@ -120,6 +121,7 @@ function handleChange(e) {
             date_depense: formData.date_depense,
             statut: formData.statut,
             montant: formData.montant,
+            montant_paye: formData.montant_paye,
             mode_paiement: formData.mode_paiement,
             justificatif: formData.justificatif,
             created_user_id: user?.id
@@ -248,6 +250,16 @@ function handleChange(e) {
                 name="montant"
                 value={formData.montant}
                 onChange={(e) => setFormData({ ...formData, montant: e.target.value })}
+                />
+            </div>
+
+            <div>
+                <label>Montant payé</label>
+                <input
+                type="number"
+                name="montant_paye"
+                value={formData.montant_paye}
+                onChange={(e) => setFormData({ ...formData, montant_paye: e.target.value })}
                 />
             </div>
 
