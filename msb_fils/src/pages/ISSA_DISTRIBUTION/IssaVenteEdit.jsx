@@ -146,8 +146,8 @@ function IssaVenteEdit() {
       return;
     }
 
-    if (productLines.length === 0) {
-      alert("Veuillez ajouter au moins un produit");
+    if (productLines.length === 0 && marchandiseLines.length === 0) {
+      alert("Veuillez ajouter au moins un produit ou une marchandise");
       return;
     }
 
@@ -170,7 +170,7 @@ function IssaVenteEdit() {
       return;
     }
 
-    // await supabase.from("venteproduits").delete().eq("vente_id", id);
+    await supabase.from("issaventeproduits").delete().eq("vente_id", id);
 
     for (const line of productLines) {
       if (!line.produit_id || !line.quantite) continue;
@@ -201,12 +201,13 @@ function IssaVenteEdit() {
       }
     }
 
+    await supabase.from("issaventemarchandises").delete().eq("vente_id", id);
     // Ajout marchandise ventes 
     for (const line of marchandiseLines) {
       if (!line.marchandise_id || !line.quantite) continue;
 
       const linePayload = {
-        vente_id: insertedVente.id,
+        vente_id: id,
         marchandise_id: line.marchandise_id,
         fournisseur_id: line.fournisseur_id,
         quantite: Number(line.quantite),

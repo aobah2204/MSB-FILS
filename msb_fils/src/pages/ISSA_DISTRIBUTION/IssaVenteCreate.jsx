@@ -192,8 +192,8 @@ function IssaVenteCreate() {
       return;
     }
 
-    if (productLines.length === 0) {
-      alert("Veuillez ajouter au moins un produit");
+    if (productLines.length === 0 && marchandiseLines.length === 0) {
+      alert("Veuillez ajouter au moins un produit ou une marchandise");
       return;
     }
 
