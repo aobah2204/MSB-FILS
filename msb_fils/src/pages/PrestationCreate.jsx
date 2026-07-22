@@ -12,36 +12,43 @@ function PrestationCreate(){
 
     const navigate = useNavigate();
 
-    const [ventes, setVentes] = useState([]);
-    //const [vehicules, setVehicules] = useState([]);
-    const [prestataires, setPrestataires] = useState([]);
+    //const [ventes, setVentes] = useState([]);
+    const [vehicules, setVehicules] = useState([]);
+    const [prestations, setPrestations] = useState([]);
 
     async function loadData() {
-        const [{ data: ventesData }, { data: prestatairesData }] = await Promise.all([
-        supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
-        //supabase.from("vehicules").select("id, marque, immatriculation, chauffeur"),
-        supabase.from("utilisateurs").select("id, fullname, adresse, telephone").eq("role", "Prestataire"),
+        const [{ data: vehiculesData }, { data: prestationsData}] = await Promise.all([
+        //supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
+        supabase.from("vehicules").select("id, marque, immatriculation, chauffeur"),
+        supabase.from("prestations").select("*"),
         ]);
 
-        setVentes(ventesData || []);
-        //setVehicules(vehiculesData || []);
-        setPrestataires(prestatairesData || []);
+        //setVentes(ventesData || []);
+        setVehicules(vehiculesData || []);
+        setPrestations(prestationsData || []);
     }
 
 
 
     const [Prestation,setPrestation] = useState({
 
-        reference:"",
-        vente_id: "",
-        //vehicule_id: "",
-        prestataire_id: "",
+        reference:"MSB_PREST_000"+(prestations.length + 1),
+        //vente_id: "",
+        vehicule_id: "",
+        //prestataire_id: "",
         date_prestation: "",
-        statut: "",
+        materiel: "",
+        unite: "",
+        quantite: "",        
         montant: "",
+        montant_paye: "",
+        mode_paiement: "",
+        montant_carburant: "",
+        prime_voyage: "",
         adresse: "",
-        description: ""
-
+        description: "",
+        statut: "",
+        type_prestation: "",
     });
 
 
@@ -75,26 +82,28 @@ function PrestationCreate(){
         // API Supabase ici
         const table = "prestations";
 
-        /* Set vehicule
+        /* Set vehicule */
         if (vehicule) {
             Prestation.vehicule_id = vehicule.id;
         }else{
             alert("Veuillez selectionnez un véhicule");
-        }*/
+        }
 
-        // set vente id
+        /* set vente id
         if(vente){
             Prestation.vente_id = vente.id;
         }else{
             alert("Veuillez selectionnez une vente");
         }
+        */
 
-        // set prestataire id
+        /* set prestataire id
         if(prestataire){
             Prestation.prestataire_id = prestataire.id;
         }else{
             alert("Veuillez selectionnez un prestataire");
         }
+        */
         
         const { error } = await supabase.from(table).insert(Prestation);
         
@@ -107,7 +116,7 @@ function PrestationCreate(){
         navigate("/Prestations");
     }
 
-    {/** Get all vehicules 
+    {/** Get all vehicules */}
     const [vehicule,setVehicule] = useState(null);
     function onChangeVehicule(e){
 
@@ -117,10 +126,10 @@ function PrestationCreate(){
 
         );
         setVehicule(selected);
-    }*/}
+    }
 
 
-    {/** Get all ventes */}
+    {/** Get all ventes 
     const [vente,setVente] = useState(null);
     function onChangeVente(e){
 
@@ -131,8 +140,9 @@ function PrestationCreate(){
         );
         setVente(selected);
     }
+    */}
 
-    {/** Get all prestations */}
+    {/** Get all prestations 
     const [prestataire,setPrestataire] = useState(null);
     function onChangePrestataire(e){
 
@@ -142,7 +152,7 @@ function PrestationCreate(){
 
         );
         setPrestataire(selected);
-    }
+    } */}
 
     async function getClient(id){
          const { client } = await supabase.from("clients").select("*").eq("id", id);
@@ -179,11 +189,83 @@ return (
 
                 <input
                     name="reference"
+                    value={"MSB_PREST_000"+(prestations.length + 1)}
                     onChange={handleChange}
                 />
             </div>
-            
+            <div >
+                <label>
+                    Date Préstation
+                </label>
 
+                <input
+                    type="date"
+                    name="date_prestation"
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div >
+                <label>
+                    Matériel
+                </label>
+
+                <input
+                    type="text"
+                    name="materiel"
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div className="grids">
+                <div className="grid">
+                    <label>
+                        Quantité
+                    </label>
+
+                    <input
+                        type="number"
+                        name="quantite"
+                        onChange={handleChange}
+                    />
+                </div>                
+                <div className="grid">
+                    <label>
+                        Unité
+                    </label>
+                    <select
+                        name="unite"
+                        onChange={handleChange}
+                    > 
+                        <option>
+                            ---Choisir---
+                        </option>
+                        <option>
+                            Pièce
+                        </option>
+                        <option>
+                            Kg
+                        </option>
+                        <option>
+                            Tonne
+                        </option>
+                        <option>
+                            Bidon
+                        </option>
+                        <option>
+                            Fût
+                        </option>  
+                        <option>
+                            Palette
+                        </option>                
+
+                    </select>                    
+                </div>
+            </div>
+
+
+            
+            {/*
             <div>
                 <label>
                     Vente
@@ -211,8 +293,9 @@ return (
 
                 </select>
             </div>
+            */}
 
-           {/*
+           
             <div>
                 <label>
                     Véhicule
@@ -240,8 +323,8 @@ return (
 
                 </select>
             </div> 
-            */}
-
+            
+            {/*
             <div>
                 <label>
                     Préstataire
@@ -268,14 +351,15 @@ return (
 
 
                 </select>
-            </div>     
+            </div>  
+            */}   
 
             <div>
                 <label>
                     Type de préstation
                 </label>
                 <select
-                    name="type"
+                    name="type_prestation"
                     onChange={handleChange}
                 > 
                     <option>
@@ -285,7 +369,7 @@ return (
                         Livraison
                     </option>
                     <option>
-                        Conseils
+                        Transport
                     </option>
                     <option>
                         Support
@@ -324,21 +408,39 @@ return (
                     onChange={handleChange}
                 />
             </div>
+
             <div>
                 <label>
-                    Date Prestation
+                    Mode de paiement
                 </label>
-
-                <input
-                    type="date"
-                    name="date_prestation"
+                <select
+                    value={Prestation?.mode_paiement}
+                    name="mode_paiement"
                     onChange={handleChange}
-                />
+                >
+                    <option value="">
+                    -- mode de paiement --
+                    </option> 
+
+                    <option>
+                        Cash
+                    </option>
+                    <option>
+                        Orange money
+                    </option>
+                    <option>
+                        Virement bancaire
+                    </option> 
+                    <option>
+                        Chèques
+                    </option>                   
+                </select>     
             </div>
+            
 
             <div>
                 <label>
-                    Montant
+                    Coût de transport
                 </label>
 
                 <input
@@ -349,7 +451,43 @@ return (
             </div>
 
             <div>
-            <label>
+                <label>
+                    Montant payé
+                </label>
+
+                <input
+                    type="number"
+                    name="montant_paye"
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div>
+                <label>
+                    Prix du carburant
+                </label>
+
+                <input
+                    type="number"
+                    name="montant_carburant"
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div>
+                <label>
+                    Prime voyage
+                </label>
+
+                <input
+                    type="number"
+                    name="prime_voyage"
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div>
+                <label>
                     Statut
                 </label>
                 <select
@@ -372,7 +510,7 @@ return (
                     </option>
 
                 </select>     
-        </div>
+            </div>
 
         </div>  
 

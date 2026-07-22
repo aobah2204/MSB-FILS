@@ -42,25 +42,24 @@ function Prestations() {
     const tablePrestation = "prestations";
 
     // load data
-    const [ventes, setVentes] = useState([]);
+    //const [ventes, setVentes] = useState([]);
     const [vehicules, setVehicules] = useState([]);
 
     async function loadData() {
-        const [{ data: ventesData }, { data: vehiculesData }] = await Promise.all([
-        supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
+        const [{ data: vehiculesData }] = await Promise.all([
+        //supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
         supabase.from("vehicules").select("id, marque, immatriculation, chauffeur"),
         ]);
 
-        setVentes(ventesData || []);
+        //setVentes(ventesData || []);
         setVehicules(vehiculesData || []);
+
+        chargerPrestations();
     }
 
     // s'exécute une seule fois au chargement
-    useEffect(() => {
-
-        chargerPrestations();
+    useEffect(() => {        
         loadData();
-
     }, []);
 
     async function chargerPrestations() {
@@ -76,7 +75,7 @@ function Prestations() {
 
         const { data } = await supabase
             .from(tablePrestation)
-            .select("*");
+            .select("*, vehicules(immatriculation, chauffeur)");
 
         if (!data) return alert("Aucune Prestation");
 
@@ -138,11 +137,16 @@ function Prestations() {
 
                     <tr className="header_Table">
                         <th>Reférence</th>
-                        <th>Vente info</th>
-                        <th>Prestataire</th>
                         <th>Date</th>
+                        <th>Type de préstation</th>
                         <th>Adresse</th> 
-                        <th>Montant</th>
+                        <th>Description</th>
+                        <th>Coût livraison</th>
+                        <th>Coût carburant</th>
+                        <th>Montant payé</th>
+                        <th>Vehicule</th>
+                        <th>Prime voyage</th>
+                        <th>Statut</th>
                         <th>Actions</th>
                     </tr>
 
@@ -154,19 +158,26 @@ function Prestations() {
 
                         <tr key={index}>
 
-                        <td>{Prestation.reference}</td>
-
-                        <td>{Prestation.vente_id || "--"}</td>
-
-                        <td>{Prestation.prestataire_id || "--"}</td>
+                        <td>{Prestation.reference}</td>                        
 
                         <td>{Prestation?.date_prestation.split('T')[0]}</td>
 
-                        <td>{Prestation.addresse}</td>
+                        <td>{Prestation.type_prestation || "--"}</td>
+
+                        <td>{Prestation.adresse || "--"}</td>
+
+                        <td>{Prestation.description || "--"}</td>
 
                         <td>{new Intl.NumberFormat("fr-FR").format(Prestation.montant) || 0} FG</td>
+
+                        <td>{new Intl.NumberFormat("fr-FR").format(Prestation.montant_carburant) || 0} FG</td>
                         
-                        
+                        <td>{new Intl.NumberFormat("fr-FR").format(Prestation.montant_paye) || 0} FG</td>
+
+                        <td>{Prestation.vehicules.immatriculation} - {Prestation.vehicules.chauffeur}</td>
+                        <td>{new Intl.NumberFormat("fr-FR").format(Prestation.prime_voyage) || 0} FG</td>
+                        <td>{Prestation.statut || "--"}</td>
+
                         <td>
                             <NavLink to={`/prestations/details/${Prestation.id}`}>
                                 <button className="profileView"><Eye size={20} /></button>

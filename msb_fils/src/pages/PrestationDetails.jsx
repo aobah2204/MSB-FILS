@@ -40,9 +40,9 @@ function PrestationDetails(){
 
         if (!data) return alert("Aucune Prestation");
 
-        getVenteInfo(data?.vente_id);
+        //getVenteInfo(data?.vente_id);
         //getVehiculeInfo(data?.vehicule_id);
-        getPrestaInfo(data?.prestataire_id);
+        //getPrestaInfo(data?.prestataire_id);
         setPrestation(data);        
     }
 
@@ -53,15 +53,15 @@ function PrestationDetails(){
 
 
     async function loadData(id) {
-        const [{ data: ventesData }, { data: vehiculesData } , { data: lignesData }] = await Promise.all([
-        supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
+        const [{ data: vehiculesData }] = await Promise.all([
+        //supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
         supabase.from("vehicules").select("id, marque, immatriculation, chauffeur"),
-        supabase.from("venteproduits").select("id, produit_id, quantite, montant_ligne"),
+        //supabase.from("venteproduits").select("id, produit_id, quantite, montant_ligne"),
         ]);
 
-        setVentes(ventesData || []);
+        //setVentes(ventesData || []);
         setVehicules(vehiculesData || []);
-        setLignes(lignesData || []);
+        //setLignes(lignesData || []);
     }
 
     async function getVenteInfo(id){
@@ -156,23 +156,31 @@ function PrestationDetails(){
 
                 </div>
 
+                
                 <div className="card">
 
                     <h3>
-                        Prestataire
+                        Montants
                     </h3>
 
                     <div>
-                        <label>Nom et prénom</label>
+                        <label>Cout de la livraison</label>
                         <p>
-                            {prestataire?.fullname} {prestataire?.addresse}
+                            {prestataire?.montant} {prestataire?.addresse}
                         </p>
                     </div>
 
                     <div>
-                        <label>Contact</label>
+                        <label>Coût du carburant</label>
                         <p>
-                            {prestataire?.telephone} 
+                            {prestataire?.montant_carburant} 
+                        </p>
+                    </div>
+
+                    <div>
+                        <label>Coût du carburant</label>
+                        <p>
+                            {prestataire?.montant_carburant} 
                         </p>
                     </div>                    
 
@@ -207,6 +215,7 @@ function PrestationDetails(){
                                   
 
                 </div>
+                
 
             </div>
 
