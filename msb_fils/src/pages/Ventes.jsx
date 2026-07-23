@@ -614,7 +614,7 @@ function Ventes() {
 
           <div className="bg-white rounded-xl shadow p-5 profile">
               <h4 className="text-gray-500 text-sm">
-                  Nombre de dépenses
+                  Nombre de ventes
               </h4>
 
               <p className="text-3xl font-bold">
