@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Eye, Pencil, Trash2, HandCoins, FileText } from "lucide-react";
+import { Eye, Pencil, Trash2, HandCoins, FileText, Search, Filter, RotateCcw  } from "lucide-react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { jsPDF } from "jspdf";
@@ -11,15 +11,17 @@ import logo from "../assets/Logo.png";
 function Ventes() {
   const { user } = useAuth();
   const [sales, setSales] = useState([]);
+  const [ventesFiltres, setVentesFiltres] = useState([]);
   const [clients, setClients] = useState([]);
 
   async function loadData() {
     const [{ data: salesData }, { data: clientsData }] = await Promise.all([
       supabase.from("ventes").select("*").order("date_vente", { ascending: false }),
-      supabase.from("clients").select("id, nom, prenom, adresse, telephone, email, societe"),
+      supabase.from("clients").select("id, nom, prenom, adresse, telephone, email, societe").order("nom", { ascending: true }),
     ]);
 
     setSales(salesData || []);
+    setVentesFiltres(salesData || []);
     setClients(clientsData || []);
   }
 
@@ -303,6 +305,133 @@ function Ventes() {
         doc.save("Facture_vente_"+order.reference+".pdf");
   }
 
+  const [filters, setFilters] = useState({
+      search: "",
+      dateDebut: "",
+      dateFin: "",
+      client: "",
+      ModePaiement: "" 
+  });
+
+  const handleFilterChange = (e) => {
+      const { name, value } = e.target;
+
+      setFilters(prev => ({
+          ...prev,
+          [name]: value
+      }));
+  };
+
+  const ventesFiltrees = sales.filter(vente => {
+
+      const date = new Date(vente.date_vente);
+
+      return (
+
+          (!filters.search ||
+              vente.description.toLowerCase().includes(filters.search.toLowerCase()) ||
+              vente.reference?.toLowerCase().includes(filters.search.toLowerCase()))
+
+          &&
+
+          (!filters.client ||
+              vente.client_id === filters.client)
+
+          &&
+
+          (!filters.modePaiement ||
+              vente.mode_paiement === filters.modePaiement)
+
+          &&
+
+          (!filters.dateDebut ||
+              date >= new Date(filters.dateDebut))
+
+          &&
+
+          (!filters.dateFin ||
+              date <= new Date(filters.dateFin + "T23:59:59")))
+          
+  });
+
+  const reinitialiser = () => {
+      const initialFilters = {
+        search: "",
+        dateDebut: "",
+        dateFin: "",
+        client: "",
+        ModePaiement: ""        
+    };
+
+    setFilters(initialFilters);
+    setVentesFiltres(sales);
+  };
+
+
+  const rechercher = () => {
+
+    console.log("In recherche ...", filters, sales);
+
+      const resultat = sales.filter((vente) => {
+
+          // Recherche texte
+          const rechercheOK =
+              filters.search === "" ||
+
+              vente.libelle?.toLowerCase().includes(filters.search.toLowerCase()) ||
+
+              vente.reference?.toLowerCase().includes(filters.search.toLowerCase());
+
+          
+          // Client
+          const clientOK =
+              filters.client === "" ||
+              vente.client_id === filters.client;          
+
+          // Paiement
+          const paiementOK =
+              filters.modePaiement === "" ||
+              vente.mode_paiement === filters.modePaiement;
+
+
+          // Date
+          const date = new Date(vente.date_vente);
+
+          const dateDebutOK =
+              filters.dateDebut === "" ||
+              date >= new Date(filters.dateDebut);
+
+          const dateFinOK =
+              filters.dateFin === "" ||
+              date <= new Date(filters.dateFin + "T23:59:59");
+
+          
+          return (
+              rechercheOK &&
+              clientOK &&
+              paiementOK &&
+              dateDebutOK &&
+              dateFinOK 
+          );
+
+      });
+
+      console.log("Resultat ", resultat);
+
+      setVentesFiltres(resultat);
+
+  };
+
+  const montantTotal = ventesFiltres.reduce(
+      (total, vente) => total + Number(vente.montant_total || 0),
+      0
+  );
+
+  const montantTotalPaye = ventesFiltres.reduce(
+      (total, vente) => total + Number(vente.montant_paye || 0),
+      0
+  );
+
   return (
     <div className="product-page">
       <h1>Liste des ventes</h1>
@@ -316,6 +445,219 @@ function Ventes() {
           </NavLink>
         </div>
       )}
+
+      <br/>
+      <div className="bg-white rounded-xl shadow-md p-5 mb-5">
+
+            <div className="flex items-center gap-2 mb-4">
+                <Filter size={22} />
+                <h2 className="text-xl font-semibold">
+                    Critères de recherche
+                </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                {/* Recherche */}
+
+                <div>
+                    <label className="text-sm font-medium">
+                        Recherche
+                    </label>
+
+                    <div className="relative">
+
+                        <Search
+                            size={18}
+                            className="absolute left-3 top-3 text-gray-400"
+                        />
+
+                        <input
+                            type="text"
+                            name="search"
+                            value={filters.search}
+                            onChange={handleFilterChange}
+                            placeholder="Libellé ou référence..."
+                            className="w-full pl-10 p-2 border rounded-lg"
+                        />
+
+                    </div>
+                </div>
+
+                {/* Date début */}
+
+                <div>
+
+                    <label className="text-sm font-medium">
+                        Du
+                    </label>
+
+                    <input
+                        type="date"
+                        name="dateDebut"
+                        value={filters.dateDebut}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border rounded-lg"
+                    />
+
+                </div>
+
+                {/* Date fin */}
+
+                <div>
+
+                    <label className="text-sm font-medium">
+                        Au
+                    </label>
+
+                    <input
+                        type="date"
+                        name="dateFin"
+                        value={filters.dateFin}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border rounded-lg"
+                    />
+
+                </div>                
+
+                <div>
+
+                    <label className="text-sm font-medium">
+                        Client
+                    </label>
+
+                    <select
+                        name="client"
+                        value={filters.client}
+                        onChange={(e) =>
+                            setFilters({
+                                ...filters,
+                                client: e.target.value === "" ? "" : Number(e.target.value)
+                            })
+                        }
+                        className="w-full p-2 border rounded-lg"
+                    >
+
+                        <option value="">
+                            Tous
+                        </option>
+
+                        {clients.map(f => (
+
+                            <option
+                                key={f.id}
+                                value={f.id}
+                            >
+                                {f.nom} {f.prenom} - {f.societe}
+                            </option>
+
+                        ))}
+
+                    </select>
+
+                </div>
+
+                
+                {/* Paiement */}
+
+                <div>
+
+                    <label className="text-sm font-medium">
+                        Mode de paiement
+                    </label>
+
+                    <select
+                        name="modePaiement"
+                        value={filters.modePaiement}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border rounded-lg"
+                    >
+
+                        <option value="">Tous</option>
+                        <option>Cash</option>
+                        <option>Virement</option>
+                        <option>Chèque</option>
+                        <option>Orange Money</option>
+                        <option>Carte bancaire</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            {/* Boutons */}
+                        
+            <br/>
+            <div className="grid">
+
+                <button className="profile"
+                    onClick={rechercher}
+                >
+                    Rechercher
+                </button>
+
+                <button
+                    onClick={reinitialiser}
+                    className="profile"
+                >
+                    <RotateCcw size={18} />
+                    Réinitialiser
+                </button>
+
+            </div>
+
+      </div>
+
+      {/** Carte résumé dépenses */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "15px" }}>
+
+          <div className="bg-white rounded-xl shadow p-5 profile">
+              <h4 className="text-gray-500 text-sm">
+                  Nombre de dépenses
+              </h4>
+
+              <p className="text-3xl font-bold">
+                  {ventesFiltres.length}
+              </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow p-5 profileMontant">
+              <h4 className="text-gray-500 text-sm">
+                  Montant total
+              </h4>
+
+              <p className="text-3xl font-bold text-red-600">
+                  {new Intl.NumberFormat("fr-FR").format(montantTotal)} GNF
+              </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow p-5 profileEdit">
+              <h4 className="text-gray-500 text-sm">
+                  Total montant payé
+              </h4>
+
+              <p className="text-3xl font-bold text-red-600">
+                  {new Intl.NumberFormat("fr-FR").format(montantTotalPaye)} GNF
+              </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow p-5 profileSupp">
+              <h4 className="text-gray-500 text-sm">
+                  Total reste à payer
+              </h4>
+
+              <p className="text-3xl font-bold text-red-600">
+                  {new Intl.NumberFormat("fr-FR").format(montantTotal - montantTotalPaye)} GNF
+              </p>
+          </div>
+
+          
+
+      </div>    
+      
+
+      <br/>
 
       <div className="table-container">
         <table className="data-table">
@@ -331,7 +673,7 @@ function Ventes() {
             </tr>
           </thead>
           <tbody>
-            {sales.map((sale) => (
+            {ventesFiltres.map((sale) => (
               <tr key={sale.id}>
                 <td>{sale.reference || "—"}</td>
                 <td>{clientMap[sale.client_id] || "—"}</td>
