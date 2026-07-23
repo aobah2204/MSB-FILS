@@ -32,7 +32,7 @@ function PrestationCreate(){
 
     const [Prestation,setPrestation] = useState({
 
-        reference:"MSB_PREST_000"+(prestations.length + 1),
+        reference:"",
         //vente_id: "",
         vehicule_id: "",
         //prestataire_id: "",
