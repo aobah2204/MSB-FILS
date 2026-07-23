@@ -216,6 +216,9 @@ function handleChange(e) {
                     Frais de route
                 </option>
                 <option>
+                    Manutention
+                </option>                
+                <option>
                     Divers
                 </option>
 
