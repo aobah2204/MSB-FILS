@@ -614,7 +614,7 @@ function Ventes() {
 
           <div className="bg-white rounded-xl shadow p-5 profile">
               <h4 className="text-gray-500 text-sm">
-                  Nombre de ventes
+                  Nombre de dépenses
               </h4>
 
               <p className="text-3xl font-bold">
@@ -673,7 +673,7 @@ function Ventes() {
             </tr>
           </thead>
           <tbody>
-            {ventesFiltres.map((sale) => (
+            {ventesFiltrees.map((sale) => (
               <tr key={sale.id}>
                 <td>{sale.reference || "—"}</td>
                 <td>{clientMap[sale.client_id] || "—"}</td>
