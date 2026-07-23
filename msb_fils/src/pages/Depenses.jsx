@@ -269,6 +269,11 @@ function Depenses() {
       0
   );
 
+  const montantTotalPaye = depensesFiltrees.reduce(
+      (total, depense) => total + Number(depense.montant_paye || 0),
+      0
+  );
+
   return (
     <div className="product-page">
 
@@ -662,9 +667,9 @@ function Depenses() {
       </div>
 
       {/** Carte résumé dépenses */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "15px" }}>
 
-          <div className="bg-white rounded-xl shadow p-5">
+          <div className="bg-white rounded-xl shadow p-5 profile">
               <h4 className="text-gray-500 text-sm">
                   Nombre de dépenses
               </h4>
@@ -674,13 +679,33 @@ function Depenses() {
               </p>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-5">
+          <div className="bg-white rounded-xl shadow p-5 profileMontant">
               <h4 className="text-gray-500 text-sm">
                   Montant total
               </h4>
 
               <p className="text-3xl font-bold text-red-600">
                   {new Intl.NumberFormat("fr-FR").format(montantTotal)} GNF
+              </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow p-5 profileEdit">
+              <h4 className="text-gray-500 text-sm">
+                  Total montant payé
+              </h4>
+
+              <p className="text-3xl font-bold text-red-600">
+                  {new Intl.NumberFormat("fr-FR").format(montantTotalPaye)} GNF
+              </p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow p-5 profileSupp">
+              <h4 className="text-gray-500 text-sm">
+                  Total reste à payer
+              </h4>
+
+              <p className="text-3xl font-bold text-red-600">
+                  {new Intl.NumberFormat("fr-FR").format(montantTotal - montantTotalPaye)} GNF
               </p>
           </div>
 
