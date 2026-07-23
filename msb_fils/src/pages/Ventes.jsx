@@ -422,12 +422,12 @@ function Ventes() {
 
   };
 
-  const montantTotal = ventesFiltres.reduce(
+  const montantTotal = ventesFiltrees.reduce(
       (total, vente) => total + Number(vente.montant_total || 0),
       0
   );
 
-  const montantTotalPaye = ventesFiltres.reduce(
+  const montantTotalPaye = ventesFiltrees.reduce(
       (total, vente) => total + Number(vente.montant_paye || 0),
       0
   );
@@ -614,11 +614,11 @@ function Ventes() {
 
           <div className="bg-white rounded-xl shadow p-5 profile">
               <h4 className="text-gray-500 text-sm">
-                  Nombre de dépenses
+                  Nombre de Ventes
               </h4>
 
               <p className="text-3xl font-bold">
-                  {ventesFiltres.length}
+                  {ventesFiltrees.length}
               </p>
           </div>
 
