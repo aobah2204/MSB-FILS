@@ -18,7 +18,7 @@ function Depenses() {
       const { data } = await supabase
         .from("depenses")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("date_depense", { ascending: false });
 
       if (!data) return alert("Aucun Dépense");
       setDepensesList(data);
