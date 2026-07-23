@@ -215,7 +215,7 @@ function Depenses() {
           // Paiement
           const paiementOK =
               filters.modePaiement === "" ||
-              depense.mode_paiement === filters.modePaiement;
+              depense.mode_paiement.toLowerCase().trim() === filters.modePaiement.toLowerCase().trim();
 
           // Statut
           const statutOK =
