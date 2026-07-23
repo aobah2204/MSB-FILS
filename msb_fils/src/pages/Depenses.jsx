@@ -264,15 +264,36 @@ function Depenses() {
 
   };
 
+  const montantTotal = depensesFiltrees.reduce(
+      (total, depense) => total + Number(depense.montant || 0),
+      0
+  );
+
   return (
     <div className="product-page">
 
+      <h1>Liste des Dépenses</h1>
+      {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
+        user?.role
+      ) && (
+        <section>
+          <div>
+            <NavLink to="/depenses/nouveau">
+              <button className="profile">
+                <Package size={20} /> Ajouter une dépense
+              </button>
+            </NavLink>
+          </div>
+        </section>
+      )}
+
+      <br/>
       <div className="bg-white rounded-xl shadow-md p-5 mb-5">
 
             <div className="flex items-center gap-2 mb-4">
                 <Filter size={22} />
                 <h2 className="text-xl font-semibold">
-                    Filtres
+                    Critères de recherche
                 </h2>
             </div>
 
@@ -618,13 +639,14 @@ function Depenses() {
             </div>
 
             {/* Boutons */}
-
+                        
+            <br/>
             <div className="grid">
 
                 <button className="profile"
                     onClick={rechercher}
                 >
-                    Filtrer
+                    Rechercher
                 </button>
 
                 <button
@@ -637,22 +659,35 @@ function Depenses() {
 
             </div>
 
-        </div>
+      </div>
 
-      <h1>Liste des Dépenses</h1>
-      {["Administrateur", "Responsable de production", "Superviseur", "Coordinateur", "Commercial"].includes(
-        user?.role
-      ) && (
-        <section>
-          <div>
-            <NavLink to="/depenses/nouveau">
-              <button className="profile">
-                <Package size={20} /> Nouvelle Dépense
-              </button>
-            </NavLink>
+      {/** Carte résumé dépenses */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
+
+          <div className="bg-white rounded-xl shadow p-5">
+              <h4 className="text-gray-500 text-sm">
+                  Nombre de dépenses
+              </h4>
+
+              <p className="text-3xl font-bold">
+                  {depensesFiltrees.length}
+              </p>
           </div>
-        </section>
-      )}
+
+          <div className="bg-white rounded-xl shadow p-5">
+              <h4 className="text-gray-500 text-sm">
+                  Montant total
+              </h4>
+
+              <p className="text-3xl font-bold text-red-600">
+                  {new Intl.NumberFormat("fr-FR").format(montantTotal)} GNF
+              </p>
+          </div>
+
+          
+
+      </div>    
+      
 
       <br/>
 
