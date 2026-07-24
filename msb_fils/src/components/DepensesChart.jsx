@@ -16,7 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabase";
 
 
-function DepensesChart({ ChartData }) {
+function DepensesChart({ ChartData, MontantData }) {
 
     //console.log("ChartData in chart : ", ChartData); // Log the ChartData to check its value
 
@@ -33,6 +33,7 @@ return (
         <h2 className="titre_graphe">
             Dépenses par catégories
         </h2>
+        <p><strong> Montant total : </strong> {new Intl.NumberFormat("fr-FR").format(MontantData)} GNF </p>
 
 
 

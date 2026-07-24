@@ -7,7 +7,8 @@ import VenteChart from "../components/VenteChart.jsx";
 import AchatChart from "../components/AchatChart.jsx";
 import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
-import { ShoppingCart } from "lucide-react";
+import DashboardCard from "../components/DashboardCard.jsx";
+import { ShoppingCart, User2, Factory } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
 
@@ -457,6 +458,73 @@ async function FinanceByMois(){
     setFinanceMois(data);
 }
 
+// Client evolution 
+const [clientStats, setClientStats] = useState({});
+
+async function loadClientStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_clients_evolution")
+        .select("*")
+        .single();
+
+    setClientStats(data);
+
+}
+
+// vente evolution 
+const [venteStats, setVentesStats] = useState({});
+
+async function loadVenteStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_ventes_evolution")
+        .select("*")
+        .single();
+
+    setVentesStats(data);
+
+}
+
+// production evolution 
+const [productionStats, setProductionsStats] = useState({});
+const [Allproductions, setProductions] = useState({});
+async function loadProductionStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_production_evolution")
+        .select("*")
+        .single();
+
+    setProductionsStats(data);
+
+    const { data: dataP } = await supabase
+        .from("productions")
+        .select("*");
+
+    setProductions(dataP);
+
+}
+
+// depense evolution 
+const [depenseStats, setDepensesStats] = useState({});
+const [depenses, setDepenses] = useState([]);
+async function loadDepenseStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_depenses_evolution")
+        .select("*")
+        .single();
+
+    setDepensesStats(data);
+
+    const { data: dataD } = await supabase
+        .from("depenses")
+        .select("*");
+
+    setDepenses(dataD);
+
+}
 
 useEffect(()=>{
     getAllClients();  
@@ -473,9 +541,11 @@ useEffect(()=>{
     // Depenses
     Depenses_site();
     Depenses_categorie();
+    loadDepenseStats();
 
     // production 
     Prods_mois();
+    loadProductionStats();
 
     // Chiffre d'affaires par mois 
     Ventes_mois();
@@ -486,122 +556,119 @@ useEffect(()=>{
     getAllLivraisons();
 
     loadTop10();
+
+    // Client evolution 
+    loadClientStats();
+
+    // Vente evolution
+    loadVenteStats();
+
 },[]);
+
+const montantTotalPaye = depensesCategorie.reduce(
+      (total, vente) => total + Number(vente.montant || 0),
+      0
+);
+
+
 
 return (
 
 <div>    
 
 
-    <div className="cards">
-        <div className="card">            
-
-            <ChiffreAffaireMensuelGlobalChart
-                Data={financeMois}
-            />
-
-        </div>  
-        <div className="card">            
-
-            <ChiffreAffaireMensuelBySiteChart
-                Data={prodVenteMois}
-            />
-
-        </div> 
-    </div>
     
 
     <div className="cards">
-        <div className="card">            
 
-            <TopProduitsChart
-                data={datatop10}
-            />
+        <DashboardCard
 
-        </div>  
-        <div className="card">            
+                title="Clients"
 
-            <DepensesChart
-                ChartData={depensesCategorie}
-            />
+                value={NbreClient}
 
-        </div>         
+                icon={<User2 size={32}/>}
+
+                color="#2563eb"
+
+                trend={clientStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/clients"
+
+        />
+
+        <DashboardCard
+
+                title="Ventes"
+
+                value={ventes.length}
+
+                icon={<ShoppingCart size={32}/>}
+
+                color="#db4b12"
+
+                trend={venteStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/ventes"
+
+                montantCourant={venteStats.mois_courant}
+
+                moisDernier={venteStats.mois_precedent}
+
+        />
+        
     </div>
-
-    {/*<div className="cards">
-        <div className="card">            
-
-            <ProductionMensuelSiteChart
-                ChartData={prodMois}
-            />
-
-        </div>  
-    </div>*/}
-
-
     <div className="cards">
+        <DashboardCard
 
-        <NavLink to="/clients" className="card">
-            <div>
-                <h3>Clients</h3>
-                <p>{NbreClient}</p>
-            </div>
-        </NavLink>
+                title="Production"
 
-        <NavLink to="/produits" className="card">
-            <div>
-                <h3>Produits</h3>
-                <p>{NbreProduit}</p>
-            </div>
-        </NavLink>
+                value={Allproductions.length}
 
-        <NavLink to="/marchandises" className="card">
-            <div>
-                <h3>Marchandises</h3>
-                <p>{NbrMarchandise}</p>
-            </div>
-        </NavLink>  
+                icon={<Factory size={32}/>}
 
-        <NavLink to="/vehicules" className="card">
-            <div>
-                <h3>Véhicules</h3>
-                <p>{NbreVehicule}</p>
-            </div>
-        </NavLink>     
+                color="#db4b12"
+
+                trend={productionStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/productions"
+
+                montantCourant={productionStats.mois_courant}
+
+                moisDernier={productionStats.mois_precedent}
+
+        />     
+
+        <DashboardCard
+
+                title="Dépenses"
+
+                value={depenses.length}
+
+                icon={<Factory size={32}/>}
+
+                color="#db4b12"
+
+                trend={depenseStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/depenses"
+
+                montantCourant={depenseStats.mois_courant}
+
+                moisDernier={depenseStats.mois_precedent}
+
+        />        
     </div>
 
-    <div className="cards">   
-
-        <NavLink to="/fournisseurs" className="card">
-            <div>
-                <h3>Fournisseurs</h3>
-                <p>{NbreFournisseur}</p>
-            </div>
-        </NavLink>
-
-        <NavLink to="/production-sites" className="card">
-            <div>
-                <h3>Sites de production</h3>
-                <p>{NbreSite}</p>
-            </div>
-        </NavLink>
-
-        <NavLink to="/matierespremieres" className="card">
-            <div>
-                <h3>Matières premières</h3>
-                <p>{NbreMatPrem}</p>
-            </div>
-        </NavLink>
-
-        <NavLink to="/salaries" className="card">
-            <div>                
-                <h3>Salariés</h3>                
-                <p>{NbreSalaries}</p>
-            </div>
-        </NavLink>
-        
-        
-    </div>
+    
     <br/>
 
     <h3> <ShoppingCart /> Commandes </h3>
@@ -653,6 +720,52 @@ return (
 
         
     </div>
+
+    <div className="cards">
+        <div className="card">            
+
+            <ChiffreAffaireMensuelGlobalChart
+                Data={financeMois}
+            />
+        </div>  
+        <div className="card">            
+
+            <ChiffreAffaireMensuelBySiteChart
+                Data={prodVenteMois}
+            />
+
+        </div> 
+    </div>
+    
+
+    <div className="cards">
+        <div className="card">            
+
+            <TopProduitsChart
+                data={datatop10}
+            />
+
+        </div>  
+        <div className="card">            
+
+            <DepensesChart
+                ChartData={depensesCategorie}
+                MontantData={montantTotalPaye}
+            />
+
+        </div>         
+    </div>
+
+    {/*<div className="cards">
+        <div className="card">            
+
+            <ProductionMensuelSiteChart
+                ChartData={prodMois}
+            />
+
+        </div>  
+    </div>*/}
+
 </div>
 
 )
