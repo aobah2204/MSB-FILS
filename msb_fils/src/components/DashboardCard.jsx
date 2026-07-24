@@ -75,7 +75,6 @@ function DashboardCard({
 
             <div>
                 {moisDernier && <div className="dashboard-montantdernier">Mois dernier : {new Intl.NumberFormat("fr-FR").format(moisDernier)} gnf</div>}
-                <br/>
                 {montantCourant && <div className="dashboard-montantcourant">Mois courant : {new Intl.NumberFormat("fr-FR").format(montantCourant)} gnf</div>}
                 
             </div>
