@@ -631,7 +631,7 @@ return (
 
                 icon={<Factory size={32}/>}
 
-                color="#db4b12"
+                color="#230da0"
 
                 trend={productionStats.evolution}
 
@@ -653,7 +653,7 @@ return (
 
                 icon={<HandCoins size={42}/>}
 
-                color="#db4b12"
+                color="#f11a0a"
 
                 trend={depenseStats.evolution}
 
