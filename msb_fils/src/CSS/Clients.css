@@ -37,6 +37,15 @@ border-radius:20px;
 
 }
 
+.profileExit{
+
+background:rgb(235, 31, 31);
+color:white;
+
+border-radius:20px;
+
+}
+
 .profileEdit{
 
 background:rgb(7, 102, 36);

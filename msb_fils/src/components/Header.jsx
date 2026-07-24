@@ -20,9 +20,7 @@ return (
 
 
     <div>
-        <h4 className="profile_user">
-           <User/> {user?.fullname} 
-        </h4>
+        <h4 className="profile_user_header"><User size={25}/> {user?.fullname} </h4>
         <p>{user?.role}</p>
     </div>
 
@@ -40,7 +38,7 @@ return (
         🔔
         </div>
         {/*<button className="profile" type="button" onClick={() => navigate("/")}>Accueil</button>*/}
-        <button className="profile" onClick={logout}>
+        <button className="profileExit" onClick={logout}>
             <LogOut />
         </button>
 
