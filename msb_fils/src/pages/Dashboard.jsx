@@ -8,7 +8,7 @@ import AchatChart from "../components/AchatChart.jsx";
 import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
-import { ShoppingCart, User2, Factory, HandCoins } from "lucide-react";
+import { ShoppingCart, User2, Factory, HandCoins, Users } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
 
@@ -587,7 +587,7 @@ return (
 
                 value={NbreClient}
 
-                icon={<User2 size={32}/>}
+                icon={<Users size={32}/>}
 
                 color="#2563eb"
 
