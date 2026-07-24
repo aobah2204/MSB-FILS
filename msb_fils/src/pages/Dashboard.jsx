@@ -8,7 +8,7 @@ import AchatChart from "../components/AchatChart.jsx";
 import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
-import { ShoppingCart, User2, Factory, HandCoins, Users } from "lucide-react";
+import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
 
@@ -22,6 +22,7 @@ import {
     CartesianGrid,
     ResponsiveContainer
 } from "recharts";
+import Achats from "./Achats.jsx";
 
 function TopProduitsChart({data}){
 
@@ -472,6 +473,20 @@ async function loadClientStats() {
 
 }
 
+// Fournisseur evolution 
+const [fournisseurStats, setFournisseurStats] = useState({});
+
+async function loadFournisseurStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_fournisseurs_evolution")
+        .select("*")
+        .single();
+
+    setFournisseurStats(data);
+
+}
+
 // vente evolution 
 const [venteStats, setVentesStats] = useState({});
 
@@ -526,12 +541,36 @@ async function loadDepenseStats() {
 
 }
 
+// achats evolution 
+const [achatsStats, setachatsStats] = useState({});
+const [achats, setachats] = useState([]);
+async function loadachatsStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_achats_evolution")
+        .select("*")
+        .single();
+
+    setachatsStats(data);
+
+    const { data: dataD } = await supabase
+        .from("achats")
+        .select("*");
+
+    setachats(dataD);
+
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts(); 
     getAllMarchandises(); 
     getAllVehicules();
+    
+    // Fournisseurs
     getAllFournisseurs();
+    loadFournisseurStats();
+    
     getAllMatPrems();
     getAllSalaries();
     getAllSites();
@@ -563,6 +602,9 @@ useEffect(()=>{
     // Vente evolution
     loadVenteStats();
 
+    // Achats
+    loadachatsStats();
+
 },[]);
 
 const montantTotalPaye = depensesCategorie.reduce(
@@ -579,25 +621,7 @@ return (
 
     
 
-    <div className="cards">
-
-        <DashboardCard
-
-                title="Clients"
-
-                value={NbreClient}
-
-                icon={<Users size={32}/>}
-
-                color="#2563eb"
-
-                trend={clientStats.evolution}
-
-                subtitle="depuis le mois dernier"
-
-                link="/clients"
-
-        />
+    <div className="cards">        
 
         <DashboardCard
 
@@ -618,6 +642,27 @@ return (
                 montantCourant={venteStats.mois_courant}
 
                 moisDernier={venteStats.mois_precedent}
+
+        />
+        <DashboardCard
+
+                title="Achats"
+
+                value={achats.length}
+
+                icon={<Handshake size={32}/>}
+
+                color="#11a30c"
+
+                trend={achatsStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/achats"
+
+                montantCourant={achatsStats.mois_courant}
+
+                moisDernier={achatsStats.mois_precedent}
 
         />
         
@@ -666,6 +711,43 @@ return (
                 moisDernier={depenseStats.mois_precedent}
 
         />        
+    </div>
+
+    <div className="cards">
+        <DashboardCard
+
+                title="Clients"
+
+                value={NbreClient}
+
+                icon={<Users size={32}/>}
+
+                color="#0f46bd"
+
+                trend={clientStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/clients"
+
+        />
+        <DashboardCard
+
+                title="Fournisseurs"
+
+                value={NbreFournisseur}
+
+                icon={<Users size={32}/>}
+
+                color="#0d0b88"
+
+                trend={fournisseurStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/fournisseurs"
+
+        />
     </div>
 
     
