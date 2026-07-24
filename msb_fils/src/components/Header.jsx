@@ -26,11 +26,11 @@ return (
         <p>{user?.role}</p>
     </div>
 
-    <div>
+    {/*<div>
         <h2>        
             MSB & FILS Portail
         </h2>
-    </div>
+    </div>*/}
             
 
     <div className="header-actions">
@@ -39,7 +39,7 @@ return (
         <div className="notification">
         🔔
         </div>
-        <button className="profile" type="button" onClick={() => navigate("/")}>Accueil</button>
+        {/*<button className="profile" type="button" onClick={() => navigate("/")}>Accueil</button>*/}
         <button className="profile" onClick={logout}>
             <LogOut />
         </button>
