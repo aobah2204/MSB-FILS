@@ -21,7 +21,7 @@ return (
 
     <div>
         <h4 className="profile_user">
-            {user?.fullname} 
+           <User/> {user?.fullname} 
         </h4>
         <p>{user?.role}</p>
     </div>
