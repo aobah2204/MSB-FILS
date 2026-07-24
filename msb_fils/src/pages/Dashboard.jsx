@@ -8,7 +8,7 @@ import AchatChart from "../components/AchatChart.jsx";
 import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
-import { ShoppingCart, User2, Factory } from "lucide-react";
+import { ShoppingCart, User2, Factory, HandCoins } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
 
@@ -625,7 +625,7 @@ return (
     <div className="cards">
         <DashboardCard
 
-                title="Production"
+                title="Productions"
 
                 value={Allproductions.length}
 
@@ -651,7 +651,7 @@ return (
 
                 value={depenses.length}
 
-                icon={<Factory size={32}/>}
+                icon={<HandCoins size={42}/>}
 
                 color="#db4b12"
 

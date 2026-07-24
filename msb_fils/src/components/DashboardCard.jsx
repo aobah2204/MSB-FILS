@@ -54,10 +54,7 @@ function DashboardCard({
                 >
                     {icon}
                 </div>
-
-                {montantCourant && <p>Mois courant : {new Intl.NumberFormat("fr-FR").format(montantCourant)} GNF</p>}
-                {moisDernier && <p>Mois dernier : {new Intl.NumberFormat("fr-FR").format(moisDernier)} GNF</p>}
-
+                
                 <div>
 
                     <h4 className="dashboard-title">
@@ -74,6 +71,13 @@ function DashboardCard({
 
                 </div>
 
+            </div>
+
+            <div>
+                {moisDernier && <div className="dashboard-montantdernier">Mois dernier : {new Intl.NumberFormat("fr-FR").format(moisDernier)} gnf</div>}
+                <br/>
+                {montantCourant && <div className="dashboard-montantcourant">Mois courant : {new Intl.NumberFormat("fr-FR").format(montantCourant)} gnf</div>}
+                
             </div>
 
             <div className="dashboard-footer">
