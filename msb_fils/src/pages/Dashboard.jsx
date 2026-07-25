@@ -650,17 +650,11 @@ const montantTotalPaye = depensesCategorie.reduce(
       0
 );
 
-
-
 return (
 
-<div>    
+<div>       
 
-
-    
-
-    <div className="cards">        
-
+    <div className="cards"> 
 
         <DashboardCard
 
