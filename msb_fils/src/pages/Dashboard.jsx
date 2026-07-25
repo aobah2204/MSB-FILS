@@ -9,6 +9,7 @@ import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensue
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
 import ClientStats from "../components/ClientStats.jsx";
+import FournisseurStats from "../components/FournisseurStats.jsx";
 import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake, Truck, BadgeSwissFranc } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
@@ -490,7 +491,7 @@ async function loadClientStats() {
 
 // Fournisseur evolution 
 const [fournisseurStats, setFournisseurStats] = useState({});
-
+const [top10fournisseurStats, settop10FournisseurStats] = useState({});
 async function loadFournisseurStats() {
 
     const { data } = await supabase
@@ -499,6 +500,12 @@ async function loadFournisseurStats() {
         .single();
 
     setFournisseurStats(data);
+
+    const { data: top10F } = await supabase
+        .from("vw_dashboard_top10_fournisseurs")
+        .select("*");
+
+    settop10FournisseurStats(top10F);
 
 }
 
@@ -984,6 +991,9 @@ return (
 
         <ClientStats
             data={top10clientsDetailsStats}
+        />
+        <FournisseurStats
+            data={top10fournisseurStats}
         />
 
         

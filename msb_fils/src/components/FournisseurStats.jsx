@@ -1,11 +1,11 @@
 import { Trophy, ShoppingCart, Receipt } from "lucide-react";
 
-function ClientStats({ data = [] }) {
+function FournisseurStats({ data = [] }) {
 
     if (!data.length) {
         return (
             <div className="client-stats-card">
-                <h2 className="profile">🏆 Top clients</h2>
+                <h2 className="profile">🏆 Top Fournisseurs</h2>
                 <p>Aucune donnée.</p>
             </div>
         );
@@ -23,7 +23,7 @@ function ClientStats({ data = [] }) {
 
                 <Trophy size={24} color="#f59e0b"/>
 
-                <h2>Top 10 des clients</h2>
+                <h2>Top 10 des Fournisseurs</h2>
 
             </div>
 
@@ -71,12 +71,8 @@ function ClientStats({ data = [] }) {
 
                                     <span>
 
-                                        {client.nb_commandes} commandes
-
-                                        •
-
-                                        {client.nb_ventes} ventes
-
+                                        {client.nb_achats} achats
+                                
                                     </span>
 
                                 </div>
@@ -90,7 +86,7 @@ function ClientStats({ data = [] }) {
 
                                     } GNF
 
-                                     
+                                    
 
                                 </div>
 
@@ -124,4 +120,4 @@ function ClientStats({ data = [] }) {
 
 }
 
-export default ClientStats;
+export default FournisseurStats;
