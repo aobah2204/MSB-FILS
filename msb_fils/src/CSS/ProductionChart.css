@@ -192,3 +192,137 @@ padding:10px;
     font-size:13px;
 
 }
+
+.client-stats-card{
+
+    background:rgb(23, 31, 41);
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.client-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:25px;
+
+}
+
+.client-header h2{
+
+    margin:0;
+
+}
+
+.client-item{
+
+    margin-bottom:22px;
+
+}
+
+.client-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:8px;
+
+}
+
+.client-avatar{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+
+    font-size:18px;
+
+}
+
+.client-info{
+
+    flex:1;
+
+    margin-left:15px;
+
+}
+
+.client-info h4{
+
+    margin:0;
+
+    font-size:15px;
+
+}
+
+.client-info span{
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+.client-ca{
+
+    font-weight:bold;
+
+    color:#059669;
+
+    font-size:16px;
+
+}
+
+.progress{
+
+    width:100%;
+
+    height:10px;
+
+    background:#e5e7eb;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+        90deg,
+        #2563eb,
+        #06b6d4
+    );
+
+}

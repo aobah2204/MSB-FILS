@@ -8,6 +8,7 @@ import AchatChart from "../components/AchatChart.jsx";
 import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
+import ClientStats from "../components/ClientStats.jsx";
 import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake, Truck, BadgeSwissFranc } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
@@ -461,6 +462,8 @@ async function FinanceByMois(){
 
 // Client evolution 
 const [clientStats, setClientStats] = useState({});
+const [clientsDetailsStats, setClientsDetailsStats] = useState({});
+const [top10clientsDetailsStats, settop10ClientsDetailsStats] = useState({});
 
 async function loadClientStats() {
 
@@ -470,6 +473,18 @@ async function loadClientStats() {
         .single();
 
     setClientStats(data);
+
+    const { data: clientsDetailsData } = await supabase
+        .from("vw_dashboard_clients")
+        .select("*");
+
+    setClientsDetailsStats(clientsDetailsData);
+
+    const { data: top10clientsDetailsData } = await supabase
+        .from("vw_dashboard_top10_clients")
+        .select("*");
+
+    settop10ClientsDetailsStats(top10clientsDetailsData);
 
 }
 
@@ -966,19 +981,12 @@ return (
     <br/>
     <h2 className="profile">Statistiques & Graphes</h2>
     <div className="cards">
-        <div className="card">            
 
-            <ChiffreAffaireMensuelGlobalChart
-                Data={financeMois}
-            />
-        </div>  
-        <div className="card">            
+        <ClientStats
+            data={top10clientsDetailsStats}
+        />
 
-            <ChiffreAffaireMensuelBySiteChart
-                Data={prodVenteMois}
-            />
-
-        </div> 
+        
     </div>
     
 
@@ -997,7 +1005,20 @@ return (
                 MontantData={montantTotalPaye}
             />
 
-        </div>         
+        </div>  
+        <div className="card">            
+
+            <ChiffreAffaireMensuelGlobalChart
+                Data={financeMois}
+            />
+        </div>  
+        <div className="card">            
+
+            <ChiffreAffaireMensuelBySiteChart
+                Data={prodVenteMois}
+            />
+
+        </div>        
     </div>
 
     {/*<div className="cards">
