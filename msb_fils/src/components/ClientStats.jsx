@@ -71,11 +71,7 @@ function ClientStats({ data = [] }) {
 
                                     <span>
 
-                                        {client.nb_commandes} commandes
-
-                                        •
-
-                                        {client.nb_ventes} ventes
+                                        {client.nb_commandes} commandes •  {client.nb_ventes} ventes
 
                                     </span>
 

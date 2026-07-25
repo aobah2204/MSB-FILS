@@ -12,7 +12,7 @@ function FournisseurStats({ data = [] }) {
     }
 
     const maxCA = Math.max(
-        ...data.map(c => Number(c.chiffre_affaires || 0))
+        ...data.map(c => Number(c.montant_total || 0))
     );
 
     return (
@@ -34,7 +34,7 @@ function FournisseurStats({ data = [] }) {
                     const pourcentage =
                         maxCA === 0
                             ? 0
-                            : (client.chiffre_affaires/maxCA)*100;
+                            : (client.montant_total/maxCA)*100;
 
                     return(
 
@@ -71,7 +71,7 @@ function FournisseurStats({ data = [] }) {
 
                                     <span>
 
-                                        {client.nb_achats} achats
+                                        {client.nb_achats} achats --  {client.nb_depenses} dépenses
                                 
                                     </span>
 
@@ -82,7 +82,7 @@ function FournisseurStats({ data = [] }) {
                                     {
 
                                         new Intl.NumberFormat("fr-FR")
-                                        .format(client.chiffre_affaires)
+                                        .format(client.montant_total)
 
                                     } GNF
 
