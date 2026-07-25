@@ -595,6 +595,26 @@ async function loadLivraisonStats() {
 
 }
 
+// Prestation evolution 
+const [PrestationsStats, setPrestationsStats] = useState({});
+const [Prestations, setPrestations] = useState({});
+async function loadPrestationStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_prestations_evolution")
+        .select("*")
+        .single();
+
+    setPrestationsStats(data);
+
+    const { data: dataP } = await supabase
+        .from("prestations")
+        .select("*");
+
+    setPrestations(dataP);
+
+}
+
 // Issa distribution evolution 
 const [IssaVentessStats, setIssaVentesStats] = useState({});
 const [IssaAchatsStats, setIssaAchatsStats] = useState({});
@@ -666,6 +686,9 @@ useEffect(()=>{
     // Livraisons
     getAllLivraisons();
     loadLivraisonStats();
+
+    // Prestation 
+    loadPrestationStats();
 
     loadTop10();
 
@@ -868,6 +891,27 @@ return (
                 montantCourant={livraisonsStats.mois_courant}
 
                 moisDernier={livraisonsStats.mois_precedent}
+
+        />
+        <DashboardCard
+
+                title="Prestations"
+
+                value={Prestations.length}
+
+                icon={<Truck size={32}/>}
+
+                color="#ebcd27"
+
+                trend={PrestationsStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/prestations"
+
+                montantCourant={PrestationsStats.mois_courant}
+
+                moisDernier={PrestationsStats.mois_precedent}
 
         />
     </div>
