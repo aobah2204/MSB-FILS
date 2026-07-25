@@ -715,8 +715,7 @@ const montantTotalPaye = depensesCategorie.reduce(
 return (
 
 <div>       
-
-    <h2>MSB & FILS</h2>
+    <h2 className="profile">MSB & FILS</h2>
     <div className="cards"> 
         <DashboardCard
 
@@ -917,7 +916,7 @@ return (
     </div>
 
     <br/>
-    <h2>ISSA DISTRIBUTION</h2>
+    <h2 className="profile">ISSA DISTRIBUTION</h2>
     <div className="cards"> 
         <DashboardCard
 
@@ -965,7 +964,7 @@ return (
     </div>
 
     <br/>
-    <h2>Statistiques visuel graphes</h2>
+    <h2 className="profile">Statistiques & Graphes</h2>
     <div className="cards">
         <div className="card">            
 
