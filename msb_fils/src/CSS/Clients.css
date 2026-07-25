@@ -70,8 +70,34 @@ border-radius:20px;
 
 .profileVehicule{
 
-background:rgb(212, 199, 13);
-color:rgb(12, 10, 10);
+background:rgb(212, 8, 8);
+color:rgb(240, 235, 235);
+
+padding:10px 20px;
+
+border-radius:20px;
+
+}
+
+.profile-msb{
+
+    padding:10px 20px;
+
+    border-radius:20px;
+    color:rgb(240, 235, 235);
+
+    background:linear-gradient(
+        90deg,
+        #f30404,
+        #1e9102
+    );
+
+}
+
+.profileStat{
+
+background:rgb(4, 114, 9);
+color:rgb(240, 235, 235);
 
 padding:10px 20px;
 
@@ -83,7 +109,18 @@ border-radius:20px;
 
 background:rgb(212, 199, 13);
 color:rgb(228, 9, 9);
+color:rgb(12, 10, 10);
+padding:10px 20px;
 
+border-radius:20px;
+
+}
+
+.profileIssa{
+
+background:rgb(231, 116, 8);
+color:rgb(228, 159, 9);
+color:rgb(241, 237, 237);
 padding:10px 20px;
 
 border-radius:20px;
