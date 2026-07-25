@@ -5,7 +5,7 @@ function ClientStats({ data = [] }) {
     if (!data.length) {
         return (
             <div className="client-stats-card">
-                <h2 className="profile">🏆 Top clients</h2>
+                <h2 className="profile"> Top clients</h2>
                 <p>Aucune donnée.</p>
             </div>
         );
@@ -21,9 +21,8 @@ function ClientStats({ data = [] }) {
 
             <div className="client-header">
 
-                <Trophy size={24} color="#f59e0b"/>
 
-                <h2>Top 10 des clients</h2>
+                <p className="profile">🏆 Top 10 des clients</p>
 
             </div>
 

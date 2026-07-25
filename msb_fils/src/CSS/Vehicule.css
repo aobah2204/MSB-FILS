@@ -24,7 +24,7 @@
 
     margin-bottom:25px;
 
-    color:#95ade4;
+    color:#eaecf0;
 
     font-size:24px;
 
@@ -38,7 +38,7 @@
 
 .vehicle-item{
 
-    background:rgb(177, 180, 236);
+    background:rgb(39, 40, 51);
 
     border-radius:18px;
 
@@ -80,17 +80,17 @@
 
     margin:0;
 
-    color:#0f172a;
+    color:#d8dde7;
 
-    font-size:20px;
+    font-size:25px;
 
 }
 
 .vehicle-header span{
 
-    color:#64748b;
+    color:#eef0f3;
 
-    font-size:14px;
+    font-size:18px;
 
 }
 
@@ -156,7 +156,7 @@
 
     gap:8px;
 
-    color:#334155;
+    color:#f8f9fa;
 
     font-weight:600;
 
@@ -166,7 +166,7 @@
 
     font-weight:bold;
 
-    color:#0f172a;
+    color:#eff0f3;
 
 }
 
@@ -180,7 +180,7 @@
 
     height:10px;
 
-    background:#e2e8f0;
+    background:#edeff1;
 
     border-radius:20px;
 
@@ -196,8 +196,8 @@
 
     background:linear-gradient(
         90deg,
-        #2563eb,
-        #06b6d4
+        #e9c008,
+        #f30404
     );
 
     transition:width .5s;
@@ -222,7 +222,7 @@
 
 .resume div{
 
-    background:#f8fafc;
+    background:#8dbceb;
 
     padding:15px;
 
@@ -232,7 +232,7 @@
 
     font-size:14px;
 
-    color:#64748b;
+    color:#030d1b;
 
 }
 

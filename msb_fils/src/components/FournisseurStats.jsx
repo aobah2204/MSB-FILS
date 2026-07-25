@@ -21,9 +21,7 @@ function FournisseurStats({ data = [] }) {
 
             <div className="client-header">
 
-                <Trophy size={24} color="#f59e0b"/>
-
-                <h2>Top 10 des Fournisseurs</h2>
+                <p className="profile"> 🏆Top 10 des Fournisseurs</p>
 
             </div>
 

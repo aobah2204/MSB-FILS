@@ -29,7 +29,7 @@ return(
 
 <div className="vehicle-card">
 
-<h2>
+<h2 className="profile">
 
 🚚 Dépenses des véhicules
 
@@ -149,9 +149,7 @@ new Intl.NumberFormat("fr-FR")
 
 .format(cat.montant_total)
 
-}
-
-GNF
+} GNF
 
 </div>
 
@@ -195,9 +193,7 @@ new Intl.NumberFormat("fr-FR")
 
 .format(vehicle.mois_courant)
 
-}
-
-GNF
+} GNF
 
 </strong>
 
@@ -215,9 +211,7 @@ new Intl.NumberFormat("fr-FR")
 
 .format(vehicle.mois_precedent)
 
-}
-
-GNF
+} GNF
 
 </strong>
 
