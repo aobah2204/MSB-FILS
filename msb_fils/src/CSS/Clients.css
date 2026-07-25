@@ -68,6 +68,28 @@ border-radius:20px;
 
 }
 
+.profileVehicule{
+
+background:rgb(212, 199, 13);
+color:rgb(12, 10, 10);
+
+padding:10px 20px;
+
+border-radius:20px;
+
+}
+
+.profileFournisseur{
+
+background:rgb(212, 199, 13);
+color:rgb(228, 9, 9);
+
+padding:10px 20px;
+
+border-radius:20px;
+
+}
+
 .profile_back{
 
 background:rgb(189, 84, 84);

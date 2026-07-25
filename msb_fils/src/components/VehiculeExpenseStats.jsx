@@ -29,11 +29,10 @@ return(
 
 <div className="vehicle-card">
 
-<h2 className="profile">
-
-🚚 Dépenses des véhicules
-
-</h2>
+    <p className="profileVehicule">
+        🚚 Dépenses véhicules
+    </p>
+    <br/>
 
 {
 

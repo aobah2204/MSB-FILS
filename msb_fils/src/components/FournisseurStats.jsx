@@ -5,7 +5,7 @@ function FournisseurStats({ data = [] }) {
     if (!data.length) {
         return (
             <div className="client-stats-card">
-                <h2 className="profile">🏆 Top Fournisseurs</h2>
+                <h2 className="profileFournisseur">🏆 Top Fournisseurs</h2>
                 <p>Aucune donnée.</p>
             </div>
         );
@@ -21,7 +21,7 @@ function FournisseurStats({ data = [] }) {
 
             <div className="client-header">
 
-                <p className="profile"> 🏆Top 10 des Fournisseurs</p>
+                <p className="profileFournisseur"> 🏆Top 10 des Fournisseurs</p>
 
             </div>
 
@@ -43,7 +43,7 @@ function FournisseurStats({ data = [] }) {
 
                             <div className="client-top">
 
-                                <div className="client-avatar">
+                                <div className="fournisseur-avatar">
 
                                     {
                                         client.societe
@@ -75,7 +75,7 @@ function FournisseurStats({ data = [] }) {
 
                                 </div>
 
-                                <div className="client-ca">
+                                <div className="fournisseur-ca">
 
                                     {
 
@@ -90,11 +90,11 @@ function FournisseurStats({ data = [] }) {
 
                             </div>
 
-                            <div className="progress">
+                            <div className="progressFournisseur">
 
                                 <div
 
-                                    className="progress-fill"
+                                    className="progress-fill-Fournisseur"
 
                                     style={{
                                         width:`${pourcentage}%`
