@@ -10,7 +10,7 @@
 
 .vehicle-card{
 
-    background:#0c7beb;
+    background:rgb(5, 29, 58);;
 
     border-radius:20px;
 
@@ -24,7 +24,7 @@
 
     margin-bottom:25px;
 
-    color:#0f172a;
+    color:#95ade4;
 
     font-size:24px;
 
@@ -38,7 +38,7 @@
 
 .vehicle-item{
 
-    background:rgb(238, 231, 231);
+    background:rgb(177, 180, 236);
 
     border-radius:18px;
 
