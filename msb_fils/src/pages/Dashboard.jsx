@@ -595,6 +595,42 @@ async function loadLivraisonStats() {
 
 }
 
+// Issa distribution evolution 
+const [IssaVentessStats, setIssaVentesStats] = useState({});
+const [IssaAchatsStats, setIssaAchatsStats] = useState({});
+const [IssaVentess, setIssaVentes] = useState({});
+const [IssaAchats, setIssaAchats] = useState({});
+
+async function loadIssaVentesStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_issaventes_evolution")
+        .select("*")
+        .single();
+
+    setIssaVentesStats(data);
+
+    const { data: issaVD } = await supabase
+        .from("issaventes")
+        .select("*");
+
+    setIssaVentes(issaVD);
+
+    const { data: issaAD } = await supabase
+        .from("vw_dashboard_issaachats_evolution")
+        .select("*")
+        .single();
+
+    setIssaAchatsStats(issaAD);
+
+    const { data: issaA } = await supabase
+        .from("issaachats")
+        .select("*");
+
+    setIssaAchats(issaA);
+
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts(); 
@@ -643,6 +679,9 @@ useEffect(()=>{
     // Achats
     loadachatsStats();
 
+    // Issa Distribution
+    loadIssaVentesStats();
+
 },[]);
 
 const montantTotalPaye = depensesCategorie.reduce(
@@ -654,8 +693,8 @@ return (
 
 <div>       
 
+    <h2>MSB & FILS</h2>
     <div className="cards"> 
-
         <DashboardCard
 
                 title="Commandes"
@@ -833,6 +872,56 @@ return (
         />
     </div>
 
+    <br/>
+    <h2>ISSA DISTRIBUTION</h2>
+    <div className="cards"> 
+        <DashboardCard
+
+                title="Achats"
+
+                value={IssaAchats.length}
+
+                icon={<ShoppingCart size={32}/>}
+
+                color="#524c49"
+
+                trend={IssaAchatsStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/issaachats"
+
+                montantCourant={IssaAchatsStats.mois_courant}
+
+                moisDernier={IssaAchatsStats.mois_precedent}
+
+        />
+
+        <DashboardCard
+
+                title="Ventes"
+
+                value={IssaVentess.length}
+
+                icon={<BadgeSwissFranc size={32}/>}
+
+                color="#db4b12"
+
+                trend={IssaVentessStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/issaventes"
+
+                montantCourant={IssaVentessStats.mois_courant}
+
+                moisDernier={IssaVentessStats.mois_precedent}
+
+        />
+    </div>
+
+    <br/>
+    <h2>Statistiques visuel graphes</h2>
     <div className="cards">
         <div className="card">            
 
