@@ -3,3 +3,271 @@
     color: black;
     background-color: bisque;
 }
+
+/* ===========================
+   VEHICLE EXPENSES DASHBOARD
+=========================== */
+
+.vehicle-card{
+
+    background:#0c7beb;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.vehicle-card h2{
+
+    margin-bottom:25px;
+
+    color:#0f172a;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+/* ===========================
+   CARD VEHICULE
+=========================== */
+
+.vehicle-item{
+
+    background:rgb(238, 231, 231);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.06);
+
+    transition:.3s;
+
+}
+
+.vehicle-item:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.vehicle-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.vehicle-header h3{
+
+    margin:0;
+
+    color:#0f172a;
+
+    font-size:20px;
+
+}
+
+.vehicle-header span{
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+/* ===========================
+   EVOLUTION
+=========================== */
+
+.trend{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-weight:700;
+
+}
+
+.positive{
+
+    color:#16a34a;
+
+    background:#dcfce7;
+
+}
+
+.negative{
+
+    color:#dc2626;
+
+    background:#fee2e2;
+
+}
+
+/* ===========================
+   CATEGORIES
+=========================== */
+
+.cat-line{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:15px;
+
+    margin-bottom:8px;
+
+}
+
+.cat-line div:first-child{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#334155;
+
+    font-weight:600;
+
+}
+
+.cat-line div:last-child{
+
+    font-weight:bold;
+
+    color:#0f172a;
+
+}
+
+/* ===========================
+   BARRE
+=========================== */
+
+.progress{
+
+    width:100%;
+
+    height:10px;
+
+    background:#e2e8f0;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.fill{
+
+    height:100%;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+        90deg,
+        #2563eb,
+        #06b6d4
+    );
+
+    transition:width .5s;
+
+}
+
+/* ===========================
+   RESUME
+=========================== */
+
+.resume{
+
+    margin-top:25px;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+.resume div{
+
+    background:#f8fafc;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    color:#64748b;
+
+}
+
+.resume strong{
+
+    display:block;
+
+    margin-top:8px;
+
+    color:#0f172a;
+
+    font-size:20px;
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .vehicle-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:15px;
+
+    }
+
+    .resume{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

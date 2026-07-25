@@ -25,6 +25,7 @@ import {
     ResponsiveContainer
 } from "recharts";
 import Achats from "./Achats.jsx";
+import VehicleExpenseStats from "../components/VehiculeExpenseStats.jsx";
 
 function TopProduitsChart({data}){
 
@@ -673,10 +674,31 @@ async function loadIssaVentesStats() {
 
 }
 
+// Depenses vehicules
+const [vehiculesDepCategoriesStat , setvehiculesDepCategoriesStat] = useState([]);
+const [vehiculesDepEvolutionStat , setvehiculesDepEvolutionStat] = useState([]);
+async function loadvehiculesDepStat() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_depenses_vehicules_evolution")
+        .select("*");
+
+    setvehiculesDepEvolutionStat(data);
+
+    const { data: dataC } = await supabase
+        .from("vw_dashboard_depenses_vehicules_categories")
+        .select("*");
+
+    setvehiculesDepCategoriesStat(dataC);
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts(); 
     getAllMarchandises(); 
+
+    // Vehicules
+    loadvehiculesDepStat();
     getAllVehicules();
     
     // Fournisseurs
@@ -987,6 +1009,7 @@ return (
 
     <br/>
     <h2 className="profile">Statistiques & Graphes</h2>
+
     <div className="cards">
 
         <ClientStats
@@ -995,6 +1018,17 @@ return (
         <FournisseurStats
             data={top10fournisseurStats}
         />
+
+        
+    </div>
+
+    <div className="cards">
+
+        <VehicleExpenseStats
+            categories={vehiculesDepCategoriesStat}
+            evolution={vehiculesDepEvolutionStat}
+        />
+        
 
         
     </div>
