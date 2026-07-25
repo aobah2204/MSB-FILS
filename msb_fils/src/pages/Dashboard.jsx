@@ -8,7 +8,7 @@ import AchatChart from "../components/AchatChart.jsx";
 import ChiffreAffaireMensuelBySiteChart from "../components/ChiffreAffaireMensuelBySiteChart.jsx";
 import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensuelGlobalChart.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
-import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake } from "lucide-react";
+import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake, Truck } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
 
@@ -561,6 +561,40 @@ async function loadachatsStats() {
 
 }
 
+// commandes evolution 
+const [commandesStats, setcommandesStats] = useState({});
+const [commandes, setcommandes] = useState([]);
+async function loadcommandesStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_commandes_evolution")
+        .select("*")
+        .single();
+
+    setcommandesStats(data);
+
+    const { data: dataD } = await supabase
+        .from("commandes")
+        .select("*");
+
+    setcommandes(dataD);
+
+}
+
+// Livraison evolution 
+const [livraisonsStats, setLivraisonsStats] = useState({});
+
+async function loadLivraisonStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_livraisons_evolution")
+        .select("*")
+        .single();
+
+    setLivraisonsStats(data);
+
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts(); 
@@ -574,8 +608,10 @@ useEffect(()=>{
     getAllMatPrems();
     getAllSalaries();
     getAllSites();
+
+    // Commandes
     getAllCommandes();
-    getAllVentes();
+    loadcommandesStats();
 
     // Depenses
     Depenses_site();
@@ -593,6 +629,7 @@ useEffect(()=>{
 
     // Livraisons
     getAllLivraisons();
+    loadLivraisonStats();
 
     loadTop10();
 
@@ -601,6 +638,7 @@ useEffect(()=>{
 
     // Vente evolution
     loadVenteStats();
+    getAllVentes();
 
     // Achats
     loadachatsStats();
@@ -622,6 +660,29 @@ return (
     
 
     <div className="cards">        
+
+
+        <DashboardCard
+
+                title="Commandes"
+
+                value={commandes.length}
+
+                icon={<ShoppingCart size={32}/>}
+
+                color="#524c49"
+
+                trend={commandesStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/commandes"
+
+                montantCourant={commandesStats.mois_courant}
+
+                moisDernier={commandesStats.mois_precedent}
+
+        />
 
         <DashboardCard
 
@@ -753,54 +814,29 @@ return (
     
     <br/>
 
-    <h3> <ShoppingCart /> Commandes </h3>
-    <div className="cards grid-4">
-        <NavLink to="/commandes">
-            <div className="card">
-                <h3>Commandes en cours</h3>
-                <p>{NbreCmdEncours}</p>
-            </div>
-        </NavLink>
+    <div className="cards">
 
-        <NavLink to="/commandes">
-            <div className="card">
-                <h3>Commandes validées</h3>
-                <p>{NbreCmdValides}</p>
-            </div>
-        </NavLink>
+        <DashboardCard
 
-        <NavLink to="/commandes">
-            <div className="card">
-                <h3>Commandes livrées</h3>
-                <p>{NbreCmdLivree}</p>
-            </div>
-        </NavLink>
-        <NavLink to="/commandes">
-            <div className="card">
-                <h3>Commandes annulées</h3>
-                <p>{NbreCmdAnnulee}</p>
-            </div>
-        </NavLink>
-    </div>
+                title="Livraisons"
 
-    <h3> <ShoppingCart /> Ventes & Livraisons</h3>
-    <div className="cards grid-4">
+                value={NbrLivraison}
 
-        <NavLink to="/ventes">
-            <div className="card">
-                <h3>Total des ventes</h3>
-                <p>{NbreVentes}</p>
-            </div>
-        </NavLink>
+                icon={<Truck size={32}/>}
 
-        <NavLink to="/livraisons">
-            <div className="card">
-                <h3>Total des livraisons</h3>
-                <p>{NbrLivraison}</p>
-            </div>
-        </NavLink>
+                color="#1b17f3"
 
-        
+                trend={livraisonsStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/livraisons"
+
+                montantCourant={livraisonsStats.mois_courant}
+
+                moisDernier={livraisonsStats.mois_precedent}
+
+        />
     </div>
 
     <div className="cards">
