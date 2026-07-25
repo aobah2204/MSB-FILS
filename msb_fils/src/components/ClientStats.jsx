@@ -61,9 +61,9 @@ function ClientStats({ data = [] }) {
 
                                         {index+1}. {
 
-                                            client.societe ||
+                                            client.societe - client.nom - client.prenom ||
 
-                                            `${client.nom} ${client.prenom}`
+                                            `${client.nom} ${client.prenom} - ${client.societe}`
 
                                         }
 
