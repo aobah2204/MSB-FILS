@@ -16,7 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../supabase";
 
 
-import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, BadgeSwissFranc } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 function DashboardCard({
@@ -74,8 +74,8 @@ function DashboardCard({
             </div>
 
             <div>
-                {moisDernier && <div className="dashboard-subtitle">Mois dernier <p className="dashboard-montantdernier">{new Intl.NumberFormat("fr-FR").format(moisDernier)} gnf</p></div>}
-                {montantCourant && <div className="dashboard-title">Mois courant <p className="dashboard-montantcourant"> {new Intl.NumberFormat("fr-FR").format(montantCourant)} gnf</p></div>}
+                {moisDernier && <div className="dashboard-subtitle">Mois dernier <p className="dashboard-montantdernier">{new Intl.NumberFormat("fr-FR").format(moisDernier)} Fg</p></div>}
+                {montantCourant && <div className="dashboard-title">Mois courant <p className="dashboard-montantcourant"> {new Intl.NumberFormat("fr-FR").format(montantCourant)} Fg</p></div>}
                 
             </div>
 
