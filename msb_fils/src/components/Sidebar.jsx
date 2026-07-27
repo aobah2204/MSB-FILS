@@ -60,7 +60,8 @@ const menu = [
       { label: "Commandes", to: "/commandes" },
       { label: "Achats", to: "/achats" },
       { label: "Ventes", to: "/ventes" },
-      { label: "Marchandises", to: "/marchandises" }
+      { label: "Marchandises", to: "/marchandises" },
+      { label: "Encaissements", to: "/encaissements" }
     ]
   },
   {

@@ -101,6 +101,11 @@ import IssaVenteCreate from './pages/ISSA_DISTRIBUTION/IssaVenteCreate';
 import IssaVenteEdit from './pages/ISSA_DISTRIBUTION/IssaVenteEdit';
 import IssaVenteDetails from './pages/ISSA_DISTRIBUTION/IssaVenteDetails';
 
+// Encaissements
+import Encaissements from './pages/Encaissements';
+import EncaissementCreate from './pages/EncaissementCreate';
+import EncaissementDetails from './pages/EncaissementDetails';
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
 
@@ -417,6 +422,7 @@ function App() {
           <Route index element={<PlanBuilder />} />          
         </Route>
 
+        {/** Dépenses */}
         <Route path="depenses">
           <Route index element={<Depenses />} />
           <Route path="nouveau"
@@ -427,6 +433,19 @@ function App() {
                 element={<DepenseEdit />} />*/}
           <Route path="details/:id"
                 element={<DepenseDetails />} />
+        </Route>
+
+        {/** Encaissements */}
+        <Route path="encaissements">
+          <Route index element={<Encaissements />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
+                element={<EncaissementCreate />} />
+          {/*<Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<DepenseEdit />} />*/}
+          <Route path="details/:id"
+                element={<EncaissementDetails />} />
         </Route>
 
         {/** Véhicules routes 
