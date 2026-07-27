@@ -15,7 +15,10 @@ function EncaissementDetails() {
     type_liaison: "",
     site_id: "",
     vehicule_id: "",
-    utilisateur_id: ""
+    utilisateur_id: "",
+    prestation_id: "",
+    vente_id: "",
+    commande_id: ""
   });
   const [fournisseur, setFournisseur] = useState({
     id:"",
@@ -57,12 +60,16 @@ function EncaissementDetails() {
     adresse: "",
   });
 
+  const [vente, setVente] = useState([]);
+  const [commande, setCommande] = useState([]);
+  const [prestation, setPrestation] = useState([]);
+
   async function loadEncaissement() {
-    const { data, error } = await supabase.from("Encaissements").select("*").eq("id", id).maybeSingle();
+    const { data, error } = await supabase.from("encaissements").select("*").eq("id", id).maybeSingle();
 
     if (error || !data) {
-      alert("Dépense introuvable");
-      navigate("/encaissement");
+      alert("Encaissement introuvable");
+      navigate("/encaissements");
       return;
     }
 
@@ -94,7 +101,7 @@ function EncaissementDetails() {
         .eq("id", data.vehicule_id)
         .maybeSingle();
       setVehicule(vehiculeData);
-      console.log("Vehicule : ",vehiculeData)
+      //console.log("Vehicule : ",vehiculeData)
     }
 
     if (data.utilisateur_id) {
@@ -104,7 +111,33 @@ function EncaissementDetails() {
         .eq("id", data.utilisateur_id)
         .maybeSingle();
       setSalarie(userData);
-      console.log(userData);
+      //console.log(userData);
+    }
+
+    if (data.vente_id) {
+      const { data: venteData } = await supabase
+        .from("ventes")
+        .select("*")
+        .eq("id", data.vente_id)
+        .maybeSingle();
+      setVente(venteData);
+    }
+
+    if (data.prestation_id) {
+      const { data: prestationData } = await supabase
+        .from("prestations")
+        .select("*")
+        .eq("id", data.prestation_id)
+        .maybeSingle();
+      setPrestation(prestationData);
+    }
+    if (data.commande_id) {
+      const { data: commandeData } = await supabase
+        .from("commandes")
+        .select("*")
+        .eq("id", data.commande_id)
+        .maybeSingle();
+      setCommande(commandeData);
     }
 
   }
@@ -151,6 +184,21 @@ function EncaissementDetails() {
           <strong>Salarié associé :</strong> {salarie?.fullname || "—"}
         </p>
         }
+        {Encaissement?.vente_id !== 0 &&
+        <p>
+          <strong>Vente associée :</strong> {vente?.reference || "—"} {vente?.date_vente || "—"} {vente?.description || "—"}
+        </p>
+        }
+        {Encaissement?.commande_id !== 0 &&
+        <p>
+          <strong>Commande associée :</strong> {commande?.reference || "—"} {commande?.date_commande || "—"} {commande?.description || "—"}
+        </p>
+        }
+        {Encaissement?.prestation_id !== 0 &&
+        <p>
+          <strong>Prestation associée :</strong> {prestation?.reference || "—"} {prestation?.date_prestation || "—"} {prestation?.description || "—"}
+        </p>
+        }
         <p>
           <strong>Date :</strong> {formatDate(Encaissement.date_encaissement) || "—"}
         </p>
@@ -176,7 +224,7 @@ function EncaissementDetails() {
         </p>
       </div>
 
-      <button className="profile" type="button" onClick={() => navigate("/encaissement")}>
+      <button className="profile" type="button" onClick={() => navigate("/encaissements")}>
         Retour
       </button>
     </div>

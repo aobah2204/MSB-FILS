@@ -904,11 +904,11 @@ return()=>window.removeEventListener("resize",resize);
                         <Eye size={20} />
                       </button>
                     </NavLink>
-                    <NavLink to={`/Encaissements/modifier/${Encaissement.id}`}>
+                    {/*<NavLink to={`/Encaissements/modifier/${Encaissement.id}`}>
                       <button className="profile">
                         <Pencil size={20} />
                       </button>
-                    </NavLink>
+                    </NavLink>*/}
                     <button className="profileSupp" onClick={() => deleteEncaissement(Encaissement)}>
                       <Trash2 size={20} />
                     </button>
