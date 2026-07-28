@@ -1,19 +1,19 @@
 import { Eye, Pencil, Trash2, Package, Search, Filter, RotateCcw, Edit } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { supabase } from "../supabase.js";
+import { supabase } from "../../supabase.js";
 import { useState, useEffect } from "react";
-import "../CSS/Products.css";
-import { useAuth } from "../context/AuthContext";
-import CardList from "../components/CardList.jsx";
-import Table from "../components/Table.jsx";
+import "../../CSS/Products.css";
+import { useAuth } from "../../context/AuthContext";
+import CardList from "../../components/CardList.jsx";
+import Table from "../../components/Table.jsx";
 
-function Encaissements() {
+function IssaEncaissements() {
   const { user } = useAuth();
   const [sites, setSites] = useState([]);
   const [fournisseurs, setFournisseurs] = useState([]);
   const [vehicules, setVehicules] = useState([]);
-  const [Encaissements, setEncaissements] = useState([]);
-  const [EncaissementsFiltrees, setEncaissementsFiltrees] = useState([]);
+  const [IssaEncaissements, setIssaEncaissements] = useState([]);
+  const [IssaEncaissementsFiltrees, setIssaEncaissementsFiltrees] = useState([]);
   const [commandes, setCommandes] = useState([]);
   const [prestations, setPrestations] = useState([]);
   const [ventes, setVentes] = useState([]);
@@ -56,7 +56,7 @@ function Encaissements() {
     ];
 
   useEffect(() => {
-    loadEncaissements();
+    loadIssaEncaissements();
 }, []);
 
 
@@ -76,16 +76,16 @@ return()=>window.removeEventListener("resize",resize);
 
 },[]);
 
-  async function loadEncaissements() {
+  async function loadIssaEncaissements() {
     try {
-      const { data: EncaissementsData } = await supabase
-        .from("encaissements")
+      const { data: IssaEncaissementsData } = await supabase
+        .from("issaencaissements")
         .select("*")
         .order("date_encaissement", { ascending: false });
 
-      if (!EncaissementsData) return alert("Aucun Dépense");
-      setEncaissements(EncaissementsData);
-      setEncaissementsFiltrees(EncaissementsData);
+      if (!IssaEncaissementsData) return alert("Aucun encaissement");
+      setIssaEncaissements(IssaEncaissementsData);
+      setIssaEncaissementsFiltrees(IssaEncaissementsData);
 
       const { data: sitesData } = await supabase
         .from("siteproduction")
@@ -109,7 +109,7 @@ return()=>window.removeEventListener("resize",resize);
       setVehicules(vehiculesData);
 
       const { data: ventesData } = await supabase
-        .from("ventes")
+        .from("issaventes")
         .select("*");
 
       if (!ventesData) return alert("Aucune vente");
@@ -139,8 +139,8 @@ return()=>window.removeEventListener("resize",resize);
     if (confirm("Supprimer cet Encaissement ?")) {
       try {
         // Delete cascade: Encaissements cascade to Encaissementmatierepremieres
-        await supabase.from("encaissements").delete().eq("id", Encaissement.id);
-        await loadEncaissements();
+        await supabase.from("issaencaissements").delete().eq("id", Encaissement.id);
+        await loadIssaEncaissements();
       } catch (error) {
         console.error("Erreur lors de la suppression :", error);
       }
@@ -180,7 +180,7 @@ return()=>window.removeEventListener("resize",resize);
       }));
   };
 
-  const EncaissementsFiltres = Encaissements.filter(Encaissement => {
+  const IssaEncaissementsFiltres = IssaEncaissements.filter(Encaissement => {
 
       const date = new Date(Encaissement.date_encaissement);
 
@@ -275,15 +275,15 @@ return()=>window.removeEventListener("resize",resize);
     };
 
     setFilters(initialFilters);
-    setEncaissementsFiltrees(Encaissements);
+    setIssaEncaissementsFiltrees(IssaEncaissements);
   };
 
 
   const rechercher = () => {
 
-    console.log("In recherche ...", filters, Encaissements);
+    console.log("In recherche ...", filters, IssaEncaissements);
 
-      const resultat = Encaissements.filter((Encaissement) => {
+      const resultat = IssaEncaissements.filter((Encaissement) => {
 
           // Recherche texte
           const rechercheOK =
@@ -378,16 +378,16 @@ return()=>window.removeEventListener("resize",resize);
 
       console.log("Resultat ", resultat);
 
-      setEncaissementsFiltrees(resultat);
+      setIssaEncaissementsFiltrees(resultat);
 
   };
 
-  const montantTotal = EncaissementsFiltrees.reduce(
+  const montantTotal = IssaEncaissementsFiltrees.reduce(
       (total, Encaissement) => total + Number(Encaissement.montant || 0),
       0
   );
 
-  const montantTotalPaye = EncaissementsFiltrees.reduce(
+  const montantTotalPaye = IssaEncaissementsFiltrees.reduce(
       (total, Encaissement) => total + Number(Encaissement.montant_paye || 0),
       0
   );
@@ -401,7 +401,7 @@ return()=>window.removeEventListener("resize",resize);
       ) && (
         <section>
           <div>
-            <NavLink to="/encaissements/nouveau">
+            <NavLink to="/issaencaissements/nouveau">
               <button className="profile">
                 <Package size={20} /> Ajouter un encaissement
               </button>
@@ -895,7 +895,7 @@ return()=>window.removeEventListener("resize",resize);
               </h4>
 
               <p className="text-3xl font-bold">
-                  {EncaissementsFiltrees.length}
+                  {IssaEncaissementsFiltrees.length}
               </p>
           </div>
 
@@ -919,7 +919,7 @@ return()=>window.removeEventListener("resize",resize);
 
         <CardList
 
-        data={EncaissementsFiltres}
+        data={IssaEncaissementsFiltres}
 
         title={(v)=>v.reference}
 
@@ -934,7 +934,7 @@ return()=>window.removeEventListener("resize",resize);
             view: (encaissement) => (
 
                 <NavLink
-                    to={`/encaissements/details/${encaissement.id}`}
+                    to={`/issaencaissements/details/${encaissement.id}`}
                 >
                     <button className="profile">
                         <Eye size={20}/>
@@ -946,7 +946,7 @@ return()=>window.removeEventListener("resize",resize);
             edit:(encaissement) => (
 
                 <NavLink
-                    to={`/encaissements/modifier/${encaissement.id}`}
+                    to={`/issaencaissements/modifier/${encaissement.id}`}
                 >
                     <button className="profile">
                         <Edit size={20}/>
@@ -976,7 +976,7 @@ return()=>window.removeEventListener("resize",resize);
 
             columns={columns}
 
-            data={EncaissementsFiltres}
+            data={IssaEncaissementsFiltres}
 
             actions={{
 
@@ -1027,7 +1027,7 @@ return()=>window.removeEventListener("resize",resize);
             </tr>
           </thead>
           <tbody>
-            {EncaissementsFiltrees.map((Encaissement) => (
+            {IssaEncaissementsFiltrees.map((Encaissement) => (
               <tr key={Encaissement.id}>
                 <td>{Encaissement.reference || "—"}</td>
                 <td>{Encaissement.categorie}</td>
@@ -1039,7 +1039,7 @@ return()=>window.removeEventListener("resize",resize);
                   user?.role
                 ) && (
                   <td>
-                    <NavLink to={`/encaissements/details/${Encaissement.id}`}>
+                    <NavLink to={`/issaencaissements/details/${Encaissement.id}`}>
                       <button className="profile">
                         <Eye size={20} />
                       </button>
@@ -1064,4 +1064,4 @@ return()=>window.removeEventListener("resize",resize);
   );
 }
 
-export default Encaissements;
+export default IssaEncaissements;

@@ -101,6 +101,11 @@ import IssaVenteCreate from './pages/ISSA_DISTRIBUTION/IssaVenteCreate';
 import IssaVenteEdit from './pages/ISSA_DISTRIBUTION/IssaVenteEdit';
 import IssaVenteDetails from './pages/ISSA_DISTRIBUTION/IssaVenteDetails';
 
+// Issa Encaissements
+import IssaEncaissements from './pages/ISSA_DISTRIBUTION/IssaEncaissements';
+import IssaEncaissementCreate from './pages/ISSA_DISTRIBUTION/IssaEncaissementCreate';
+import IssaEncaissementDetails from './pages/ISSA_DISTRIBUTION/IssaEncaissementDetails';
+
 // Encaissements
 import Encaissements from './pages/Encaissements';
 import EncaissementCreate from './pages/EncaissementCreate';
@@ -415,6 +420,18 @@ function App() {
                 element={<IssaVenteEdit />} />
           <Route path="details/:id"
                 element={<IssaVenteDetails />} />
+        </Route>
+        {/** Issa Encaissements */}
+        <Route path="issaencaissements">
+          <Route index element={<IssaEncaissements />} />
+          <Route path="nouveau"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
+                element={<IssaEncaissementCreate />} />
+          {/*<Route path="modifier/:id"
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                element={<DepenseEdit />} />*/}
+          <Route path="details/:id"
+                element={<IssaEncaissementDetails />} />
         </Route>
 
         {/** Plan builder routes */}
