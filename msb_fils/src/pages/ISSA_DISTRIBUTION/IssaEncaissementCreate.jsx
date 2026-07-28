@@ -34,6 +34,9 @@ function IssaEncaissementCreate() {
     montant_paye: "",
     justificatif: "",
     type_liaison: "GENERAL",
+    commande_id: 0,
+    vente_id: 0,
+    prestation_id: 0,
   });
 
   const [Encaissement, setEncaissement] = useState({
@@ -44,7 +47,10 @@ function IssaEncaissementCreate() {
     type_liaison: "GENERAL",
     site_id: "",
     vehicule_id: "",
-    utilisateur_id: ""
+    utilisateur_id: "",
+    commande_id: 0,
+    vente_id: 0,
+    prestation_id: 0,
 });
 
   useEffect(() => {

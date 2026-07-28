@@ -186,17 +186,17 @@ function EncaissementDetails() {
         }
         {Encaissement?.vente_id !== 0 &&
         <p>
-          <strong>Vente associée :</strong> {vente?.reference || "—"} {vente?.date_vente || "—"} {vente?.description || "—"}
+          <strong>Vente associée :</strong> {vente?.reference || "—"} {vente?.description || "—"}
         </p>
         }
         {Encaissement?.commande_id !== 0 &&
         <p>
-          <strong>Commande associée :</strong> {commande?.reference || "—"} {commande?.date_commande || "—"} {commande?.description || "—"}
+          <strong>Commande associée :</strong> {commande?.reference || "—"} {commande?.description || "—"}
         </p>
         }
         {Encaissement?.prestation_id !== 0 &&
         <p>
-          <strong>Prestation associée :</strong> {prestation?.reference || "—"} {prestation?.date_prestation || "—"} {prestation?.description || "—"}
+          <strong>Prestation associée :</strong> {prestation?.reference || "—"} {prestation?.description || "—"}
         </p>
         }
         <p>
@@ -215,8 +215,7 @@ function EncaissementDetails() {
       <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "5px" }}>
         <p>
           <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(Encaissement.montant) || 0} FG
-        </p>
-        
+        </p>        
       </div>
 
       <button className="profile" type="button" onClick={() => navigate("/encaissements")}>

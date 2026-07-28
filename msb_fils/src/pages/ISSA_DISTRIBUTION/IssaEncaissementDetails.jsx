@@ -116,7 +116,7 @@ function IssaEncaissementDetails() {
 
     if (data.vente_id) {
       const { data: venteData } = await supabase
-        .from("ventes")
+        .from("issaventes")
         .select("*")
         .eq("id", data.vente_id)
         .maybeSingle();

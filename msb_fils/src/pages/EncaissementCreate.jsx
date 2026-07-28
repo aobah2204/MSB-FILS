@@ -27,6 +27,9 @@ function EncaissementCreate() {
     site_id: 0,
     vehicule_id: 0,
     utilisateur_id: 0,
+    commande_id: 0,
+    vente_id: 0,
+    prestation_id: 0,
     date_encaissement: "",
     statut: "Payé",
     mode_paiement: "",
@@ -44,7 +47,10 @@ function EncaissementCreate() {
     type_liaison: "GENERAL",
     site_id: "",
     vehicule_id: "",
-    utilisateur_id: ""
+    utilisateur_id: "",
+    commande_id: 0,
+    vente_id: 0,
+    prestation_id: 0,
 });
 
   useEffect(() => {
@@ -91,7 +97,10 @@ function handleChange(e) {
             fournisseur_id: "",
             commande_id: "",
             prestation_id: "",
-            vente_id: ""
+            vente_id: "",
+            commande_id: "",
+            vente_id: "",
+            prestation_id: "",
         }));
 
         return;
