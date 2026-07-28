@@ -13,12 +13,12 @@ function EncaissementDetails() {
     montant: 0,
     categorie: "",
     type_liaison: "",
-    site_id: "",
-    vehicule_id: "",
-    utilisateur_id: "",
-    prestation_id: "",
-    vente_id: "",
-    commande_id: ""
+    site_id: 0,
+    vehicule_id: 0,
+    utilisateur_id: 0,
+    prestation_id: 0,
+    vente_id: 0,
+    commande_id: 0
   });
   const [fournisseur, setFournisseur] = useState({
     id:"",
@@ -159,7 +159,7 @@ function EncaissementDetails() {
 
   return (
     <div className="product-page">
-      <h1>Détails de la dépense {id}</h1>
+      <h1>Détails de l'encaissement #{Encaissement.reference}</h1>
       <div className="card" style={{textAlign: "left"}}>
         <p>
           <strong>Référence :</strong> {Encaissement.reference || "—"}
@@ -169,7 +169,7 @@ function EncaissementDetails() {
           <strong>Site associé :</strong> {site?.nom + " "+ site?.adresse || "—"}
         </p>
         }
-        {Encaissement?.vehicule_id !== 0 &&
+        {Encaissement?.vehicule_id !== 0 && 
         <p>
           <strong>Véhicule associé :</strong> {vehicule?.marque + " "+ vehicule?.immatriculation || "—"}
         </p>
@@ -216,12 +216,7 @@ function EncaissementDetails() {
         <p>
           <strong>Montant total :</strong> {new Intl.NumberFormat("fr-FR").format(Encaissement.montant) || 0} FG
         </p>
-        <p>
-          <strong>Montant payé :</strong> {new Intl.NumberFormat("fr-FR").format(Encaissement.montant_paye) || 0} FG
-        </p>
-        <p>
-          <strong>Rest à payer :</strong> {new Intl.NumberFormat("fr-FR").format(Encaissement.montant - Encaissement.montant_paye) || 0} FG
-        </p>
+        
       </div>
 
       <button className="profile" type="button" onClick={() => navigate("/encaissements")}>

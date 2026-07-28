@@ -747,28 +747,6 @@ return()=>window.removeEventListener("resize",resize);
               </p>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-5 profileEdit">
-              <h4 className="text-gray-500 text-sm">
-                  Total montant payé
-              </h4>
-
-              <p className="text-3xl font-bold text-red-600">
-                  {new Intl.NumberFormat("fr-FR").format(montantTotalPaye)} GNF
-              </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-5 profileSupp">
-              <h4 className="text-gray-500 text-sm">
-                  Total reste à payer
-              </h4>
-
-              <p className="text-3xl font-bold text-red-600">
-                  {new Intl.NumberFormat("fr-FR").format(montantTotal - montantTotalPaye)} GNF
-              </p>
-          </div>
-
-          
-
       </div>    
       
 
