@@ -120,16 +120,16 @@ function Ventes() {
         doc.setFont("helvetica", "bold");
 
         // Titres
-        doc.text("FOURNISSEUR", leftX, 35);
+        doc.text("FOURNISSEUR", leftX, 43);
         doc.text("CLIENT", rightX, 35);
 
         doc.setFont("helvetica", "normal");
 
         // Fournisseur
-        doc.text("MSB & FILS", leftX, 43);
-        doc.text("Conakry - Guinée", leftX, 49);
-        doc.text("Tel : +224 620 00 00 00", leftX, 55);
-        doc.text("Email : contact@msbfils.com", leftX, 61);
+        doc.text("MSB & FILS", leftX, 49);
+        doc.text("Conakry - Guinée", leftX, 56);
+        doc.text("Tel : +224 620 60 23 24", leftX, 61);
+        doc.text("Email : msbetfils@gmail.com", leftX, 65);
 
         // Client
         doc.text(clientMap[order.client_id] || "-", rightX, 43);
