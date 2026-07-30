@@ -22,7 +22,7 @@ function VenteCreate() {
     montant_paye: 0,
     description: "",
     user_create_id: user?.id,
-    type_liaison: "GENERAL",
+    type_liaison: "EMPORTER",
   });
 
   const [clients, setClients] = useState([]);
