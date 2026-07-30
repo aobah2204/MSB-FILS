@@ -26,10 +26,15 @@ function VenteEdit() {
   const [productLines, setProductLines] = useState([]);
   const [marchandiseLines, setMarchandiseLines] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [vehicules, setVehicules] = useState([]);
+  const [livraisons, setLivraisons] = useState([]);
+  const [oldLivraison, setOldLivraison] = useState([]);
+  const [vente, setVente] = useState([]);
 
   async function loadData() {
     const [{ data: venteData }, { data: clientsData }, { data: fournisseursData }, { data: productsData },
-       { data: marchandisesData }, { data: linesData }, { data: linesMData}, { data: sitesData }] = await Promise.all([
+       { data: marchandisesData }, { data: linesData }, { data: linesMData}, { data: sitesData }, 
+       { data: vehiculesData}, { data: livraisonsData}] = await Promise.all([
       supabase.from("ventes").select("*").eq("id", id).maybeSingle(),
       supabase.from("clients").select("id, nom, prenom"),
       supabase.from("fournisseurs").select("id, nom, prenom"),
@@ -38,6 +43,8 @@ function VenteEdit() {
       supabase.from("venteproduits").select("*").eq("vente_id", id),
       supabase.from("ventemarchandises").select("*").eq("vente_id", id),
       supabase.from("siteproduction").select("*"),
+      supabase.from("vehicules").select("*"),
+      supabase.from("livraisons").select("*"),       
     ]);
 
     setClients(clientsData || []);
@@ -46,9 +53,32 @@ function VenteEdit() {
     setFournisseurs(fournisseursData || []);
     setProductLines(linesData || []);
     setForm(venteData || []);
+    setVente(venteData);
     setMarchandises(marchandisesData || []);
     setSites(sitesData || []);
+    setVehicules(vehiculesData);
+    loadLivraison(venteData);
   }
+
+  async function loadLivraison(vente){
+    const { data: livraisonData} = await
+      supabase.from("livraisons").select("*").eq("vehicule_id", vente.vehicule_id)
+    ;
+
+    setOldLivraison(livraisonData);
+  }
+
+  const [Livraison,setLivraison] = useState({
+
+        reference:"",
+        vehicule_id: "",
+        date_livraison: "",
+        statut: "",
+        montant: "",
+        addresse: "",
+        libelle: ""
+
+    });
 
   useEffect(() => {
     loadData();
@@ -235,6 +265,33 @@ function VenteEdit() {
     }
 
     alert("Vente mise à jour");
+
+    if(Livraison.addresse && Livraison.montant){
+          // API Supabase ici
+            const table = "livraisons";
+    
+            // Reference
+            Livraison.reference = "MSB_LIV_000"+(livraisons.length  + 1)
+    
+            // Set vehicule
+            if (vehicule) {
+                Livraison.vehicule_id = vehicule.id;
+            }else{
+                alert("Veuillez selectionnez un véhicule");
+            }
+    
+            // Date 
+            Livraison.date_livraison = ventePayload.date_vente;
+            
+            const { error } = await supabase.from(table).up(Livraison).eq("vehicule_id", oldLivraison.vehicule_id);
+            
+            if(!error){
+                alert("Livraison enregistré");
+            }else{
+                alert("Livraison non enregistré : " + error.message);
+            }
+        }
+
     navigate("/ventes");
   }
 
@@ -279,6 +336,35 @@ function VenteEdit() {
           fournisseur_id: selectedOption ? selectedOption.value : null,
       }));
   };
+
+  function handleChange(e){
+
+
+        const {name,value,type,checked}=e.target;
+
+        setLivraison({
+
+            ...Livraison,
+
+            [name]:
+            type==="checkbox"
+            ? checked
+            : value
+
+        });
+  }
+
+  {/** Get all vehicules */}
+    const [vehicule,setVehicule] = useState(null);
+    function onChangeVehicule(e){
+
+        const selected = vehicules.find(
+
+            f => f.id == e.target.value
+
+        );
+        setVehicule(selected);
+    }
 
   return (
     <div className="product-page">
@@ -559,6 +645,114 @@ function VenteEdit() {
         <div className="profile" style={{ backgroundColor: "#a8415b"}}>
           <label><strong>Montant total :</strong></label>
           <output style={{ fontSize: "18px", fontWeight: "bold" }}>{totalAmount}</output> Fg
+        </div>
+
+        <div className="form-group">
+
+            <label>Type de vente</label>
+
+            <div className="radio-group">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="type_liaison"
+                        value="EMPORTER"
+                        checked={vente.type_vente === "EMPORTER"}
+                        onChange={handleFormChange}
+                    />
+                    A emporter
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="type_liaison"
+                        value="LIVRER"
+                        checked={vente.type_vente === "LIVRER"}
+                        onChange={handleFormChange}
+                    />
+                    A livrer
+                </label>
+            </div>
+
+          { /* LIVRAISON */
+            vente.type_vente === "LIVRER" && (
+
+            <div className="form-group">
+
+                <label>LIVRAISON</label>
+
+                <div>
+                  <label>
+                      Véhicule
+                  </label>
+                  <select
+                      value={vente?.vehicule_id}
+                      name="vehicule_id"
+                      onChange={onChangeVehicule}
+                  >
+                      <option value="">
+                      -- selectionner le véhicule --
+                      </option>
+                      {
+                          vehicules.map((vehicule)=>(
+
+                              <option
+                                  key={vehicule.id}
+                                  value={vehicule.id}
+                              >
+                                  {vehicule?.immatriculation} {vehicule?.marque} - {vehicule?.chauffeur}
+                              </option>
+                          )) 
+                      }
+                  </select>                  
+              </div> 
+              <div>
+                  <label>
+                      Adresse
+                  </label>
+
+                  <input
+                      type="text"
+                      name="addresse"
+                      value={oldLivraison?.addresse}
+                      onChange={handleChange}
+                  />
+              </div>
+
+
+              {/*<div>
+                  <label>
+                      Date livraison
+                  </label>
+
+                  <input
+                      type="date"
+                      name="date_livraison"
+                      onChange={handleChange}
+                  />
+              </div>*/}
+
+              <div>
+                  <label>
+                      Montant de la livraison
+                  </label>
+
+                  <input
+                      type="number"
+                      name="montant"
+                      value={oldLivraison?.montant}
+                      onChange={handleChange}
+                  />
+              </div>
+
+            </div>
+
+            )
+        }
+
+            
         </div>
 
         <div style={{ marginTop: "20px" }}>

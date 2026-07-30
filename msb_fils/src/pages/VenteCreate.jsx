@@ -241,16 +241,22 @@ function VenteCreate() {
       return;
     }
 
+    
+
     const ventePayload = {
       reference: "MSB_VENTE_000"+ (ventes.length+1),
       client_id: form.client_id,
       date_vente: form.date_vente || new Date().toISOString().slice(0, 10),
       mode_paiement: form.mode_paiement,
-      montant_paye: form.montant_paye,
+      montant_paye: Number(form.montant_paye),
       description: form.description,
       montant_total: totalAmount,
       user_create_id: user?.id,
+      type_vente: form.type_liaison,
+      vehicule_id: vehicule.id,
     };
+
+    console.log("vente :", ventePayload);
 
     const { data: insertedVente, error: insertError } = await supabase
       .from("ventes")
@@ -264,48 +270,54 @@ function VenteCreate() {
     }
 
     // Ajout produits ventes
-    for (const line of productLines) {
-      if (!line.produit_id || !line.quantite) continue;
+    if(productLines.length > 0){
+      for (const line of productLines) {
+        if (!line.produit_id || !line.quantite) continue;
 
-      const linePayload = {
-        vente_id: insertedVente.id,
-        produit_id: line.produit_id,
-        site_id: line.site_id,
-        fournisseur_id: line.fournisseur_id,
-        quantite: Number(line.quantite),
-        prix_unitaire: Number(line.prix_unitaire),
-        montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
-      };
+        const linePayload = {
+          vente_id: insertedVente.id,
+          produit_id: line.produit_id,
+          site_id: line.site_id,
+          fournisseur_id: line.fournisseur_id,
+          quantite: Number(line.quantite),
+          prix_unitaire: Number(line.prix_unitaire),
+          montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
+        };
 
-      const { error: lineError } = await supabase.from("venteproduits").insert(linePayload);
+        const { error: lineError } = await supabase.from("venteproduits").insert(linePayload);
 
-      if (lineError) {
-        alert("Erreur lors de l'ajout du produit : " + lineError.message);
-        return;
+        if (lineError) {
+          alert("Erreur lors de l'ajout du produit : " + lineError.message);
+          return;
+        }
       }
     }
+    
 
     // Ajout marchandise ventes 
-    for (const line of marchandiseLines) {
-      if (!line.marchandise_id || !line.quantite) continue;
+    if(marchandiseLines.length > 0){
+      for (const line of marchandiseLines) {
+        if (!line.marchandise_id || !line.quantite) continue;
 
-      const linePayload = {
-        vente_id: insertedVente.id,
-        marchandise_id: line.marchandise_id,
-        quantite: Number(line.quantite),
-        prix_unitaire: Number(line.prix_unitaire),
-        montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
-      };
+        const linePayload = {
+          vente_id: insertedVente.id,
+          marchandise_id: line.marchandise_id,
+          quantite: Number(line.quantite),
+          prix_unitaire: Number(line.prix_unitaire),
+          montant_ligne: Number(line.quantite) * Number(line.prix_unitaire),
+        };
 
-      console.log(linePayload);
+        console.log(linePayload);
 
-      const { error: lineError } = await supabase.from("ventemarchandises").insert(linePayload);
+        const { error: lineError } = await supabase.from("ventemarchandises").insert(linePayload);
 
-      if (lineError) {
-        alert("Erreur lors de l'ajout des marchandises de la vente : " + lineError.message);
-        return;
+        if (lineError) {
+          alert("Erreur lors de l'ajout des marchandises de la vente : " + lineError.message);
+          return;
+        }
       }
     }
+    
 
     alert("Vente enregistrée");
 
@@ -452,7 +464,7 @@ function VenteCreate() {
         </div>
         <div className="grids">
           <label>Montant payé</label>
-          <input name="montant_paye" value={form.montant_paye} onChange={handleFormChange} />
+          <input type="number" name="montant_paye" value={form.montant_paye} onChange={handleFormChange} />
         </div>
         
 

@@ -5,7 +5,7 @@ import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import logo from "../assets/Logo.png";
+import logo from "../assets/logoMSBALHASS.jpeg";
 
 
 function Ventes() {
@@ -151,6 +151,8 @@ function Ventes() {
         );
 
         const totalVente = totalM +  totalP;
+
+        const lignes = [...LinesP, ...LinesM];
         
   
         // Produits
@@ -158,11 +160,11 @@ function Ventes() {
             startY: 75,
             head: [["Produit", "Quantité", "Prix", "Total"]],
             body: 
-                LinesP.map(p => [
-                    `${p.products?.nom} - ${p.products?.description}`  || "—",
-                    p.quantite || 0,    
-                    new Intl.NumberFormat("en-US").format(p.prix_unitaire) || 0,
-                    new Intl.NumberFormat("en-US").format(p.montant_ligne) || 0
+                lignes.map(item => [
+                    `${item.products?.nom || item.marchandises?.nom}`,
+                    item.quantite || 0,
+                    new Intl.NumberFormat("en-US").format(item.prix_unitaire || 0),
+                    new Intl.NumberFormat("en-US").format(item.montant_ligne || 0)
                 ]),
   
             theme: "grid",
@@ -209,7 +211,7 @@ function Ventes() {
 
         // position de fin
         const y = doc.lastAutoTable.finalY + 10;
-
+{/*
         doc.setFontSize(13);
         doc.setFont("helvetica", "bold");
 
@@ -268,7 +270,7 @@ function Ventes() {
             }
   
         });
-
+*/}
         const montantpaye = new Intl.NumberFormat("en-US").format(order.montant_paye);
         const resteapaye = new Intl.NumberFormat("en-US").format(totalP + totalM - order.montant_paye);
         const totalFacture = new Intl.NumberFormat("en-US").format(order.montant_total);
