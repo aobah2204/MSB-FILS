@@ -134,6 +134,10 @@ function LivraisonDetails(){
                         Adresse : {Livraison.addresse}
                     </p>
 
+                    <p>
+                        Montant : {new Intl.NumberFormat("fr-FR").format(Livraison.montant)} FG
+                    </p>
+
                 </div>
 
                 <div className="card">
@@ -156,37 +160,7 @@ function LivraisonDetails(){
                         </p>
                     </div>                    
 
-                </div>
-
-                <div className="card">
-
-                    <h3>
-                        Vente
-                    </h3>
-
-                    <div>
-                        <label>Réference</label>
-                        <p>
-                            {vente?.reference}
-                        </p>
-                    </div>
-                    <div>
-                        <label>Description</label>
-                        <p>
-                            {vente?.description}
-                        </p>
-                    </div>
-
-                    <div>
-                        <label>Date</label>
-                        <p>
-                            {vente?.date_vente.split('T')[0]} 
-                        </p>
-                    </div>
-
-                                  
-
-                </div>
+                </div>                
 
             </div>
 

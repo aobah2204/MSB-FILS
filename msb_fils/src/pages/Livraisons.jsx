@@ -76,7 +76,7 @@ function Livraisons() {
 
         const { data } = await supabase
             .from(tableLivraison)
-            .select("*");
+            .select("*, vehicules(immatriculation, chauffeur)");
 
         if (!data) return alert("Aucune Livraison");
 
@@ -117,7 +117,7 @@ function Livraisons() {
 
             <h1>Liste des Livraisons</h1>
 
-            {
+            {/*
             ["Administrateur","Responsable de production"]
             .includes(user?.role)
             &&
@@ -128,7 +128,7 @@ function Livraisons() {
                     </NavLink>                        
                 </div>            
             </section>
-            }
+            */}
 
             <br/>
 
@@ -138,7 +138,6 @@ function Livraisons() {
 
                     <tr className="header_Table">
                         <th>Reférence</th>
-                        <th>Vente info</th>
                         <th>Véhicule</th>
                         <th>Date</th>
                         <th>Adresse</th> 
@@ -157,9 +156,7 @@ function Livraisons() {
 
                         <td>{livraison.reference}</td>
 
-                        <td>{livraison.vente_id || "--"}</td>
-
-                        <td>{livraison.vehicule_id || "--"}</td>
+                        <td>{livraison.vehicules.immatriculation  || "--"} - {livraison.vehicules.chauffeur  || "--"}</td>
 
                         <td>{livraison?.date_livraison.split('T')[0]}</td>
 
@@ -172,7 +169,7 @@ function Livraisons() {
                             <NavLink to={`/Livraisons/details/${livraison.id}`}>
                                 <button className="profileView"><Eye size={20} /></button>
                             </NavLink>
-                            {
+                            {/*
                             ["Administrateur","Responsable de production", "Magasinier"]
                             .includes(user?.role)
                             &&
@@ -186,7 +183,7 @@ function Livraisons() {
                             .includes(user?.role)
                             &&                             
                              <button className="profileSupp" onClick={() => DeleteLivraison(livraison)}> <Trash2 size={20} /></button>
-                            }
+                            */}
                         </td>
                         
 

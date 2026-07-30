@@ -513,61 +513,45 @@ return()=>window.removeEventListener("resize",resize);
                         ))}*/}
             
                 
-                      <option>
-                          Carburant
-                      </option>
-                      <option>
-                          Transport
-                      </option>
-                      <option>
-                          Réparation
-                      </option>
-                      <option>
-                          Pièce
-                      </option>
-                      <option>
-                          Salaire
-                      </option>
-                      <option>
-                          Electricité
-                      </option>
-                      <option>
-                          Eau
-                      </option>
-                      <option>
-                          Loyer
-                      </option>
-                      <option>
-                          Transport
-                      </option>
-                      <option>
-                          Matières premières
-                      </option>
-                      <option>
-                          Consommables
-                      </option>
-                      <option>
-                          Impôts
-                      </option>
-                      <option>
-                          Assurance
-                      </option>
-                      <option>
-                          Fournisseur
-                      </option>
-                      <option>
-                          Prime de voyage
-                      </option>
-                      <option>
-                          Frais de route
-                      </option>
-                      <option>
-                          Manutention
-                      </option>                
-                      <option>
-                          Divers
-                      </option>
-
+                        <option>
+                            Vente client
+                        </option>
+                        <option>
+                            Acompte client
+                        </option>
+                        <option>
+                            Paiement partiel
+                        </option>
+                        <option>
+                            Solde de facture
+                        </option>
+                        <option>
+                            Paiement comptant
+                        </option>
+                        <option>
+                            Remboursement fournisseur
+                        </option>
+                        <option>
+                            Remboursement prestataire
+                        </option>
+                        <option>
+                            Subvention
+                        </option>
+                        <option>
+                            Apport en capital
+                        </option>
+                        <option>
+                            Emprunt bancaire
+                        </option>
+                        <option>
+                            Revenus financiers
+                        </option>
+                        <option>
+                            Autres produits
+                        </option>                   
+                        <option>
+                            Divers
+                        </option>
 
                     </select>
 
