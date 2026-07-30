@@ -309,7 +309,7 @@ function VenteCreate() {
 
     alert("Vente enregistrée");
 
-    if(Livraison){
+    if(Livraison.addresse && Livraison.montant){
       // API Supabase ici
         const table = "livraisons";
 
@@ -697,7 +697,7 @@ function VenteCreate() {
                 </label>
             </div>
 
-            { /* LIVRAISON */
+          { /* LIVRAISON */
             form.type_liaison === "LIVRER" && (
 
             <div className="form-group">
@@ -769,7 +769,7 @@ function VenteCreate() {
             </div>
 
             )
-            }
+        }
 
             
         </div>
