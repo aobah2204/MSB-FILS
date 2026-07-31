@@ -253,7 +253,7 @@ function VenteCreate() {
       montant_total: totalAmount,
       user_create_id: user?.id,
       type_vente: form.type_liaison,
-      vehicule_id: vehicule.id,
+      vehicule_id: vehicule?.id,
     };
 
     console.log("vente :", ventePayload);

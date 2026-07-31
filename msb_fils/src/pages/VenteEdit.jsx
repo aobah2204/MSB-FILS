@@ -16,6 +16,8 @@ function VenteEdit() {
     mode_paiement: "",
     description: "",
     montant_paye: "",
+    vehicule_id: "",
+    type_liaison: "",
   });
 
   const [clients, setClients] = useState([]);
@@ -28,8 +30,18 @@ function VenteEdit() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [vehicules, setVehicules] = useState([]);
   const [livraisons, setLivraisons] = useState([]);
-  const [oldLivraison, setOldLivraison] = useState([]);
-  const [vente, setVente] = useState([]);
+  const [oldLivraison, setOldLivraison] = useState({
+
+        reference:"",
+        vehicule_id: "",
+        date_livraison: "",
+        statut: "",
+        montant: "",
+        addresse: "",
+        libelle: ""
+
+    });
+  const [vente, setVente] = useState();
 
   async function loadData() {
     const [{ data: venteData }, { data: clientsData }, { data: fournisseursData }, { data: productsData },
@@ -65,6 +77,7 @@ function VenteEdit() {
       supabase.from("livraisons").select("*").eq("vehicule_id", vente.vehicule_id)
     ;
 
+    console.log("Old Livraison",livraisonData);
     setOldLivraison(livraisonData);
   }
 
@@ -191,6 +204,7 @@ function VenteEdit() {
       description: form.description,
       montant_total: totalAmount,
       montant_paye: form.montant_paye,
+      vehicule_id: form.vehicule_id,
     };
 
     const { error: updateError } = await supabase
@@ -282,14 +296,19 @@ function VenteEdit() {
     
             // Date 
             Livraison.date_livraison = ventePayload.date_vente;
-            
-            const { error } = await supabase.from(table).up(Livraison).eq("vehicule_id", oldLivraison.vehicule_id);
-            
-            if(!error){
-                alert("Livraison enregistré");
+
+            const { error: updateError } = await supabase
+              .from(table)
+              .update(Livraison)
+              .eq("id", vente.vehicule_id);
+
+            if (updateError) {
+              alert("Livraison non modifiée : " + updateError.message);
+              return;
             }else{
-                alert("Livraison non enregistré : " + error.message);
+              alert("Livraison modifié");
             }
+                  
         }
 
     navigate("/ventes");
@@ -408,15 +427,15 @@ function VenteEdit() {
         </div>
 
         <label>Date vente</label>
-        <input type="date" name="date_vente" value={form.date_vente.split('T')[0] || ""} onChange={handleFormChange} />
+        <input type="date" name="date_vente" value={form?.date_vente.split('T')[0]  || ""} onChange={handleFormChange} />
 
         <label>Mode de paiement</label>
-        <input name="mode_paiement" value={form.mode_paiement || ""} onChange={handleFormChange} />
+        <input name="mode_paiement" value={form?.mode_paiement || ""} onChange={handleFormChange} />
 
         <label>Description</label>
-        <input name="description" value={form.description || ""} onChange={handleFormChange} />
+        <input name="description" value={form?.libelle || ""} onChange={handleFormChange} />
         <label>Montant payé</label>
-        <input name="montant_paye" value={form.montant_paye} onChange={handleFormChange} />
+        <input name="montant_paye" value={form?.montant_paye} onChange={handleFormChange} />
 
         <h3>Produits</h3>
 
@@ -658,7 +677,7 @@ function VenteEdit() {
                         type="radio"
                         name="type_liaison"
                         value="EMPORTER"
-                        checked={vente.type_vente === "EMPORTER"}
+                        checked={vente?.type_vente === "EMPORTER"}
                         onChange={handleFormChange}
                     />
                     A emporter
@@ -669,7 +688,7 @@ function VenteEdit() {
                         type="radio"
                         name="type_liaison"
                         value="LIVRER"
-                        checked={vente.type_vente === "LIVRER"}
+                        checked={vente?.type_vente === "LIVRER"}
                         onChange={handleFormChange}
                     />
                     A livrer
@@ -677,7 +696,7 @@ function VenteEdit() {
             </div>
 
           { /* LIVRAISON */
-            vente.type_vente === "LIVRER" && (
+            vente?.type_vente === "LIVRER" && (
 
             <div className="form-group">
 
@@ -716,7 +735,7 @@ function VenteEdit() {
                   <input
                       type="text"
                       name="addresse"
-                      value={oldLivraison?.addresse}
+                      value={Livraison?.addresse}
                       onChange={handleChange}
                   />
               </div>
