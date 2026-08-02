@@ -144,3 +144,24 @@ nav a{
 .label::hover{
     background-color: rgb(73, 112, 146);
 }
+
+.logo-container{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo_header{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+    transform:scale(1.05);
+    transition:transform .2s ease, box-shadow .2s ease;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.logo_header:hover{
+    transform:scale(1.12);
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
