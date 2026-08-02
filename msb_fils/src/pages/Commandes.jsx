@@ -5,7 +5,7 @@ import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import logo from "../assets/Logo.png";
+import logo from "../assets/logoMSBALHASS.jpeg";
 
 function Commandes() {
 
@@ -122,13 +122,13 @@ function Commandes() {
 
 
        // Titres
-        doc.text("FOURNISSEUR", leftX, 35);
+        doc.text("FOURNISSEUR", leftX, 41);
         doc.text("CLIENT", rightX, 35);
 
         doc.setFont("helvetica", "normal");
 
         // Fournisseur
-        doc.text("MSB & FILS", leftX, 43);
+        doc.text("MSB & FILS", leftX, 45);
         doc.text("Conakry - Guinée", leftX, 49);
         doc.text("Tel : +224 620 00 00 00", leftX, 55);
         doc.text("Email : contact@msbfils.com", leftX, 61);
