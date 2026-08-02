@@ -392,6 +392,8 @@ return()=>window.removeEventListener("resize",resize);
       0
   );
 
+  const [visible, setVisible] = useState(false);
+  
   return (
     <div className="product-page">
 
@@ -408,9 +410,14 @@ return()=>window.removeEventListener("resize",resize);
             </NavLink>
           </div>
         </section>
-      )}
+      )}      
 
       <br/>
+      <button className="profile" onClick={() => setVisible(!visible)}>
+                {visible ? "Masquer" : "Afficher "} les critères de recherche
+      </button>
+
+ {visible && (
       <div className="bg-white rounded-xl shadow-md p-5 mb-5">
 
             <div className="flex items-center gap-2 mb-4">
@@ -885,7 +892,7 @@ return()=>window.removeEventListener("resize",resize);
             </div>
 
       </div>
-
+ )}
       {/** Carte résumé Encaissements */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "15px" }}>
 
