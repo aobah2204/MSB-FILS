@@ -3,6 +3,7 @@ import { supabase } from "../../supabase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Input } from "postcss";
+import { notify } from "../../utils/notifications.js";
 
 function IssaEncaissementCreate() {
   const navigate = useNavigate();
@@ -57,111 +58,143 @@ function IssaEncaissementCreate() {
     loadData();
   }, []);
 
-  async function loadData() {
-    try {
-      const { data: fournisseursData } = await supabase.from("fournisseurs").select("*");
-      const { data: sitesData } = await supabase.from("siteproduction").select("*");
-      const { data: vehiculesData } = await supabase.from("vehicules").select("id, immatriculation, marque");
-      const { data: salariesData } = await supabase.from("utilisateurs").select("*");
-      const { data: IssaEncaissementsData } = await supabase.from("issaencaissements").select("*");
-      const { data: prestationsData } = await supabase.from("prestations").select("*");
-      const { data: commandesData } = await supabase.from("commandes").select("*, clients(nom, prenom)");
-      const { data: ventesData } = await supabase.from("issaventes").select("*, clients(nom, prenom)");
+    async function loadData() {
+        try {
+        const { data: fournisseursData } = await supabase.from("fournisseurs").select("*");
+        const { data: sitesData } = await supabase.from("siteproduction").select("*");
+        const { data: vehiculesData } = await supabase.from("vehicules").select("id, immatriculation, marque");
+        const { data: salariesData } = await supabase.from("utilisateurs").select("*");
+        const { data: IssaEncaissementsData } = await supabase.from("issaencaissements").select("*");
+        const { data: prestationsData } = await supabase.from("prestations").select("*");
+        const { data: commandesData } = await supabase.from("commandes").select("*, clients(nom, prenom)");
+        const { data: ventesData } = await supabase.from("issaventes").select("*, clients(nom, prenom)");
 
-      setFournisseurs(fournisseursData || []);
-      setSites(sitesData || []);
-      setVehicules(vehiculesData || []);
-      setSalaries(salariesData || []);
-      setIssaEncaissements(IssaEncaissementsData || []);
-      setCommandes(commandesData || []);
-      setPrestations(prestationsData || []);
-      setVentes(ventesData || []);
+        setFournisseurs(fournisseursData || []);
+        setSites(sitesData || []);
+        setVehicules(vehiculesData || []);
+        setSalaries(salariesData || []);
+        setIssaEncaissements(IssaEncaissementsData || []);
+        setCommandes(commandesData || []);
+        setPrestations(prestationsData || []);
+        setVentes(ventesData || []);
 
-    } catch (error) {
-      console.error("Erreur lors du chargement des données :", error);
+        } catch (error) {
+        console.error("Erreur lors du chargement des données :", error);
+        }
     }
-  }
 
-function handleChange(e) {
+    function handleChange(e) {
 
-    const { name, value } = e.target;
+        const { name, value } = e.target;
 
-    if (name === "type_liaison") {
+        if (name === "type_liaison") {
+
+            setEncaissement(prev => ({
+                ...prev,
+                type_liaison: value,
+                site_id: "",
+                vehicule_id: "",
+                utilisateur_id: "",
+                fournisseur_id: "",
+                commande_id: "",
+                prestation_id: "",
+                vente_id: ""
+            }));
+
+            return;
+        }
 
         setEncaissement(prev => ({
             ...prev,
-            type_liaison: value,
-            site_id: "",
-            vehicule_id: "",
-            utilisateur_id: "",
-            fournisseur_id: "",
-            commande_id: "",
-            prestation_id: "",
-            vente_id: ""
+            [name]: value
         }));
 
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    }
+
+    async function createNotification(titre, message, type, lien, user) {
+
+        const { error: notificationError } = await supabase.from("notifications")
+            .insert({
+                titre: titre,
+        
+                message: message,
+        
+                type:type,
+        
+                utilisateur_id:null,
+        
+                lien:lien,
+        
+                auteur_id:user?.id
+            });
+        
+            if(notificationError){
+                alert("Notification non enregistrée : " + notificationError.message);
+            }
+    };
+
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        if (!formData.categorie) {
+        alert("Veuillez remplir tous les champs");
         return;
+        }
+
+        //console.log("Form data :", formData)
+
+        try {
+        const { data: EncaissementData, error: EncaissementError } = await supabase
+            .from("issaencaissements")
+            .insert([
+            {
+                reference: "ISSA_ENC_000"+(IssaEncaissements.length + 1),
+                libelle: formData.libelle,
+                categorie: formData.categorie,
+                fournisseur_id: formData.fournisseur_id,
+                site_id: formData.site_id,
+                vehicule_id: formData.vehicule_id,
+                utilisateur_id: formData.utilisateur_id,
+                commande_id: formData.commande_id,
+                vente_id: formData.vente_id,
+                prestation_id: formData.prestation_id,
+                date_encaissement: formData.date_encaissement,
+                statut: formData.statut,
+                montant: formData.montant,
+                //montant_paye: formData.montant_paye,
+                mode_paiement: formData.mode_paiement,
+                justificatif: formData.justificatif,
+                created_user_id: user?.id
+            },
+            ])
+            .select();
+
+        if (EncaissementError || !EncaissementData) {
+            alert("Erreur lors de la création de l'encaissement "+ (EncaissementError ? EncaissementError.message : ""));
+            return;
+        }
+
+        // Créer une notification
+        await createNotification(
+            "Nouvel encaissement créé",
+            `Un nouvel encaissement a été créé avec la référence : ${EncaissementData[0].reference}`,
+            "encaissement",
+            `/issaencaissements/${EncaissementData[0].id}`,
+            user
+        );
+        notify.success("Encaissement créé avec succès !");
+
+        navigate("/issaencaissements");
+        } catch (error) {
+        console.error("Erreur :", error);
+        alert("Erreur lors de la création");
+        }
     }
-
-    setEncaissement(prev => ({
-        ...prev,
-        [name]: value
-    }));
-
-    setFormData({
-        ...formData,
-        [name]: value
-    });
-}
-
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!formData.categorie) {
-      alert("Veuillez remplir tous les champs");
-      return;
-    }
-
-    //console.log("Form data :", formData)
-
-    try {
-      const { data: EncaissementData, error: EncaissementError } = await supabase
-        .from("issaencaissements")
-        .insert([
-          {
-            reference: "ISSA_ENC_000"+(IssaEncaissements.length + 1),
-            libelle: formData.libelle,
-            categorie: formData.categorie,
-            fournisseur_id: formData.fournisseur_id,
-            site_id: formData.site_id,
-            vehicule_id: formData.vehicule_id,
-            utilisateur_id: formData.utilisateur_id,
-            commande_id: formData.commande_id,
-            vente_id: formData.vente_id,
-            prestation_id: formData.prestation_id,
-            date_encaissement: formData.date_encaissement,
-            statut: formData.statut,
-            montant: formData.montant,
-            //montant_paye: formData.montant_paye,
-            mode_paiement: formData.mode_paiement,
-            justificatif: formData.justificatif,
-            created_user_id: user?.id
-          },
-        ])
-        .select();
-
-      if (EncaissementError || !EncaissementData) {
-        alert("Erreur lors de la création de l'encaissement "+ (EncaissementError ? EncaissementError.message : ""));
-        return;
-      }
-
-      navigate("/issaencaissements");
-    } catch (error) {
-      console.error("Erreur :", error);
-      alert("Erreur lors de la création");
-    }
-  }
 
   return (
     <div className="product-page">

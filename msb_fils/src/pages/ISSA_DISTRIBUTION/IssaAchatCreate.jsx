@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../../supabase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { notify } from "../../utils/notifications.js";
 
 function IssaAchatCreate() {
   const navigate = useNavigate();
@@ -111,6 +112,28 @@ function IssaAchatCreate() {
     setMarchandiseLines(newLines);
   }
 
+  async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -178,6 +201,8 @@ function IssaAchatCreate() {
         return;
       }
 
+      createNotification("Nouvel achat", `Un nouvel achat a été enregistré.`, "achat", `/issaachats`, user);
+      notify.success("Achat enregistré avec succès !");
       navigate("/issaachats");
     } catch (error) {
       console.error("Erreur :", error);

@@ -5,6 +5,7 @@ import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { Trash2 } from "lucide-react";
+import { notify } from "../utils/notifications.js";
 
 function ProductionCreate() {
   const navigate = useNavigate();
@@ -185,9 +186,32 @@ function ProductionCreate() {
       if (!ok) return;
     }
 
-    alert("Production enregistrée");
+    createNotification("Nouvelle production", `Une nouvelle production a été enregistrée.`, "production", `/productions`, user);
+    notify.success("Production enregistrée avec succès !");
     navigate("/productions");
   }
+
+  async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+  };
 
   function removeProductLine(index) {
     setMaterials(materials.filter((_, i) => i !== index));

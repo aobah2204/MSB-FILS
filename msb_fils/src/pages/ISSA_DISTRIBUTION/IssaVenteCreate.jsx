@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import Select from "react-select";
 
 import { selectStyle } from "../../components/selectStyle";
+import { notify } from "../../utils/notifications.js";
 
 function IssaVenteCreate() {
   const navigate = useNavigate();
@@ -184,6 +185,28 @@ function IssaVenteCreate() {
     setMarchandiseLines(marchandiseLines.filter((_, i) => i !== index));
   }
 
+  async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -259,7 +282,9 @@ function IssaVenteCreate() {
       }
     }
 
-    alert("Vente enregistrée");
+    createNotification("Nouvelle vente", `Une nouvelle vente a été enregistrée.`, "vente", `/issaventes`, user);
+    notify.success("Vente enregistrée avec succès !");
+
     navigate("/issaventes");
   }
 
