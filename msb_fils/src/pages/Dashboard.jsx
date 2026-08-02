@@ -10,7 +10,11 @@ import ChiffreAffaireMensuelGlobalChart from "../components/ChiffreAffaireMensue
 import DashboardCard from "../components/DashboardCard.jsx";
 import ClientStats from "../components/ClientStats.jsx";
 import FournisseurStats from "../components/FournisseurStats.jsx";
-import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake, Truck, BadgeSwissFranc } from "lucide-react";
+import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake, Truck, BadgeSwissFranc,
+    Receipt,
+    TrendingUp,
+    Wallet, TrendingDown
+ } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
 import FinanceCards from "../components/FinanceCards.jsx";
@@ -855,7 +859,7 @@ return (
 
                 value={achats.length}
 
-                icon={<Handshake size={32}/>}
+                icon={<ShoppingCart size={32}/>}
 
                 color="#11a30c"
 
@@ -923,7 +927,7 @@ return (
 
                 value={encaissements.length}
 
-                icon={<HandCoins size={42}/>}
+                icon={<Receipt size={42}/>}
 
                 color="#f11a0a"
 
@@ -948,7 +952,7 @@ return (
 
                 //value={encaissements.length}
 
-                icon={<HandCoins size={42}/>}
+                icon={ financeKpi.find(c => c.indicateur === "Bénéfice")?.courant > financeKpi.find(c => c.indicateur === "Bénéfice")?.precedent ? <TrendingUp size={42} style={{ color: 'green' }}/> : <TrendingDown size={42} style={{ color: 'red' }} /> }
 
                 color="#f11a0a"
 
