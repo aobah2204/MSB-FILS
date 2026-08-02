@@ -24,6 +24,7 @@ import {
 import logo from "../assets/Logo.png";
 import "./Sidebar.css";
 import { useAuth } from "../context/AuthContext";
+import logoAlhass from "../assets/logoMSBALHASS.jpeg";
 
 
 function Sidebar({open,closeMenu}){
@@ -141,7 +142,7 @@ return (
     <aside className={`sidebar ${open ? "open" : ""}`}>
 
         <div className="logo-container">
-            <Factory size={40}/>
+            <img src={logoAlhass} alt="Logo" className="logo_header" />
             <span>MSB & FILS</span>
         </div>
 
