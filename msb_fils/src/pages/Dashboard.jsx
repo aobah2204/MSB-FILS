@@ -13,6 +13,7 @@ import FournisseurStats from "../components/FournisseurStats.jsx";
 import { ShoppingCart, User2, Factory, HandCoins, Users, Handshake, Truck, BadgeSwissFranc } from "lucide-react";
 
 import DepensesChart from "../components/DepensesChart.jsx";
+import FinanceCards from "../components/FinanceCards.jsx";
 
 import {
     BarChart,
@@ -22,8 +23,11 @@ import {
     Tooltip,
     Legend,
     CartesianGrid,
-    ResponsiveContainer
+    ResponsiveContainer,
+    LineChart, 
+    Line
 } from "recharts";
+
 import Achats from "./Achats.jsx";
 import VehicleExpenseStats from "../components/VehiculeExpenseStats.jsx";
 
@@ -692,6 +696,41 @@ async function loadvehiculesDepStat() {
     setvehiculesDepCategoriesStat(dataC);
 }
 
+
+// Encaissements evolution
+const [encaissementsStats, setEncaissementsStats] = useState({});
+const [encaissements, setEncaissements] = useState([]);
+
+async function loadEncaissementsStats() {
+
+    const { data } = await supabase
+        .from("vw_dashboard_encaissements_evolution")
+        .select("*")        
+        .single();
+
+    setEncaissementsStats(data);
+
+    const { data: dataE } = await supabase
+        .from("encaissements")
+        .select("*");
+
+    setEncaissements(dataE);
+}
+
+// Finance evolution
+const [financeKpi, setFinanceKpi] = useState([]);
+
+async function loadFinanceKpi() {
+
+    const { data, error } = await supabase
+        .from("vw_dashboard_finance_kpi")
+        .select("*");
+
+    if (!error) {
+        setFinanceKpi(data);
+    }
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts(); 
@@ -749,6 +788,12 @@ useEffect(()=>{
     // Issa Distribution
     loadIssaVentesStats();
 
+    // Encaissements
+    loadEncaissementsStats();
+
+    // Finance evolution
+    loadFinanceKpi();
+
 },[]);
 
 const montantTotalPaye = depensesCategorie.reduce(
@@ -763,7 +808,7 @@ return (
     <div className="cards"> 
         <DashboardCard
 
-                title="Commandes"
+                title="Commandes MSB & FILS"
 
                 value={commandes.length}
 
@@ -785,7 +830,7 @@ return (
 
         <DashboardCard
 
-                title="Ventes"
+                title="Ventes MSB & FILS"
 
                 value={ventes.length}
 
@@ -806,7 +851,7 @@ return (
         />
         <DashboardCard
 
-                title="Achats"
+                title="Achats MSB & FILS"
 
                 value={achats.length}
 
@@ -830,7 +875,7 @@ return (
     <div className="cards">
         <DashboardCard
 
-                title="Productions"
+                title="Productions MSB & FILS"
 
                 value={Allproductions.length}
 
@@ -871,6 +916,53 @@ return (
                 moisDernier={depenseStats.mois_precedent}
 
         />        
+
+        <DashboardCard
+
+                title="Encaissements"
+
+                value={encaissements.length}
+
+                icon={<HandCoins size={42}/>}
+
+                color="#f11a0a"
+
+                trend={encaissementsStats.evolution}
+
+                subtitle="depuis le mois dernier"
+
+                link="/encaissements"
+
+                montantCourant={encaissementsStats.mois_courant}
+
+                moisDernier={encaissementsStats.mois_precedent}
+
+        />   
+
+    </div>
+    <div className="cards">
+        {/*<FinanceCards data={financeKpi} />*/}
+        <DashboardCard
+
+                title="Bénéfice"
+
+                //value={encaissements.length}
+
+                icon={<HandCoins size={42}/>}
+
+                color="#f11a0a"
+
+                trend={financeKpi.find(c => c.indicateur === "Bénéfice")?.evolution || 0}
+
+                subtitle="depuis le mois dernier"
+
+                link="/encaissements"
+
+                montantCourant={financeKpi.find(c => c.indicateur === "Bénéfice")?.courant || 0}
+
+                moisDernier={financeKpi.find(c => c.indicateur === "Bénéfice")?.precedent || 0}
+
+        />   
     </div>
 
     <div className="cards">
@@ -938,7 +1030,7 @@ return (
         />
         <DashboardCard
 
-                title="Prestations"
+                title="Prestations "
 
                 value={Prestations.length}
 

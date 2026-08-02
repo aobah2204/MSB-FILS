@@ -29,7 +29,8 @@ function DashboardCard({
     suffix = "",
     link = "",
     montantCourant = "",
-    moisDernier = ""
+    moisDernier = "",
+    dataFinance = [],
 }) {
 
     const positive = Number(trend) >= 0;
@@ -76,7 +77,6 @@ function DashboardCard({
             <div>
                 {moisDernier && <div className="dashboard-subtitle">Mois dernier <p className="dashboard-montantdernier">{new Intl.NumberFormat("fr-FR").format(moisDernier)} Fg</p></div>}
                 {montantCourant && <div className="dashboard-title">Mois courant <p className="dashboard-montantcourant"> {new Intl.NumberFormat("fr-FR").format(montantCourant)} Fg</p></div>}
-                
             </div>
 
             <div className="dashboard-footer">
