@@ -434,6 +434,8 @@ function Ventes() {
       0
   );
 
+  const [visible, setVisible] = useState(false);
+
   return (
     <div className="product-page">
       <h1>Liste des ventes</h1>
@@ -449,167 +451,174 @@ function Ventes() {
       )}
 
       <br/>
-      <div className="bg-white rounded-xl shadow-md p-5 mb-5">
+        <button className="profile" onClick={() => setVisible(!visible)}>
+                {visible ? "Masquer" : "Afficher"} les critères de recherche
+        </button>
 
-            <div className="flex items-center gap-2 mb-4">
-                <Filter size={22} />
-                <h2 className="text-xl font-semibold">
-                    Critères de recherche
-                </h2>
-            </div>
+        {visible && (
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl shadow-md p-5 mb-5">
 
-                {/* Recherche */}
+                    <div className="flex items-center gap-2 mb-4">
+                        <Filter size={22} />
+                        <h2 className="text-xl font-semibold">
+                            Critères de recherche
+                        </h2>
+                    </div>
 
-                <div>
-                    <label className="text-sm font-medium">
-                        Recherche
-                    </label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-                    <div className="relative">
+                        {/* Recherche */}
 
-                        <Search
-                            size={18}
-                            className="absolute left-3 top-3 text-gray-400"
-                        />
+                        <div>
+                            <label className="text-sm font-medium">
+                                Recherche
+                            </label>
 
-                        <input
-                            type="text"
-                            name="search"
-                            value={filters.search}
-                            onChange={handleFilterChange}
-                            placeholder="Libellé ou référence..."
-                            className="w-full pl-10 p-2 border rounded-lg"
-                        />
+                            <div className="relative">
+
+                                <Search
+                                    size={18}
+                                    className="absolute left-3 top-3 text-gray-400"
+                                />
+
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value={filters.search}
+                                    onChange={handleFilterChange}
+                                    placeholder="Libellé ou référence..."
+                                    className="w-full pl-10 p-2 border rounded-lg"
+                                />
+
+                            </div>
+                        </div>
+
+                        {/* Date début */}
+
+                        <div>
+
+                            <label className="text-sm font-medium">
+                                Du
+                            </label>
+
+                            <input
+                                type="date"
+                                name="dateDebut"
+                                value={filters.dateDebut}
+                                onChange={handleFilterChange}
+                                className="w-full p-2 border rounded-lg"
+                            />
+
+                        </div>
+
+                        {/* Date fin */}
+
+                        <div>
+
+                            <label className="text-sm font-medium">
+                                Au
+                            </label>
+
+                            <input
+                                type="date"
+                                name="dateFin"
+                                value={filters.dateFin}
+                                onChange={handleFilterChange}
+                                className="w-full p-2 border rounded-lg"
+                            />
+
+                        </div>                
+
+                        <div>
+
+                            <label className="text-sm font-medium">
+                                Client
+                            </label>
+
+                            <select
+                                name="client"
+                                value={filters.client}
+                                onChange={(e) =>
+                                    setFilters({
+                                        ...filters,
+                                        client: e.target.value === "" ? "" : Number(e.target.value)
+                                    })
+                                }
+                                className="w-full p-2 border rounded-lg"
+                            >
+
+                                <option value="">
+                                    Tous
+                                </option>
+
+                                {clients.map(f => (
+
+                                    <option
+                                        key={f.id}
+                                        value={f.id}
+                                    >
+                                        {f.nom} {f.prenom} - {f.societe}
+                                    </option>
+
+                                ))}
+
+                            </select>
+
+                        </div>
+
+                        
+                        {/* Paiement */}
+
+                        <div>
+
+                            <label className="text-sm font-medium">
+                                Mode de paiement
+                            </label>
+
+                            <select
+                                name="modePaiement"
+                                value={filters.modePaiement}
+                                onChange={handleFilterChange}
+                                className="w-full p-2 border rounded-lg"
+                            >
+
+                                <option value="">Tous</option>
+                                <option>Cash</option>
+                                <option>Virement</option>
+                                <option>Chèque</option>
+                                <option>Orange Money</option>
+                                <option>Carte bancaire</option>
+
+                            </select>
+
+                        </div>
 
                     </div>
-                </div>
 
-                {/* Date début */}
+                    {/* Boutons */}
+                                
+                    <br/>
+                    <div className="grid">
 
-                <div>
+                        <button className="profile"
+                            onClick={rechercher}
+                        >
+                            Rechercher
+                        </button>
 
-                    <label className="text-sm font-medium">
-                        Du
-                    </label>
+                        <button
+                            onClick={reinitialiser}
+                            className="profile"
+                        >
+                            <RotateCcw size={18} />
+                            Réinitialiser
+                        </button>
 
-                    <input
-                        type="date"
-                        name="dateDebut"
-                        value={filters.dateDebut}
-                        onChange={handleFilterChange}
-                        className="w-full p-2 border rounded-lg"
-                    />
-
-                </div>
-
-                {/* Date fin */}
-
-                <div>
-
-                    <label className="text-sm font-medium">
-                        Au
-                    </label>
-
-                    <input
-                        type="date"
-                        name="dateFin"
-                        value={filters.dateFin}
-                        onChange={handleFilterChange}
-                        className="w-full p-2 border rounded-lg"
-                    />
-
-                </div>                
-
-                <div>
-
-                    <label className="text-sm font-medium">
-                        Client
-                    </label>
-
-                    <select
-                        name="client"
-                        value={filters.client}
-                        onChange={(e) =>
-                            setFilters({
-                                ...filters,
-                                client: e.target.value === "" ? "" : Number(e.target.value)
-                            })
-                        }
-                        className="w-full p-2 border rounded-lg"
-                    >
-
-                        <option value="">
-                            Tous
-                        </option>
-
-                        {clients.map(f => (
-
-                            <option
-                                key={f.id}
-                                value={f.id}
-                            >
-                                {f.nom} {f.prenom} - {f.societe}
-                            </option>
-
-                        ))}
-
-                    </select>
-
-                </div>
-
-                
-                {/* Paiement */}
-
-                <div>
-
-                    <label className="text-sm font-medium">
-                        Mode de paiement
-                    </label>
-
-                    <select
-                        name="modePaiement"
-                        value={filters.modePaiement}
-                        onChange={handleFilterChange}
-                        className="w-full p-2 border rounded-lg"
-                    >
-
-                        <option value="">Tous</option>
-                        <option>Cash</option>
-                        <option>Virement</option>
-                        <option>Chèque</option>
-                        <option>Orange Money</option>
-                        <option>Carte bancaire</option>
-
-                    </select>
-
-                </div>
+                    </div>
 
             </div>
-
-            {/* Boutons */}
-                        
-            <br/>
-            <div className="grid">
-
-                <button className="profile"
-                    onClick={rechercher}
-                >
-                    Rechercher
-                </button>
-
-                <button
-                    onClick={reinitialiser}
-                    className="profile"
-                >
-                    <RotateCcw size={18} />
-                    Réinitialiser
-                </button>
-
-            </div>
-
-      </div>
+        )}
 
       {/** Carte résumé dépenses */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" style={{ marginTop: "20px", padding: "10px", backgroundColor: "#a8415b", borderRadius: "15px" }}>
