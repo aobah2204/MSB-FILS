@@ -8,6 +8,7 @@ import Select from "react-select";
 import { selectStyle } from "../components/selectStyle";
 import Marchandises from "./Marchandises";
 import Livraisons from "./Livraisons";
+import { notify } from "../utils/notifications";
 
 function VenteCreate() {
   const navigate = useNavigate();
@@ -106,6 +107,46 @@ function VenteCreate() {
     }, 0);
     setTotalAmount(totalP + totalM);
   }, [productLines, marchandiseLines]);
+
+  useEffect(()=>{
+
+    const channel=supabase
+
+    .channel("notifications")
+
+    .on(
+
+    'postgres_changes',
+
+    {
+
+      event:'INSERT',
+
+      schema:'public',
+
+      table:'notifications'
+
+    },
+
+    (payload)=>{
+
+    toast.success(payload.new.message);
+
+    loadNotifications();
+
+    }
+
+    )
+
+    .subscribe();
+
+    return ()=>{
+
+    supabase.removeChannel(channel);
+
+    };
+
+},[]);
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -346,6 +387,12 @@ function VenteCreate() {
             alert("Livraison non enregistré : " + error.message);
         }
     }
+
+    // Notification
+    notify.createNotification("Nouvelle vente", `La vente ${"MSB_VENTE_000"+ (ventes.length+1)} a été enregistrée.`, "vente", `/ventes/details/${ventes.length+1}`, user);
+
+    // envoie notification
+    notify.success("Vente enregistrée avec succès !");
 
     navigate("/ventes");
   }

@@ -114,14 +114,21 @@ import EncaissementDetails from './pages/EncaissementDetails';
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute";
 
-
+// Notifications
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <Routes>
+    <>
+      <Toaster 
+        position="top-right"
+        reverseOrder={false}
+      />
+      <Routes>
+        
 
         <Route
           path="/login"
@@ -526,8 +533,8 @@ function App() {
 
       </Route>
 
-    </Routes>
-
+      </Routes>
+    </>
   )
 }
 

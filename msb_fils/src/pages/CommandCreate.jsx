@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
+import { notify } from "../utils/notifications";
 
 function CommandCreate() {
   const navigate = useNavigate();
@@ -77,6 +78,28 @@ function CommandCreate() {
     setProductLines(productLines.filter((_, i) => i !== index));
   }
 
+  async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+};
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -130,7 +153,9 @@ function CommandCreate() {
       }
     }
 
-    alert("Commande enregistrée");
+    createNotification("Nouvelle commande", `La commande ${form.reference} a été enregistrée.`, "commande", `/commandes/details/${insertedCommande.id}`, user);
+    notify.success("Commande enregistrée avec succès !");
+    //alert("Commande enregistrée");
     navigate("/commandes");
   }
 

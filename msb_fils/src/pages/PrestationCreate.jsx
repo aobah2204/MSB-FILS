@@ -4,8 +4,7 @@ import "../CSS/ProductCreate.css";
 import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import Prestations from "./Prestations";
-
-    
+import {notify} from "../utils/notifications.js";   
 
 
 function PrestationCreate(){
@@ -71,7 +70,27 @@ function PrestationCreate(){
     }
 
 
+async function createNotification(titre, message, type, lien, user) {
 
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+};
 
     async function handleSubmit(e){
 
@@ -114,6 +133,9 @@ function PrestationCreate(){
         }else{
             alert("Prestation non enregistré : " + error.message);
         }
+
+        createNotification("Nouvelle prestation", `La prestation ${Prestation.reference} a été enregistrée.`, "prestation", `/prestations/details/${Prestation.reference}`, user);
+        notify.success("Prestation enregistrée avec succès !");
 
         navigate("/Prestations");
     }

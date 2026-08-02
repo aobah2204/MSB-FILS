@@ -3,6 +3,7 @@ import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Input } from "postcss";
+import { notify } from "../utils/notifications";
 
 function DepenseCreate() {
   const navigate = useNavigate();
@@ -95,6 +96,28 @@ function handleChange(e) {
     });
 }
 
+async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+};
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -135,9 +158,12 @@ function handleChange(e) {
       }
 
       navigate("/depenses");
+      createNotification("Nouvelle dépense", `La dépense ${"MSB_DPS_000"+ (depenses.length+1)} a été enregistrée.`, "depense", `/depenses/details/${depenses.length+1}`, user);
+      notify.success("Dépense enregistrée avec succès !");
+
     } catch (error) {
       console.error("Erreur :", error);
-      alert("Erreur lors de la création");
+      alert("Erreur lors de la création", error.message);
     }
   }
 

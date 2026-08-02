@@ -159,11 +159,19 @@ font-size:6px;
 
 
 .notification{
-
-display:none;
-
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
+.profileExit{
+
+    position: absolute;
+    right: 10px;
+    top: 50px;
+    max-height: 50px;
+    max-width: 40px;
+}
 
 
 .profile{

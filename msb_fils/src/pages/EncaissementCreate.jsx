@@ -3,6 +3,7 @@ import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Input } from "postcss";
+import { notify } from "../utils/notifications";
 
 function EncaissementCreate() {
   const navigate = useNavigate();
@@ -117,6 +118,27 @@ function handleChange(e) {
     });
 }
 
+async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+};
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -158,6 +180,9 @@ function handleChange(e) {
         alert("Erreur lors de la création de l'encaissement "+ (EncaissementError ? EncaissementError.message : ""));
         return;
       }
+
+        createNotification("Nouvel encaissement", `L'encaissement ${"MSB_ENC_000"+(Encaissements.length + 1)} a été enregistré.`, "encaissement", `/encaissements/details/${EncaissementData[0].id}`, user);
+        notify.success("Encaissement enregistré avec succès !");
 
       navigate("/encaissements");
     } catch (error) {

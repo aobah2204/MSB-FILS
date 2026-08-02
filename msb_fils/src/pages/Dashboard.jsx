@@ -808,7 +808,7 @@ return (
     <div className="cards"> 
         <DashboardCard
 
-                title="Commandes MSB & FILS"
+                title="Commandes"
 
                 value={commandes.length}
 
@@ -830,7 +830,7 @@ return (
 
         <DashboardCard
 
-                title="Ventes MSB & FILS"
+                title="Ventes"
 
                 value={ventes.length}
 
@@ -851,7 +851,7 @@ return (
         />
         <DashboardCard
 
-                title="Achats MSB & FILS"
+                title="Achats"
 
                 value={achats.length}
 
@@ -875,7 +875,7 @@ return (
     <div className="cards">
         <DashboardCard
 
-                title="Productions MSB & FILS"
+                title="Productions"
 
                 value={Allproductions.length}
 

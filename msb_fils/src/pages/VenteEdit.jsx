@@ -4,6 +4,7 @@ import { Trash2 } from "lucide-react";
 import { supabase } from "../supabase";
 import Select from "react-select";
 import { selectStyle } from "../components/selectStyle";
+import { notify } from "../utils/notifications";
 
 function VenteEdit() {
   const { id } = useParams();
@@ -311,6 +312,9 @@ function VenteEdit() {
                   
         }
 
+    // envoie notification
+    notify.success("Vente modifiée avec succès !");
+    
     navigate("/ventes");
   }
 

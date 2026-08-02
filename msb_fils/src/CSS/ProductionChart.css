@@ -71,9 +71,9 @@ padding:10px;
 
 .dashboard-icon{
 
-    width:65px;
+    width:75px;
 
-    height:65px;
+    height:75px;
 
     border-radius:16px;
 
@@ -93,7 +93,7 @@ padding:10px;
 
     color:#64748b;
 
-    font-size:15px;
+    font-size:25px;
 
     font-weight:600;
 
@@ -105,7 +105,7 @@ padding:10px;
 
     color:#0757c5;
 
-    font-size:12px;
+    font-size:16px;
 
     font-weight:600;
 
@@ -115,7 +115,7 @@ padding:10px;
 
     margin:5;
 
-    color:#0757c5;
+    color:#239c23;
 
     font-size:26px;
 
@@ -127,7 +127,7 @@ padding:10px;
 
     margin:5;
 
-    color:#093a0f;
+    color:#d40b0b;
 
     font-size:24px;
 
@@ -139,7 +139,7 @@ padding:10px;
 
     margin-top:5;
 
-    font-size:14px;
+    font-size:24px;
 
     font-weight:bold;
 
@@ -169,7 +169,7 @@ padding:10px;
 
     font-weight:bold;
 
-    font-size:15px;
+    font-size:18px;
 
 }
 
@@ -189,7 +189,7 @@ padding:10px;
 
     color:#94a3b8;
 
-    font-size:13px;
+    font-size:16px;
 
 }
 

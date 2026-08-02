@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { notify } from "../utils/notifications";
 
 function AchatCreate() {
   const navigate = useNavigate();
@@ -75,6 +76,29 @@ function AchatCreate() {
     setProductLines(newLines);
   }
 
+
+  async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -124,12 +148,18 @@ function AchatCreate() {
         return;
       }
 
+      // Create notification
+      createNotification("Nouvel achat", `L'achat ${formData.reference} a été enregistré.`, "achat", `/achats/details/${achatId}`, user);
+      notify.success("Achat enregistré avec succès !");
+
       navigate("/achats");
     } catch (error) {
       console.error("Erreur :", error);
       alert("Erreur lors de la création");
     }
   }
+
+
 
   return (
     <div className="product-page">

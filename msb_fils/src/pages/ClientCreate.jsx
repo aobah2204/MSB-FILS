@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../CSS/ClientCreate.css";
 import { supabase } from "../supabase.js";
+import { notify } from "../utils/notifications.js";
 
 function ClientCreate(e) {
 
@@ -26,7 +27,27 @@ function handleChange(e){
 
 }
 
+async function createNotification(titre, message, type, lien, user) {
 
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+};
 
 async function handleSubmit(e){
 
@@ -45,6 +66,9 @@ async function handleSubmit(e){
     }else{
         alert("Client non enregistré");
     }
+
+    createNotification("Nouveau client", `Le client ${client.nom} ${client.prenom} a été enregistré.`, "client", `/clients`, user);
+    notify.success("Client enregistré avec succès !");
 
     navigate("/clients");
 
