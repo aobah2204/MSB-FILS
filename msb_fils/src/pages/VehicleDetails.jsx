@@ -44,6 +44,7 @@ function VehicleDetails(){
         getChauffeur(data);
         getLivraisonsVehicule(data);
         getDepensesVehicule(data);
+        getEncaissementsVehicule(data);
         
     }
 
@@ -88,6 +89,20 @@ function VehicleDetails(){
         if (!data) return alert("Aucune dépense effectuée");
         setDepenses(data);
     }
+
+    // Get encaissements véhicules
+    const [encaissements, setEncaissements] = useState([]);
+    async function getEncaissementsVehicule(vehicule){
+
+        const { data } = await supabase
+            .from("encaissements")            
+            .select("*")
+            .eq("vehicule_id",vehicule.id);
+
+        if (!data) return alert("Aucun encaissement effectué");
+        setEncaissements(data);
+    }
+
 
     function formatDate(value) {
         if (!value) return "—";
@@ -154,6 +169,26 @@ function VehicleDetails(){
                         {chauffeur?.adresse}
                     </p>
 
+
+                </div>
+
+                <div className="card" style={{width:"100%", textAlign:"left"}}>
+
+                    <h3>
+                        Statistiques
+                    </h3>
+
+                    <p>
+                        Total livraisons : {livraisons.length} :  {new Intl.NumberFormat("fr-FR").format(livraisons.reduce((acc, livraison) => acc + livraison.montant, 0))} FG
+                    </p>    
+
+                    <p>
+                        Total dépenses : {depenses.length} :  {new Intl.NumberFormat("fr-FR").format(depenses.reduce((acc, depense) => acc + depense.montant, 0))} FG
+                    </p>
+
+                    <p>
+                        Total encaissements : {encaissements.length} ,  {new Intl.NumberFormat("fr-FR").format(encaissements.reduce((acc, encaissement) => acc + encaissement.montant, 0))} FG
+                    </p>
 
                 </div>
 
@@ -231,7 +266,33 @@ function VehicleDetails(){
                     </table>
                 </div> 
                 
-
+                <div className="table-container card">
+                    <h3>Total des encaissements</h3>
+                    <table className="data-table">
+                        <thead className="header_Table">
+                            <tr>
+                                <th>Date</th>
+                                <th>Référence</th>
+                                <th>catégorie</th>
+                                <th>Libellé</th>                            
+                                <th>Montant total</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {encaissements.map((Encaissement) => (
+                            <tr key={Encaissement.id}>
+                                <td>{formatDate(Encaissement.date_encaissement) || "—"}</td>
+                                <td>{Encaissement.reference || "—"}</td>
+                                <td>{Encaissement.categorie}</td>
+                                <td>{Encaissement.libelle}</td>
+                                <td>{new Intl.NumberFormat("fr-FR").format(Encaissement.montant) || 0 } FG</td>
+                                <td>{Encaissement.statut || "—"}</td>                            
+                            </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>  
             </div>
 
             
