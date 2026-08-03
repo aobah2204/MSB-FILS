@@ -7,7 +7,7 @@ import {
  User,
  LogOut
 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
 import { useState, useEffect } from "react";
 import "../CSS/Notification.css";
@@ -19,7 +19,22 @@ function Header(){
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    const [notifications, setNotifications] = useState([]);
+    const [rawNotifications, setRawNotifications] = useState([]);
+    const [readNotificationIds, setReadNotificationIds] = useState([]);
+
+    const normalizeReadIds = (ids) => {
+        return Array.isArray(ids) ? ids.map(id => String(id)) : [];
+    };
+
+    const applyReadState = (notifs, ids) => {
+        const readSet = new Set(normalizeReadIds(ids));
+        return notifs.map(n => ({
+            ...n,
+            lu: n.lu || readSet.has(String(n.id))
+        }));
+    };
+
+    const notifications = applyReadState(rawNotifications, readNotificationIds);
 
     function Notification({ notifications = [], onItemClick }) {
 
@@ -117,6 +132,34 @@ function Header(){
 
     }
 
+    function getLocalStorageKey() {
+        return `notifications_read_${user?.id || "anonymous"}`;
+    }
+
+    function loadReadNotificationIds() {
+        try {
+            const key = getLocalStorageKey();
+            const stored = window.localStorage.getItem(key);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed)) {
+                    setReadNotificationIds(parsed);
+                }
+            }
+        } catch (err) {
+            console.error("Erreur lecture localStorage notifications lu :", err);
+        }
+    }
+
+    function saveReadNotificationIds(ids) {
+        try {
+            const key = getLocalStorageKey();
+            window.localStorage.setItem(key, JSON.stringify(ids));
+        } catch (err) {
+            console.error("Erreur écriture localStorage notifications lu :", err);
+        }
+    }
+
     async function loadNotifications() {
 
         const { data } = await supabase
@@ -124,20 +167,17 @@ function Header(){
             .select("*")
             .order("created_at", { ascending: false });
 
-        setNotifications(data || []);
+        setRawNotifications(data || []);
     }
 
     async function handleNotificationClick(notif) {
         try {
-            // Mark as read locally for the current user only (no DB update)
-            setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, lu: true } : n));
+            if (!readNotificationIds.includes(notif.id)) {
+                const nextIds = [...readNotificationIds, String(notif.id)];
+                setReadNotificationIds(nextIds);
+                saveReadNotificationIds(nextIds);
+            }
 
-            // NOTE: To persist per-user reads you should add a per-user structure
-            // in the DB (e.g. a `notification_reads` table or a `read_by` jsonb/text[] field)
-            // and update that instead of setting a global `lu` flag. For now we avoid
-            // changing the global `lu` boolean to prevent marking as read for all users.
-
-            // Navigate to linked page if provided
             if (notif.lien) {
                 navigate(notif.lien);
             }
@@ -147,8 +187,9 @@ function Header(){
     }
 
     useEffect(() => {
-    loadNotifications();
-}, []);
+        loadReadNotificationIds();
+        loadNotifications();
+    }, [user?.id]);
 
 return (
 
