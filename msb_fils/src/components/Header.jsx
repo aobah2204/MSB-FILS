@@ -21,7 +21,7 @@ function Header(){
 
     const [notifications, setNotifications] = useState([]);
 
-    function Notification({ notifications = [] }) {
+    function Notification({ notifications = [], onItemClick }) {
 
         const [open, setOpen] = useState(false);
 
@@ -68,11 +68,19 @@ function Header(){
 
                             :
 
+
                             notifications.map(notif => (
 
                                 <div
                                     key={notif.id}
                                     className={`notification-item ${notif.lu ? "" : "unread"}`}
+                                    onClick={async () => {
+                                        if (typeof onItemClick === "function") {
+                                            await onItemClick(notif);
+                                        }
+                                        setOpen(false);
+                                    }}
+                                    style={{ cursor: "pointer" }}
                                 >
 
                                     <div className="notification-title">
@@ -119,6 +127,25 @@ function Header(){
         setNotifications(data || []);
     }
 
+    async function handleNotificationClick(notif) {
+        try {
+            // Mark as read locally for the current user only (no DB update)
+            setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, lu: true } : n));
+
+            // NOTE: To persist per-user reads you should add a per-user structure
+            // in the DB (e.g. a `notification_reads` table or a `read_by` jsonb/text[] field)
+            // and update that instead of setting a global `lu` flag. For now we avoid
+            // changing the global `lu` boolean to prevent marking as read for all users.
+
+            // Navigate to linked page if provided
+            if (notif.lien) {
+                navigate(notif.lien);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     useEffect(() => {
     loadNotifications();
 }, []);
@@ -144,7 +171,7 @@ return (
 
 
         <div className="notification">
-            <Notification notifications={notifications} />
+            <Notification notifications={notifications} onItemClick={handleNotificationClick} />
         </div>
         {/*<button className="profile" type="button" onClick={() => navigate("/")}>Accueil</button>*/}
         <button className="profileExit" onClick={logout}>
