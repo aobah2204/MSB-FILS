@@ -269,6 +269,28 @@ function VenteCreate() {
     setMarchandiseLines(marchandiseLines.filter((_, i) => i !== index));
   }
 
+  async function createNotification(titre, message, type, lien, user) {
+
+    const { error: notificationError } = await supabase.from("notifications")
+          .insert({
+              titre: titre,
+    
+              message: message,
+    
+              type:type,
+    
+              utilisateur_id:null,
+    
+              lien:lien,
+    
+              auteur_id:user?.id
+          });
+    
+        if(notificationError){
+            alert("Notification non enregistrée : " + notificationError.message);
+        }
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -389,10 +411,28 @@ function VenteCreate() {
     }
 
     // Notification
-    notify.createNotification("Nouvelle vente", `La vente ${"MSB_VENTE_000"+ (ventes.length+1)} a été enregistrée.`, "vente", `/ventes/details/${ventes.length+1}`, user);
+    createNotification("Nouvelle vente", `La vente ${"MSB_VENTE_000"+ (ventes.length+1)} a été enregistrée.`, 
+      "vente",
+      `/ventes/details/${ventes.length+1}`, user);
 
-    // envoie notification
+    // envoie notification dans l'app
     notify.success("Vente enregistrée avec succès !");
+
+    // envoie notification sur whatsapp
+    if(ventePayload.montant_totale && ventePayload.user_create_id){
+      const message = `Nouvelle vente enregistrée : ${"MSB_VENTE_000"+ (ventes.length+1)}\nMontant total : ${totalAmount} FG\nMontant payé : ${form.montant_paye} FG\nMode de paiement : ${form.mode_paiement}\nDate de vente : ${ventePayload.date_vente}\nClient : ${clients.find(c => c.id === form.client_id)?.nom || "N/A"}\nAdresse de livraison : ${Livraison.addresse}\nMontant livraison : ${Livraison.montant} FG\nVéhicule : ${vehicule?.marque || "N/A"} - ${vehicule?.immatriculation || "N/A"}`;
+      await notify.whatsappGroup({
+        members: [
+          { name: "Koto Mounir", telephone: "+224 622 21 88 97" },
+          { name: "Alhassane", telephone: "+224 620 60 23 24" },
+          { name: "Mamadou Dardaye", telephone: "224 621 13 42 80" },
+          { name: "Amadou Oury", telephone: "+33 6 12 18 22 45" }
+        ],
+        title: "Nouvelle vente",
+        message,
+        link: `/ventes/details/${ventes.length+1}`
+      });
+    }
 
     navigate("/ventes");
   }
