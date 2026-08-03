@@ -201,7 +201,7 @@ function IssaAchatCreate() {
         return;
       }
 
-      createNotification("Nouvel achat", `Un nouvel achat a été enregistré.`, "achat", `/issaachats`, user);
+      createNotification("Nouvel achat", `Un nouvel achat "ISSA_ACHT_000${achats.length + 1}" a été enregistré.`, "achat", `/issaachats`, user);
       notify.success("Achat enregistré avec succès !");
       navigate("/issaachats");
     } catch (error) {

@@ -282,7 +282,7 @@ function IssaVenteCreate() {
       }
     }
 
-    createNotification("Nouvelle vente", `Une nouvelle vente a été enregistrée.`, "vente", `/issaventes`, user);
+    createNotification("Nouvelle vente", `Une nouvelle vente "ISSA_DIST_VTE_000${ventes.length + 1}" a été enregistrée.`, "vente", `/issaventes`, user);
     notify.success("Vente enregistrée avec succès !");
 
     navigate("/issaventes");
