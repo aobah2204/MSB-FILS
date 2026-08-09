@@ -15,18 +15,40 @@ function Depenses() {
 
   useEffect(() => {
     loadDepenses();
-}, []);
+  }, []);
+
+  useEffect(() => {
+    if (depenses.length > 0) {
+      setDepensesFiltrees(getFilteredDepenses(depenses, {
+        ...filters,
+        mois_courant: true,
+        tous: false,
+      }));
+    }
+  }, [depenses]);
 
   async function loadDepenses() {
     try {
-      const { data: depensesData } = await supabase
-        .from("depenses")
-        .select("*")
-        .order("date_depense", { ascending: false });
+        const debutMois = new Date();
+        debutMois.setDate(1);
+        debutMois.setHours(0, 0, 0, 0);
+
+        const debutMoisSuivant = new Date(debutMois);
+        debutMoisSuivant.setMonth(debutMoisSuivant.getMonth() + 1);
+        const { data: depensesData } = await supabase
+            .from("depenses")
+            .select("*")
+            //.gte("date_depense", debutMois.toISOString())
+            //.lt("date_depense", debutMoisSuivant.toISOString())
+            .order("date_depense", { ascending: false });
 
       if (!depensesData) return alert("Aucun Dépense");
       setDepenses(depensesData);
-      setDepensesFiltrees(depensesData);
+      setDepensesFiltrees(getFilteredDepenses(depensesData, {
+        ...filters,
+        mois_courant: true,
+        tous: false,
+      }));
 
       const { data: sitesData } = await supabase
         .from("siteproduction")
@@ -85,11 +107,22 @@ function Depenses() {
       modePaiement: "",
       statut: "",
       montantMin: "",
-      montantMax: ""
+      montantMax: "",
+      mois_courant: true,
+      tous: false,
   });
 
   const handleFilterChange = (e) => {
       const { name, value } = e.target;
+
+      if (name === "periode") {
+          setFilters(prev => ({
+              ...prev,
+              mois_courant: value === "mois_courant",
+              tous: value === "tous",
+          }));
+          return;
+      }
 
       setFilters(prev => ({
           ...prev,
@@ -97,66 +130,76 @@ function Depenses() {
       }));
   };
 
-  const depensesFiltres = depenses.filter(depense => {
+  const getFilteredDepenses = (baseDepenses = depenses, activeFilters = filters) => {
+      const now = new Date();
 
-      const date = new Date(depense.date_depense);
+      return baseDepenses.filter(depense => {
+          const date = new Date(depense.date_depense);
 
-      return (
+          return (
+              (!activeFilters.search ||
+                  depense.libelle?.toLowerCase().includes(activeFilters.search.toLowerCase()) ||
+                  depense.reference?.toLowerCase().includes(activeFilters.search.toLowerCase()))
 
-          (!filters.search ||
-              depense.libelle.toLowerCase().includes(filters.search.toLowerCase()) ||
-              depense.reference?.toLowerCase().includes(filters.search.toLowerCase()))
+              &&
 
-          &&
+              (!activeFilters.categorie ||
+                  depense.categorie === activeFilters.categorie)
 
-          (!filters.categorie ||
-              depense.categorie === filters.categorie)
+              &&
 
-          &&
+              (!activeFilters.site ||
+                  depense.site_id === activeFilters.site)
 
-          (!filters.site ||
-              depense.site_id === filters.site)
+              &&
 
-          &&
+              (!activeFilters.fournisseur ||
+                  depense.fournisseur_id === activeFilters.fournisseur)
 
-          (!filters.fournisseur ||
-              depense.fournisseur_id === filters.fournisseur)
+              &&
 
-          &&
+              (!activeFilters.vehicule ||
+                  depense.vehicule_id === activeFilters.vehicule)
 
-          (!filters.vehicule ||
-              depense.vehicule_id === filters.vehicule)
+              &&
 
-          &&
+              (!activeFilters.modePaiement ||
+                  depense.mode_paiement === activeFilters.modePaiement)
 
-          (!filters.modePaiement ||
-              depense.mode_paiement === filters.modePaiement)
+              &&
 
-          &&
+              (!activeFilters.statut ||
+                  depense.statut === activeFilters.statut)
 
-          (!filters.statut ||
-              depense.statut === filters.statut)
+              &&
 
-          &&
+              (!activeFilters.dateDebut ||
+                  date >= new Date(activeFilters.dateDebut))
 
-          (!filters.dateDebut ||
-              date >= new Date(filters.dateDebut))
+              &&
 
-          &&
+              (!activeFilters.dateFin ||
+                  date <= new Date(activeFilters.dateFin + "T23:59:59"))
 
-          (!filters.dateFin ||
-              date <= new Date(filters.dateFin + "T23:59:59"))
+              &&
 
-          &&
+              (!activeFilters.montantMin ||
+                  Number(depense.montant) >= Number(activeFilters.montantMin))
 
-          (!filters.montantMin ||
-              Number(depense.montant) >= Number(filters.montantMin))
+              &&
 
-          &&
+              (!activeFilters.montantMax ||
+                  Number(depense.montant) <= Number(activeFilters.montantMax))
 
-          (!filters.montantMax ||
-              Number(depense.montant) <= Number(filters.montantMax)))
-  });
+              &&
+
+              (!activeFilters.mois_courant ||
+                  (date.getMonth() === now.getMonth() &&
+                      date.getFullYear() === now.getFullYear())
+              )
+          );
+      });
+  };
 
   const reinitialiser = () => {
       const initialFilters = {
@@ -170,98 +213,18 @@ function Depenses() {
         modePaiement: "",
         statut: "",
         montantMin: "",
-        montantMax: ""
-    };
+        montantMax: "",
+        mois_courant: true,
+        tous: false,
+      };
 
-    setFilters(initialFilters);
-    setDepensesFiltrees(depenses);
+      setFilters(initialFilters);
+      setDepensesFiltrees(depenses);
   };
 
 
   const rechercher = () => {
-
-    console.log("In recherche ...", filters, depenses);
-
-      const resultat = depenses.filter((depense) => {
-
-          // Recherche texte
-          const rechercheOK =
-              filters.search === "" ||
-
-              depense.libelle?.toLowerCase().includes(filters.search.toLowerCase()) ||
-
-              depense.reference?.toLowerCase().includes(filters.search.toLowerCase());
-
-          // Catégorie
-          const categorieOK =
-              filters.categorie === "" ||
-              depense.categorie === filters.categorie;
-
-          // Site
-          const siteOK =
-              filters.site === "" ||
-              depense.site_id == filters.site;
-
-          // Fournisseur
-          const fournisseurOK =
-              filters.fournisseur === "" ||
-              depense.fournisseur_id == filters.fournisseur;
-
-          // Véhicule
-          const vehiculeOK =
-              filters.vehicule === "" ||
-              depense.vehicule_id == filters.vehicule;
-
-          // Paiement
-          const paiementOK =
-              filters.modePaiement === "" ||
-              depense.mode_paiement.toLowerCase().trim() === filters.modePaiement.toLowerCase().trim();
-
-          // Statut
-          const statutOK =
-              filters.statut === "" ||
-              depense.statut === filters.statut;
-
-          // Date
-          const date = new Date(depense.date_depense);
-
-          const dateDebutOK =
-              filters.dateDebut === "" ||
-              date >= new Date(filters.dateDebut);
-
-          const dateFinOK =
-              filters.dateFin === "" ||
-              date <= new Date(filters.dateFin + "T23:59:59");
-
-          // Montants
-          const montantMinOK =
-              filters.montantMin === "" ||
-              Number(depense.montant) >= Number(filters.montantMin);
-
-          const montantMaxOK =
-              filters.montantMax === "" ||
-              Number(depense.montant) <= Number(filters.montantMax);
-
-          return (
-              rechercheOK &&
-              categorieOK &&
-              siteOK &&
-              fournisseurOK &&
-              vehiculeOK &&
-              paiementOK &&
-              statutOK &&
-              dateDebutOK &&
-              dateFinOK &&
-              montantMinOK &&
-              montantMaxOK
-          );
-
-      });
-
-      console.log("Resultat ", resultat);
-
-      setDepensesFiltrees(resultat);
-
+      setDepensesFiltrees(getFilteredDepenses(depenses, filters));
   };
 
   const montantTotal = depensesFiltrees.reduce(
@@ -608,6 +571,26 @@ function Depenses() {
                         <option value="">Tous</option>
                         <option>Payé</option>
                         <option>Non payé</option>
+                    </select>
+
+                </div>
+
+                {/* Période */}
+
+                <div>
+
+                    <label className="text-sm font-medium">
+                        Période
+                    </label>
+
+                    <select
+                        name="periode"
+                        value={filters.mois_courant ? "mois_courant" : "tous"}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border rounded-lg"
+                    >
+                        <option value="tous">Tous</option>
+                        <option value="mois_courant">Mois courant</option>
                     </select>
 
                 </div>

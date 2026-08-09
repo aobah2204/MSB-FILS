@@ -13,6 +13,7 @@ function Ventes() {
   const [sales, setSales] = useState([]);
   const [ventesFiltres, setVentesFiltres] = useState([]);
   const [clients, setClients] = useState([]);
+  const [filters, setFilters] = useState({ search: "", dateDebut: "", dateFin: "", client: "", modePaiement: "", mois_courant: true, tous: false });
 
   async function loadData() {
     const [{ data: salesData }, { data: clientsData }] = await Promise.all([
@@ -21,7 +22,7 @@ function Ventes() {
     ]);
 
     setSales(salesData || []);
-    setVentesFiltres(salesData || []);
+    setVentesFiltres(getFilteredVentes(salesData || [], { ...filters, mois_courant: true, tous: false }));
     setClients(clientsData || []);
   }
 
@@ -307,16 +308,17 @@ function Ventes() {
         doc.save("Facture_vente_"+order.reference+".pdf");
   }
 
-  const [filters, setFilters] = useState({
-      search: "",
-      dateDebut: "",
-      dateFin: "",
-      client: "",
-      ModePaiement: "" 
-  });
-
   const handleFilterChange = (e) => {
       const { name, value } = e.target;
+
+      if (name === "periode") {
+          setFilters(prev => ({
+              ...prev,
+              mois_courant: value === "mois_courant",
+              tous: value === "tous",
+          }));
+          return;
+      }
 
       setFilters(prev => ({
           ...prev,
@@ -324,37 +326,40 @@ function Ventes() {
       }));
   };
 
-  const ventesFiltrees = sales.filter(vente => {
+  const getFilteredVentes = (baseSales = sales, activeFilters = filters) => {
+      const now = new Date();
+      return baseSales.filter((vente) => {
+          const date = new Date(vente.date_vente);
+          const rechercheOK =
+              activeFilters.search === "" ||
+              vente.description?.toLowerCase().includes(activeFilters.search.toLowerCase()) ||
+              vente.reference?.toLowerCase().includes(activeFilters.search.toLowerCase());
 
-      const date = new Date(vente.date_vente);
+          const clientOK =
+              activeFilters.client === "" ||
+              vente.client_id === activeFilters.client;
 
-      return (
+          const paiementOK =
+              activeFilters.modePaiement === "" ||
+              vente.mode_paiement === activeFilters.modePaiement;
 
-          (!filters.search ||
-              vente.description.toLowerCase().includes(filters.search.toLowerCase()) ||
-              vente.reference?.toLowerCase().includes(filters.search.toLowerCase()))
+          const dateDebutOK =
+              activeFilters.dateDebut === "" ||
+              date >= new Date(activeFilters.dateDebut);
 
-          &&
+          const dateFinOK =
+              activeFilters.dateFin === "" ||
+              date <= new Date(activeFilters.dateFin + "T23:59:59");
 
-          (!filters.client ||
-              vente.client_id === filters.client)
+          const periodOK =
+              !activeFilters.mois_courant ||
+              (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear());
 
-          &&
+          return rechercheOK && clientOK && paiementOK && dateDebutOK && dateFinOK && periodOK;
+      });
+  };
 
-          (!filters.modePaiement ||
-              vente.mode_paiement === filters.modePaiement)
-
-          &&
-
-          (!filters.dateDebut ||
-              date >= new Date(filters.dateDebut))
-
-          &&
-
-          (!filters.dateFin ||
-              date <= new Date(filters.dateFin + "T23:59:59")))
-          
-  });
+  const ventesFiltrees = ventesFiltres;
 
   const reinitialiser = () => {
       const initialFilters = {
@@ -362,65 +367,19 @@ function Ventes() {
         dateDebut: "",
         dateFin: "",
         client: "",
-        ModePaiement: ""        
+        modePaiement: "",
+        mois_courant: true,
+        tous: false,
     };
 
     setFilters(initialFilters);
-    setVentesFiltres(sales);
+    setVentesFiltres(getFilteredVentes(sales, initialFilters));
   };
 
 
   const rechercher = () => {
 
-    console.log("In recherche ...", filters, sales);
-
-      const resultat = sales.filter((vente) => {
-
-          // Recherche texte
-          const rechercheOK =
-              filters.search === "" ||
-
-              vente.libelle?.toLowerCase().includes(filters.search.toLowerCase()) ||
-
-              vente.reference?.toLowerCase().includes(filters.search.toLowerCase());
-
-          
-          // Client
-          const clientOK =
-              filters.client === "" ||
-              vente.client_id === filters.client;          
-
-          // Paiement
-          const paiementOK =
-              filters.modePaiement === "" ||
-              vente.mode_paiement === filters.modePaiement;
-
-
-          // Date
-          const date = new Date(vente.date_vente);
-
-          const dateDebutOK =
-              filters.dateDebut === "" ||
-              date >= new Date(filters.dateDebut);
-
-          const dateFinOK =
-              filters.dateFin === "" ||
-              date <= new Date(filters.dateFin + "T23:59:59");
-
-          
-          return (
-              rechercheOK &&
-              clientOK &&
-              paiementOK &&
-              dateDebutOK &&
-              dateFinOK 
-          );
-
-      });
-
-      console.log("Resultat ", resultat);
-
-      setVentesFiltres(resultat);
+    setVentesFiltres(getFilteredVentes(sales, filters));
 
   };
 
@@ -592,6 +551,22 @@ function Ventes() {
 
                             </select>
 
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium">
+                                Période
+                            </label>
+
+                            <select
+                                name="periode"
+                                value={filters.mois_courant ? "mois_courant" : "tous"}
+                                onChange={handleFilterChange}
+                                className="w-full p-2 border rounded-lg"
+                            >
+                                <option value="tous">Tous</option>
+                                <option value="mois_courant">Mois courant</option>
+                            </select>
                         </div>
 
                     </div>

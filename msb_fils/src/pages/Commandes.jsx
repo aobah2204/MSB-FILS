@@ -11,9 +11,11 @@ function Commandes() {
 
     const { user } = useAuth();
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]);
     const [clients, setClients] = useState([]);
     const [client, setClient] = useState();
     const [produitsCommande, setProduitsCommande] = useState([]);
+    const [filters, setFilters] = useState({ mois_courant: true, tous: false });
 
     async function loadData() {
         const [{ data: ordersData }, { data: clientsData }] = await Promise.all([
@@ -22,6 +24,7 @@ function Commandes() {
         ]);
 
         setOrders(ordersData || []);
+        setFilteredOrders(getFilteredOrders(ordersData || [], { ...filters, mois_courant: true, tous: false }));
         setClients(clientsData || []);
     }
 
@@ -48,7 +51,25 @@ function Commandes() {
     const clientMapTel = Object.fromEntries(clients.map((client) => [client.id, `${client.telephone}`]));
     const clientMapSoc = Object.fromEntries(clients.map((client) => [client.id, `${client.societe}`]));
     const clientMapMail = Object.fromEntries(clients.map((client) => [client.id, `${client.email}`]));
+    const handleFilterChange = (e) => {
+      const { name, value } = e.target;
+      if (name === "periode") {
+        setFilters(prev => ({ ...prev, mois_courant: value === "mois_courant", tous: value === "tous" }));
+        return;
+      }
+    };
 
+    const getFilteredOrders = (baseOrders = orders, activeFilters = filters) => {
+      const now = new Date();
+      return baseOrders.filter((order) => {
+        const date = new Date(order.date_commande);
+        return !activeFilters.mois_courant || (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear());
+      });
+    };
+
+    const rechercher = () => {
+      setFilteredOrders(getFilteredOrders(orders, filters));
+    };
     const [selectedCommand, setSelectedCommande] = useState();
 
     async function selectCommande(order) {
@@ -216,6 +237,20 @@ function Commandes() {
         </div>
       )}
 
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <label className="text-sm font-medium">Période</label>
+        <select
+          name="periode"
+          value={filters.mois_courant ? "mois_courant" : "tous"}
+          onChange={handleFilterChange}
+          className="w-full md:w-48 p-2 border rounded-lg"
+        >
+          <option value="tous">Tous</option>
+          <option value="mois_courant">Mois courant</option>
+        </select>
+        <button className="profile" type="button" onClick={rechercher}>Rechercher</button>
+      </div>
+
       <div className="table-container">
         <table className="data-table">
           <thead>
@@ -229,7 +264,7 @@ function Commandes() {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <tr key={order.id}>
                 <td>{order.reference || "—"}</td>
                 <td>{clientMap[order.client_id] || "—"}</td>

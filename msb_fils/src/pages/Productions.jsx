@@ -8,6 +8,8 @@ import { useAuth } from "../context/AuthContext";
 function Productions() {
   const { user } = useAuth();
   const [productionsList, setProductionsList] = useState([]);
+  const [filteredProductions, setFilteredProductions] = useState([]);
+  const [filters, setFilters] = useState({ mois_courant: true, tous: false });
 
   useEffect(() => {
     chargerProductions();
@@ -45,6 +47,7 @@ function Productions() {
     }));
 
     setProductionsList(formattedProductions);
+    setFilteredProductions(getFilteredProductions(formattedProductions, { ...filters, mois_courant: true, tous: false }));
   }
 
   function formatDate(value) {
@@ -53,6 +56,26 @@ function Productions() {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString("fr-FR");
   }
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "periode") {
+      setFilters(prev => ({ ...prev, mois_courant: value === "mois_courant", tous: value === "tous" }));
+      return;
+    }
+  };
+
+  const getFilteredProductions = (baseProductions = productionsList, activeFilters = filters) => {
+    const now = new Date();
+    return baseProductions.filter((production) => {
+      const date = new Date(production.dateproduction);
+      return !activeFilters.mois_courant || (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear());
+    });
+  };
+
+  const rechercher = () => {
+    setFilteredProductions(getFilteredProductions(productionsList, filters));
+  };
 
   async function DeleteProduction(production) {
     if (!window.confirm("Supprimer cette production ?")) return;
@@ -93,6 +116,20 @@ function Productions() {
 
       <h2>Liste des productions</h2>
 
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <label className="text-sm font-medium">Période</label>
+        <select
+          name="periode"
+          value={filters.mois_courant ? "mois_courant" : "tous"}
+          onChange={handleFilterChange}
+          className="w-full md:w-48 p-2 border rounded-lg"
+        >
+          <option value="tous">Tous</option>
+          <option value="mois_courant">Mois courant</option>
+        </select>
+        <button className="profile" type="button" onClick={rechercher}>Rechercher</button>
+      </div>
+
       <div className="table-container">
         <table className="data-table">
           <thead className="headerTable">
@@ -107,7 +144,7 @@ function Productions() {
           </thead>
 
           <tbody>
-            {productionsList.map((production) => (
+            {filteredProductions.map((production) => (
               <tr key={production.id}>
                 <td>{production.siteName}</td>
                 <td>{production.productName}</td>

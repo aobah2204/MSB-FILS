@@ -85,7 +85,7 @@ return()=>window.removeEventListener("resize",resize);
 
       if (!EncaissementsData) return alert("Aucun Dépense");
       setEncaissements(EncaissementsData);
-      setEncaissementsFiltrees(EncaissementsData);
+      setEncaissementsFiltrees(getFilteredEncaissements(EncaissementsData, { ...filters, mois_courant: true, tous: false }));
 
       const { data: sitesData } = await supabase
         .from("siteproduction")
@@ -168,11 +168,18 @@ return()=>window.removeEventListener("resize",resize);
       modePaiement: "",
       statut: "",
       montantMin: "",
-      montantMax: ""
+      montantMax: "",
+      mois_courant: true,
+      tous: false,
   });
 
   const handleFilterChange = (e) => {
       const { name, value } = e.target;
+
+      if (name === "periode") {
+          setFilters(prev => ({ ...prev, mois_courant: value === "mois_courant", tous: value === "tous" }));
+          return;
+      }
 
       setFilters(prev => ({
           ...prev,
@@ -180,81 +187,90 @@ return()=>window.removeEventListener("resize",resize);
       }));
   };
 
-  const EncaissementsFiltres = Encaissements.filter(Encaissement => {
+  const getFilteredEncaissements = (baseEncaissements = Encaissements, activeFilters = filters) => {
+      const now = new Date();
+      return baseEncaissements.filter((Encaissement) => {
+          const date = new Date(Encaissement.date_encaissement);
 
-      const date = new Date(Encaissement.date_encaissement);
+          return (
+              (!activeFilters.search ||
+                  Encaissement.libelle?.toLowerCase().includes(activeFilters.search.toLowerCase()) ||
+                  Encaissement.reference?.toLowerCase().includes(activeFilters.search.toLowerCase()))
 
-      return (
+              &&
 
-          (!filters.search ||
-              Encaissement.libelle.toLowerCase().includes(filters.search.toLowerCase()) ||
-              Encaissement.reference?.toLowerCase().includes(filters.search.toLowerCase()))
+              (!activeFilters.categorie ||
+                  Encaissement.categorie === activeFilters.categorie)
 
-          &&
+              &&
 
-          (!filters.categorie ||
-              Encaissement.categorie === filters.categorie)
+              (!activeFilters.site ||
+                  Encaissement.site_id === activeFilters.site)
 
-          &&
+              &&
 
-          (!filters.site ||
-              Encaissement.site_id === filters.site)
+              (!activeFilters.fournisseur ||
+                  Encaissement.fournisseur_id === activeFilters.fournisseur)
 
-          &&
+              &&
 
-          (!filters.fournisseur ||
-              Encaissement.fournisseur_id === filters.fournisseur)
+              (!activeFilters.vehicule ||
+                  Encaissement.vehicule_id === activeFilters.vehicule)
 
-          &&
+              &&
 
-          (!filters.vehicule ||
-              Encaissement.vehicule_id === filters.vehicule)
+              (!activeFilters.vente ||
+                  Encaissement.vente_id === activeFilters.vente)
 
-          &&
+              &&
 
-          (!filters.vente ||
-              Encaissement.vente_id === filters.vente)
+              (!activeFilters.commande ||
+                  Encaissement.commande_id === activeFilters.commande)
 
-          &&
+              &&
 
-          (!filters.commande ||
-              Encaissement.commande_id === filters.commande)
+              (!activeFilters.prestation ||
+                  Encaissement.prestation_id === activeFilters.prestation)
 
-          &&
+              &&
 
-          (!filters.prestation ||
-              Encaissement.prestation_id === filters.prestation)
+              (!activeFilters.modePaiement ||
+                  Encaissement.mode_paiement === activeFilters.modePaiement)
 
-          &&
+              &&
 
-          (!filters.modePaiement ||
-              Encaissement.mode_paiement === filters.modePaiement)
+              (!activeFilters.statut ||
+                  Encaissement.statut === activeFilters.statut)
 
-          &&
+              &&
 
-          (!filters.statut ||
-              Encaissement.statut === filters.statut)
+              (!activeFilters.dateDebut ||
+                  date >= new Date(activeFilters.dateDebut))
 
-          &&
+              &&
 
-          (!filters.dateDebut ||
-              date >= new Date(filters.dateDebut))
+              (!activeFilters.dateFin ||
+                  date <= new Date(activeFilters.dateFin + "T23:59:59"))
 
-          &&
+              &&
 
-          (!filters.dateFin ||
-              date <= new Date(filters.dateFin + "T23:59:59"))
+              (!activeFilters.montantMin ||
+                  Number(Encaissement.montant) >= Number(activeFilters.montantMin))
 
-          &&
+              &&
 
-          (!filters.montantMin ||
-              Number(Encaissement.montant) >= Number(filters.montantMin))
+              (!activeFilters.montantMax ||
+                  Number(Encaissement.montant) <= Number(activeFilters.montantMax))
 
-          &&
+              &&
 
-          (!filters.montantMax ||
-              Number(Encaissement.montant) <= Number(filters.montantMax)))
-  });
+              (!activeFilters.mois_courant ||
+                  (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()))
+          );
+      });
+  };
+
+  const EncaissementsFiltres = EncaissementsFiltrees;
 
   const reinitialiser = () => {
       const initialFilters = {
@@ -271,114 +287,19 @@ return()=>window.removeEventListener("resize",resize);
         modePaiement: "",
         statut: "",
         montantMin: "",
-        montantMax: ""
+        montantMax: "",
+        mois_courant: true,
+        tous: false,
     };
 
     setFilters(initialFilters);
-    setEncaissementsFiltrees(Encaissements);
+    setEncaissementsFiltrees(getFilteredEncaissements(Encaissements, initialFilters));
   };
 
 
   const rechercher = () => {
 
-    console.log("In recherche ...", filters, Encaissements);
-
-      const resultat = Encaissements.filter((Encaissement) => {
-
-          // Recherche texte
-          const rechercheOK =
-              filters.search === "" ||
-
-              Encaissement.libelle?.toLowerCase().includes(filters.search.toLowerCase()) ||
-
-              Encaissement.reference?.toLowerCase().includes(filters.search.toLowerCase());
-
-          // Catégorie
-          const categorieOK =
-              filters.categorie === "" ||
-              Encaissement.categorie === filters.categorie;
-
-          // Site
-          const siteOK =
-              filters.site === "" ||
-              Encaissement.site_id == filters.site;
-
-          // Fournisseur
-          const fournisseurOK =
-              filters.fournisseur === "" ||
-              Encaissement.fournisseur_id == filters.fournisseur;
-
-          // Véhicule
-          const vehiculeOK =
-              filters.vehicule === "" ||
-              Encaissement.vehicule_id == filters.vehicule;
-
-          // Vente
-          const venteOK =
-              filters.vente === "" ||
-              Encaissement.vente_id == filters.vente;
-          // Commande
-          const commandeOK =
-              filters.commande === "" ||
-              Encaissement.commande_id == filters.commande;
-
-           // Prestation
-          const prestationOK =
-              filters.prestation === "" ||
-              Encaissement.prestation_id == filters.prestation;
-
-          // Paiement
-          const paiementOK =
-              filters.modePaiement === "" ||
-              Encaissement.mode_paiement.toLowerCase().trim() === filters.modePaiement.toLowerCase().trim();
-
-          // Statut
-          const statutOK =
-              filters.statut === "" ||
-              Encaissement.statut === filters.statut;
-
-          // Date
-          const date = new Date(Encaissement.date_encaissement);
-
-          const dateDebutOK =
-              filters.dateDebut === "" ||
-              date >= new Date(filters.dateDebut);
-
-          const dateFinOK =
-              filters.dateFin === "" ||
-              date <= new Date(filters.dateFin + "T23:59:59");
-
-          // Montants
-          const montantMinOK =
-              filters.montantMin === "" ||
-              Number(Encaissement.montant) >= Number(filters.montantMin);
-
-          const montantMaxOK =
-              filters.montantMax === "" ||
-              Number(Encaissement.montant) <= Number(filters.montantMax);
-
-          return (
-              rechercheOK &&
-              categorieOK &&
-              siteOK &&
-              fournisseurOK &&
-              vehiculeOK &&
-              venteOK &&
-              commandeOK &&
-              prestationOK &&
-              paiementOK &&
-              statutOK &&
-              dateDebutOK &&
-              dateFinOK &&
-              montantMinOK &&
-              montantMaxOK
-          );
-
-      });
-
-      console.log("Resultat ", resultat);
-
-      setEncaissementsFiltrees(resultat);
+    setEncaissementsFiltrees(getFilteredEncaissements(Encaissements, filters));
 
   };
 
@@ -815,6 +736,24 @@ return()=>window.removeEventListener("resize",resize);
                         <option>Non payé</option>
                     </select>
 
+                </div>
+
+                {/* Période */}
+
+                <div>
+                    <label className="text-sm font-medium">
+                        Période
+                    </label>
+
+                    <select
+                        name="periode"
+                        value={filters.mois_courant ? "mois_courant" : "tous"}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border rounded-lg"
+                    >
+                        <option value="tous">Tous</option>
+                        <option value="mois_courant">Mois courant</option>
+                    </select>
                 </div>
 
                 {/* Montant min */}
