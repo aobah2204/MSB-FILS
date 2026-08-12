@@ -5,6 +5,63 @@ import { useAuth } from "../context/AuthContext";
 import { Input } from "postcss";
 import { notify } from "../utils/notifications";
 
+function dataUrlToFile(dataUrl, fileName) {
+  const arr = dataUrl.split(",");
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], fileName, { type: mime });
+}
+
+function sanitizeFileName(fileName) {
+  const lastDot = fileName.lastIndexOf(".");
+  const extension = lastDot > -1 ? fileName.slice(lastDot) : "";
+  const baseName = lastDot > -1 ? fileName.slice(0, lastDot) : fileName;
+
+  const normalizedBase = baseName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+  return `${normalizedBase || "file"}${extension}`;
+}
+
+async function compressAndPrepareFile(file) {
+  if (!file) return null;
+
+  const imageBitmap = await createImageBitmap(file);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const maxWidth = 1200;
+  const maxHeight = 1200;
+  let { width, height } = imageBitmap;
+
+  if (width > height) {
+    if (width > maxWidth) {
+      height = Math.round((height * maxWidth) / width);
+      width = maxWidth;
+    }
+  } else if (height > maxHeight) {
+    width = Math.round((width * maxHeight) / height);
+    height = maxHeight;
+  }
+
+  canvas.width = width;
+  canvas.height = height;
+  ctx.drawImage(imageBitmap, 0, 0, width, height);
+
+  const quality = file.type.includes("image/png") ? 0.85 : 0.75;
+  const dataUrl = canvas.toDataURL(file.type, quality);
+  return dataUrlToFile(dataUrl, file.name);
+}
+
 function DepenseCreate() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -13,6 +70,7 @@ function DepenseCreate() {
   const [vehicules, setVehicules] = useState([]);
   const [salaries, setSalaries] = useState([]);
   const [depenses, setDepenses] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const [salarie, setSalarie] = useState();
 
@@ -127,9 +185,33 @@ async function createNotification(titre, message, type, lien, user) {
       return;
     }
 
-    //console.log("Form data :", formData)
-
     try {
+      setUploading(true);
+      let justificatifValue = formData.justificatif;
+
+      if (formData.justificatifFile) {
+        try {
+          const fileToUpload = (await compressAndPrepareFile(formData.justificatifFile)) || formData.justificatifFile;
+          const safeFileName = sanitizeFileName(fileToUpload.name);
+          const fileName = `public/justifsdepenses/${formData.reference}/${Date.now()}_${safeFileName}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from("justificatifsdocuments")
+            .upload(fileName, fileToUpload, { upsert: true, contentType: fileToUpload.type });
+
+          if (!uploadError) {
+            const { data: publicUrlData } = supabase.storage.from("justificatifsdocuments").getPublicUrl(fileName);
+            justificatifValue = publicUrlData.publicUrl;
+          } else {
+            console.error("Impossible d'envoyer le justificatif vers le stockage :", uploadError.message || uploadError);
+            notify.error("Le justificatif n'a pas pu être envoyé, mais la dépense a été enregistrée sans pièce jointe.");
+          }
+        } catch (storageError) {
+          console.error("Erreur lors de l'upload du justificatif :", storageError.message || storageError);
+          notify.error("Le justificatif n'a pas pu être envoyé, mais la dépense a été enregistrée sans pièce jointe.");
+        }
+      }
+
       const { data: DepenseData, error: DepenseError } = await supabase
         .from("depenses")
         .insert([
@@ -146,7 +228,7 @@ async function createNotification(titre, message, type, lien, user) {
             montant: formData.montant,
             montant_paye: formData.montant_paye,
             mode_paiement: formData.mode_paiement,
-            justificatif: formData.justificatif,
+            justificatif: justificatifValue,
             created_user_id: user?.id
           },
         ])
@@ -163,7 +245,9 @@ async function createNotification(titre, message, type, lien, user) {
 
     } catch (error) {
       console.error("Erreur :", error);
-      alert("Erreur lors de la création", error.message);
+      alert("Erreur lors de la création : " + error.message);
+    } finally {
+      setUploading(false);
     }
   }
 
@@ -312,6 +396,16 @@ async function createNotification(titre, message, type, lien, user) {
                 <option>Payé</option>
                 <option>Non payé</option>
                 </select>
+            </div>
+
+            <div>
+                <label>Justificatif (photo ou fichier)</label>
+                <input
+                  type="file"
+                  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+                  onChange={(e) => setFormData({ ...formData, justificatifFile: e.target.files?.[0] || null })}
+                />
+                {uploading && <p>Compression et envoi en cours...</p>}
             </div>
         </div>
 
@@ -522,8 +616,8 @@ async function createNotification(titre, message, type, lien, user) {
 
 
         <div style={{ marginTop: "20px" }}>
-          <button type="submit" className="profile">
-            Enregistrer
+          <button type="submit" className="profile" disabled={uploading}>
+            {uploading ? "Enregistrement..." : "Enregistrer"}
           </button>
           <button
             type="button"

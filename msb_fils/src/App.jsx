@@ -64,6 +64,7 @@ import AchatEdit from './pages/AchatEdit';
 import AchatDetails from './pages/AchatDetails';
 import Depenses from './pages/Depenses';
 import DepenseCreate from './pages/DepenseCreate';
+import DepenseEdit from './pages/DepenseEdit';
 import DepenseDetails from './pages/DepenseDetails';
 import Marchandises from './pages/Marchandises';
 import MarchandiseCreate from './pages/MarchandiseCreate';
@@ -452,9 +453,12 @@ function App() {
           <Route path="nouveau"
                 roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
                 element={<DepenseCreate />} />
-          {/*<Route path="modifier/:id"
-                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
-                element={<DepenseEdit />} />*/}
+          <Route path="modifier/:id"
+                element={
+                  <RoleRoute roles={["Administrateur"]}>
+                    <DepenseEdit />
+                  </RoleRoute>
+                } />
           <Route path="details/:id"
                 element={<DepenseDetails />} />
         </Route>

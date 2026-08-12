@@ -56,6 +56,7 @@ function DepenseDetails() {
     role: "",
     adresse: "",
   });
+  const [justificatifUrl, setJustificatifUrl] = useState("");
 
   async function loadDepense() {
     const { data, error } = await supabase.from("depenses").select("*").eq("id", id).maybeSingle();
@@ -67,6 +68,7 @@ function DepenseDetails() {
     }
 
     setDepense(data);
+    setJustificatifUrl(data.justificatif || "");
     console.log("Depense : ", data);
 
     if (data.fournisseur_id) {
@@ -175,6 +177,23 @@ function DepenseDetails() {
           <strong>Rest à payer :</strong> {new Intl.NumberFormat("fr-FR").format(Depense.montant - Depense.montant_paye) || 0} FG
         </p>
       </div>
+
+      {justificatifUrl && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Justificatif</h3>
+          {justificatifUrl.match(/\.(jpg|jpeg|png|gif|webp|bmp)$/i) ? (
+            <img
+              src={justificatifUrl}
+              alt="Justificatif de dépense"
+              style={{ maxWidth: "100%", maxHeight: "500px", borderRadius: "8px" }}
+            />
+          ) : (
+            <a href={justificatifUrl} target="_blank" rel="noreferrer" className="profile">
+              Voir / télécharger le justificatif
+            </a>
+          )}
+        </div>
+      )}
 
       <button className="profile" type="button" onClick={() => navigate("/Depenses")}>
         Retour

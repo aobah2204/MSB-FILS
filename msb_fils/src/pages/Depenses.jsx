@@ -740,11 +740,13 @@ function Depenses() {
                         <Eye size={20} />
                       </button>
                     </NavLink>
-                    {/*<NavLink to={`/depenses/modifier/${Depense.id}`}>
-                      <button className="profile">
-                        <Pencil size={20} />
-                      </button>
-                    </NavLink>*/}
+                    {user?.role === "Administrateur" && (
+                      <NavLink to={`/depenses/modifier/${Depense.id}`}>
+                        <button className="profile">
+                          <Pencil size={20} />
+                        </button>
+                      </NavLink>
+                    )}
                     <button className="profileSupp" onClick={() => deleteDepense(Depense)}>
                       <Trash2 size={20} />
                     </button>

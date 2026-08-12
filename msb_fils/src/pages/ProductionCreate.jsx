@@ -186,7 +186,7 @@ function ProductionCreate() {
       if (!ok) return;
     }
 
-    createNotification("Nouvelle production", `Une nouvelle production a été enregistrée.`, "production", `/productions`, user);
+    createNotification("Nouvelle production", `Une nouvelle production a été enregistrée.`, "production", `/productions/details/${insertedProduction.id}`, user);
     notify.success("Production enregistrée avec succès !");
     navigate("/productions");
   }

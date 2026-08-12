@@ -184,7 +184,7 @@ function IssaEncaissementCreate() {
             "Nouvel encaissement créé",
             `Un nouvel encaissement a été créé avec la référence : ${EncaissementData[0].reference}`,
             "encaissement",
-            `/issaencaissements/${EncaissementData[0].id}`,
+            `/issaencaissements/details/${EncaissementData[0].id}`,
             user
         );
         notify.success("Encaissement créé avec succès !");
