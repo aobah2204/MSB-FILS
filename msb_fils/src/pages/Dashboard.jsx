@@ -32,8 +32,71 @@ import {
     Line
 } from "recharts";
 
+import { Wrench } from "lucide-react";
+
 import Achats from "./Achats.jsx";
 import VehicleExpenseStats from "../components/VehiculeExpenseStats.jsx";
+
+function VehicleTotalsCard({
+    title,
+    items = [],
+    icon,
+    color = "#2563eb",
+    suffix = "FG"
+}) {
+    return (
+        <div className="card">
+            <div className="dashboard-card-header">
+                <div
+                    className="dashboard-icon"
+                    style={{
+                        background: `${color}20`,
+                        color: color
+                    }}
+                >
+                    {icon}
+                </div>
+
+                <div>
+                    <h4 className="dashboard-title">{title}</h4>
+                </div>
+            </div>
+
+            <div style={{ marginTop: 16, display: "grid", gap: 10 }}>
+                {items.length === 0 ? (
+                    <span className="dashboard-subtitle">Aucune donnée disponible</span>
+                ) : (
+                    items.map((item) => (
+                        <div
+                            key={item.id}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                gap: 12,
+                                padding: "10px 12px",
+                                borderRadius: 10,
+                                background: "#f8fafc",
+                                border: "1px solid #e2e8f0"
+                            }}
+                        >
+                            <div style={{ minWidth: 0 }}>
+                                <strong style={{ display: "block", fontSize: 14 }}>
+                                    {item.immatriculation || "Véhicule"}
+                                </strong>
+                                <span style={{ fontSize: 12, color: "#64748b" }}>
+                                    {item.marque || ""} {item.modele || ""}
+                                </span>
+                            </div>
+                            <span style={{ fontWeight: 700, color: "#0f172a", whiteSpace: "nowrap" }}>
+                                {new Intl.NumberFormat("fr-FR").format(Number(item.total || 0))} {suffix}
+                            </span>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+}
 
 function TopProduitsChart({data}){
 
@@ -134,6 +197,9 @@ const [NbreProduit,setNbreProduct] = useState(0);
 
 const [vehicules,setVehicules] = useState([]);
 const [NbreVehicule,setNbreVehicule] = useState(0);
+const [vehicleLivraisonsStats, setVehicleLivraisonsStats] = useState([]);
+const [vehiclePrestationsStats, setVehiclePrestationsStats] = useState([]);
+const [vehicleEncaissementsStats, setVehicleEncaissementsStats] = useState([]);
 
 const [fournisseurs,setFournisseurs] = useState([]);
 const [NbreFournisseur,setNbreFournisseur] = useState(0);
@@ -165,6 +231,10 @@ const [NbreProdEncours,setNbreProdEncours] = useState(0);
 const [ventes, setVentes] = useState([]);
 const [NbreVentes, setNbrVentes] = useState(0);
 const [venteProduits, setVenteProduits] = useState([]);
+const [showVehicleExpenseStats, setShowVehicleExpenseStats] = useState(true);
+const [showVehicleLivraisonStats, setShowVehicleLivraisonStats] = useState(true);
+const [showVehiclePrestationStats, setShowVehiclePrestationStats] = useState(true);
+const [showVehicleEncaissementStats, setShowVehicleEncaissementStats] = useState(true);
 
 
 async function getAllClients(){
@@ -700,6 +770,34 @@ async function loadvehiculesDepStat() {
     setvehiculesDepCategoriesStat(dataC);
 }
 
+async function loadVehicleActivityTotals() {
+    const [{ data: vehiculesData }, { data: livraisonsData }, { data: prestationsData }, { data: encaissementsData }] = await Promise.all([
+        supabase.from("vehicules").select("id, immatriculation, marque, modele"),
+        supabase.from("livraisons").select("id, vehicule_id, montant"),
+        supabase.from("prestations").select("id, vehicule_id, montant"),
+        supabase.from("encaissements").select("id, vehicule_id, montant")
+    ]);
+
+    const vehicles = vehiculesData || [];
+
+    const buildVehicleTotals = (rows = []) =>
+        vehicles
+            .map((vehicle) => ({
+                id: vehicle.id,
+                immatriculation: vehicle.immatriculation,
+                marque: vehicle.marque,
+                modele: vehicle.modele,
+                total: (rows || [])
+                    .filter((row) => Number(row.vehicule_id) === Number(vehicle.id))
+                    .reduce((sum, row) => sum + Number(row.montant || 0), 0)
+            }))
+            .sort((a, b) => Number(b.total) - Number(a.total));
+
+    setVehicleLivraisonsStats(buildVehicleTotals(livraisonsData || []));
+    setVehiclePrestationsStats(buildVehicleTotals(prestationsData || []));
+    setVehicleEncaissementsStats(buildVehicleTotals(encaissementsData || []));
+}
+
 
 // Encaissements evolution
 const [encaissementsStats, setEncaissementsStats] = useState({});
@@ -743,6 +841,7 @@ useEffect(()=>{
     // Vehicules
     loadvehiculesDepStat();
     getAllVehicules();
+    loadVehicleActivityTotals();
     
     // Fournisseurs
     getAllFournisseurs();
@@ -967,7 +1066,7 @@ return (
                 moisDernier={financeKpi.find(c => c.indicateur === "Bénéfice")?.precedent || 0}
 
         />   
-    </div>
+    </div>    
 
     <div className="cards">
         <DashboardCard
@@ -1118,15 +1217,101 @@ return (
         
     </div>
 
-    <div className="cards">
+    <div className="dashboard-section">
+        <div className="dashboard-section-header">
+            <h2 className="profileStat">Dépenses véhicules</h2>
+            <button
+                type="button"
+                className="dashboard-toggle-btn"
+                onClick={() => setShowVehicleExpenseStats(!showVehicleExpenseStats)}
+            >
+                {showVehicleExpenseStats ? "Masquer" : "Afficher"}
+            </button>
+        </div>
 
-        <VehicleExpenseStats
-            categories={vehiculesDepCategoriesStat}
-            evolution={vehiculesDepEvolutionStat}
-        /> 
-        
+        {showVehicleExpenseStats && (
+            <div className="cards">
+                <VehicleExpenseStats
+                    categories={vehiculesDepCategoriesStat}
+                    evolution={vehiculesDepEvolutionStat}
+                />
+            </div>
+        )}
     </div>
-    
+
+    <div className="dashboard-section">
+        <div className="dashboard-section-header">
+            <h2 className="profileStat">Activité par véhicule</h2>
+        </div>
+
+        <div className="cards">
+            <div className="dashboard-toggle-card">
+                <div className="dashboard-section-header compact">
+                    <h3>Livraisons</h3>
+                    <button
+                        type="button"
+                        className="dashboard-toggle-btn"
+                        onClick={() => setShowVehicleLivraisonStats(!showVehicleLivraisonStats)}
+                    >
+                        {showVehicleLivraisonStats ? "Masquer" : "Afficher"}
+                    </button>
+                </div>
+
+                {showVehicleLivraisonStats && (
+                    <VehicleTotalsCard
+                        title="Livraisons par véhicule"
+                        items={vehicleLivraisonsStats}
+                        icon={<Truck size={32} />}
+                        color="#1b17f3"
+                    />
+                )}
+            </div>
+
+            <div className="dashboard-toggle-card">
+                <div className="dashboard-section-header compact">
+                    <h3>Prestations</h3>
+                    <button
+                        type="button"
+                        className="dashboard-toggle-btn"
+                        onClick={() => setShowVehiclePrestationStats(!showVehiclePrestationStats)}
+                    >
+                        {showVehiclePrestationStats ? "Masquer" : "Afficher"}
+                    </button>
+                </div>
+
+                {showVehiclePrestationStats && (
+                    <VehicleTotalsCard
+                        title="Prestations par véhicule"
+                        items={vehiclePrestationsStats}
+                        icon={<Wrench size={32} />}
+                        color="#ebcd27"
+                    />
+                )}
+            </div>
+
+            <div className="dashboard-toggle-card">
+                <div className="dashboard-section-header compact">
+                    <h3>Encaissements</h3>
+                    <button
+                        type="button"
+                        className="dashboard-toggle-btn"
+                        onClick={() => setShowVehicleEncaissementStats(!showVehicleEncaissementStats)}
+                    >
+                        {showVehicleEncaissementStats ? "Masquer" : "Afficher"}
+                    </button>
+                </div>
+
+                {showVehicleEncaissementStats && (
+                    <VehicleTotalsCard
+                        title="Encaissements par véhicule"
+                        items={vehicleEncaissementsStats}
+                        icon={<Receipt size={32} />}
+                        color="#16a34a"
+                    />
+                )}
+            </div>
+        </div>
+    </div>
 
     <div className="cards">
         <div className="card">            

@@ -9,19 +9,19 @@ CircleDollarSign
 
 const icons={
 
-Carburant:<Fuel size={18}/>,
+    Carburant:<Fuel size={18}/>,
 
-Réparation:<Wrench size={18}/>,
+    Réparation:<Wrench size={18}/>,
 
-Assurance:<Shield size={18}/>
+    Assurance:<Shield size={18}/>
 
 };
 
 export default function VehicleExpenseStats({
 
-categories=[],
+    categories=[],
 
-evolution=[]
+    evolution=[]
 
 }){
 
@@ -34,197 +34,134 @@ return(
     </p>
     <br/>
 
-{
+    {
 
-evolution.map(vehicle=>{
+    evolution.map(vehicle=>{
 
-const total=vehicle.mois_courant;
+        const total=vehicle.mois_courant;
 
-const cats=categories.filter(
+        const cats=categories.filter( c=>c.id===vehicle.id );
 
-c=>c.id===vehicle.id
+        const max=Math.max( ...cats.map(c=>Number(c.montant_total)), 1 );
 
-);
+        return(
 
-const max=Math.max(
+            <div
 
-...cats.map(c=>Number(c.montant_total)),
+                className="vehicle-item"
 
-1
+                key={vehicle.id}
 
-);
+            >
 
-return(
+            <div className="vehicle-header">
 
-<div
+                <div>
 
-className="vehicle-item"
+                <h3>
 
-key={vehicle.id}
+                    {vehicle.immatriculation}
 
->
+                </h3>
 
-<div className="vehicle-header">
+                <span>
 
-<div>
+                    {vehicle.marque} {vehicle.modele}
 
-<h3>
+                </span>
 
-{vehicle.immatriculation}
+                </div>
 
-</h3>
+                <div className={vehicle.evolution>=0 ? "trend positive" : "trend negative" }>
 
-<span>
+                    {vehicle.evolution>=0 ? <TrendingUp/> : <TrendingDown/>}
 
-{vehicle.marque} {vehicle.modele}
+                    {vehicle.evolution} %
 
-</span>
+                </div>
 
-</div>
+            </div>
 
-<div className={
+            {
+                cats.map(cat=>(
 
-vehicle.evolution>=0
+                    <div key={cat.categorie}>
 
-?
+                        <div className="cat-line">
 
-"trend positive"
+                            <div>
 
-:
+                                {icons[cat.categorie] ?? <CircleDollarSign size={18}/>}
 
-"trend negative"
+                                {cat.categorie}
 
-}>
+                            </div>
 
-{
+                            <div>
 
-vehicle.evolution>=0
+                                {new Intl.NumberFormat("fr-FR").format(cat.montant_total)} GNF </div>
 
-?
+                            </div>
 
-<TrendingUp/>
+                            <div className="progress">
 
-:
+                                    <div className="fill" style={{width:`${cat.montant_total/max*100}%`}}></div>
 
-<TrendingDown/>
+                            </div>
 
-}
+                        </div>
 
-{vehicle.evolution} %
+                        ))
+            }
 
-</div>
 
-</div>
 
-{
+                    <div className="resume">
 
-cats.map(cat=>(
+                        <div>
 
-<div key={cat.categorie}>
+                            Ce mois
 
-<div className="cat-line">
+                            <strong>
 
-<div>
+                                {
 
-{
+                                new Intl.NumberFormat("fr-FR")
 
-icons[cat.categorie]
+                                .format(vehicle.mois_courant)
 
-??
+                                } GNF
 
-<CircleDollarSign size={18}/>
+                            </strong>
 
-}
+                        </div>
 
-{cat.categorie}
+                        <div>
 
-</div>
+                            Mois précédent
 
-<div>
+                            <strong>
 
-{
+                                {
 
-new Intl.NumberFormat("fr-FR")
+                                new Intl.NumberFormat("fr-FR")
 
-.format(cat.montant_total)
+                                .format(vehicle.mois_precedent)
 
-} GNF
+                                } GNF
 
-</div>
+                            </strong>
 
-</div>
+                        </div>
 
-<div className="progress">
+                    </div>
 
-<div
+                </div>
 
-className="fill"
+            )
+        })
 
-style={{
-
-width:`${cat.montant_total/max*100}%`
-
-}}
-
->
-
-</div>
-
-</div>
-
-</div>
-
-))
-
-}
-
-<div className="resume">
-
-<div>
-
-Ce mois
-
-<strong>
-
-{
-
-new Intl.NumberFormat("fr-FR")
-
-.format(vehicle.mois_courant)
-
-} GNF
-
-</strong>
-
-</div>
-
-<div>
-
-Mois précédent
-
-<strong>
-
-{
-
-new Intl.NumberFormat("fr-FR")
-
-.format(vehicle.mois_precedent)
-
-} GNF
-
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
-})
-
-}
+    }
 
 </div>
 
