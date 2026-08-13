@@ -43,6 +43,7 @@ function VehicleDetails(){
 
         getChauffeur(data);
         getLivraisonsVehicule(data);
+        getPrestationsVehicule(data);
         getDepensesVehicule(data);
         getEncaissementsVehicule(data);
         
@@ -74,6 +75,19 @@ function VehicleDetails(){
 
         if (!data) return alert("Aucune livraison effectuée");
         setLivraisons(data);
+    }
+
+    // Get prestations vehicules
+    const [prestations, setPrestations] = useState([]);
+    async function getPrestationsVehicule(vehicule){
+
+        const { data } = await supabase
+            .from("prestations")            
+            .select("*")
+            .eq("vehicule_id",vehicule?.id);
+
+        if (!data) return alert("Aucune prestation effectuée");
+        setPrestations(data);
     }
 
 
@@ -180,6 +194,10 @@ function VehicleDetails(){
 
                     <p>
                         Total livraisons : {livraisons.length} :  {new Intl.NumberFormat("fr-FR").format(livraisons.reduce((acc, livraison) => acc + livraison.montant, 0))} FG
+                    </p>
+
+                    <p>
+                        Total prestations : {prestations.length} :  {new Intl.NumberFormat("fr-FR").format(prestations.reduce((acc, prestation) => acc + prestation.montant, 0))} FG
                     </p>    
 
                     <p>
@@ -238,6 +256,46 @@ function VehicleDetails(){
                     </table>
                 </div>
 
+                <div className="table-container card" >
+                    <h3>Total des prestations</h3>
+                    <table className="data-table">
+                        <thead className="headerTable">
+
+                        <tr className="header_Table">
+                            <th>Reférence</th>
+                            <th>Date</th>
+                            <th>Adresse</th> 
+                            <th>Montant</th>
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {prestations.map((prestation, index) => (
+
+                            <tr key={index}>
+
+                            <td>{prestation.reference}</td>
+
+
+                            <td>{prestation?.date_prestation.split('T')[0]}</td>
+
+                            <td>{prestation.addresse}</td>
+
+                            <td>{new Intl.NumberFormat("fr-FR").format(prestation.montant) || 0} FG</td>  
+
+                        </tr>
+
+                        ))
+                        }
+
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+            <div className="cards">   
                 <div className="table-container card">
                     <h3>Total des dépenses</h3>
                     <table className="data-table">

@@ -1123,9 +1123,7 @@ return (
         <VehicleExpenseStats
             categories={vehiculesDepCategoriesStat}
             evolution={vehiculesDepEvolutionStat}
-        />
-        
-
+        /> 
         
     </div>
     
