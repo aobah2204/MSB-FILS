@@ -5,7 +5,8 @@ import {
  Settings,
  UserPlus,
  UserPen,
- UserRoundX
+ UserRoundX,
+ Eye
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -132,15 +133,22 @@ function Salaries() {
                             <td>{salarie.email}</td>
 
                             {
-                                ["Administrateur"]
-                                .includes(user?.role)
-                                &&
-                                <td>                                
-                                    <NavLink to={`/Salaries/modifier/${salarie.id}`}>
-                                        <button className="profile"><UserPen size={20} /></button>
+                                <td>
+                                    <NavLink to={`/salaries/details/${salarie.id}`}>
+                                        <button className="profile" title="Voir détails"><Eye size={20} /></button>
                                     </NavLink>
-                                    
-                                    <button className="profileSupp" onClick={() => DeleteSalarie(salarie)}> <UserRoundX size={20} /></button>
+
+                                    {
+                                        ["Administrateur"]
+                                        .includes(user?.role)
+                                        &&
+                                        <>
+                                            <NavLink to={`/Salaries/modifier/${salarie.id}`}>
+                                                <button className="profile"><UserPen size={20} /></button>
+                                            </NavLink>
+                                            <button className="profileSupp" onClick={() => DeleteSalarie(salarie)}> <UserRoundX size={20} /></button>
+                                        </>
+                                    }
                                 </td>
                             }
                         </tr>

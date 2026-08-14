@@ -38,6 +38,7 @@ import ProductionSiteDetails from "./pages/ProductionSiteDetails";
 import Salaries from './pages/Salaries';
 import SalarieCreate from './pages/SalarieCreate';
 import SalarieEdit from './pages/SalarieEdit';
+import SalarieDetails from './pages/SalarieDetails';
 import Fournisseurs from './pages/Fournisseurs';
 import FournisseurCreate from './pages/FournisseurCreate';
 import FournisseurEdit from './pages/FournisseurEdit';
@@ -238,6 +239,10 @@ function App() {
             </RoleRoute>
           }/>
 
+        <Route
+          path="salaries/details/:id"
+          element={<SalarieDetails />}
+        />
 
         <Route
           path="produits"

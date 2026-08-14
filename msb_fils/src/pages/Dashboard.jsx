@@ -1205,6 +1205,7 @@ return (
     <br/>
     <h2 className="profileStat">Statistiques & Graphes</h2>
 
+    
     <div className="cards">
 
         <ClientStats
