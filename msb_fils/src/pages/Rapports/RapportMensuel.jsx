@@ -208,7 +208,7 @@ function RapportMensuel() {
                     stats.issaachats += montant;
                     break;
                 
-                case "Issa Vente":
+                case "Issa vente":
                     stats.issaventes += montant;
                     break;
                 
@@ -388,8 +388,16 @@ function RapportMensuel() {
 
 
             {/* CARDS */}
+            <div>
 
-            <div className="rapport-cards">
+                <h2>
+                    MSB &amp; FILS
+                </h2>                    
+
+            </div>
+
+            <div className="rapport-cards">               
+
 
                 <RapportCard
                     icon={<ShoppingCart />}
@@ -451,42 +459,10 @@ function RapportMensuel() {
                     )}
                 />
 
-            </div>
-
-            <div className="rapport-cards">
-
-            
-                <RapportCard
-                    icon={<ShoppingCart />}
-                    title="Issa Distribution Ventes"
-                    value={formatMontant(
-                        statistiques.issaventes
-                    )}
-                />
+            </div>          
 
 
-
-                <RapportCard
-                    icon={<Wrench />}
-                    title="Issa Distribution achats"
-                    value={formatMontant(
-                        statistiques.issaachats
-                    )}
-                />
-
-
-                <RapportCard
-                    icon={<Wallet />}
-                    title="Issa Distribution Encaissements"
-                    value={formatMontant(
-                        statistiques.issaencaissements
-                    )}
-                />
-
-            </div>
-
-
-            {/* RESULTAT */}
+            {/* RESULTAT MSB */}
 
             <div className="rapport-finance">
 
@@ -536,6 +512,94 @@ function RapportMensuel() {
 
             </div>
 
+            <div>
+
+                <h2>
+                    Issa Distribution
+                </h2>                    
+
+            </div>
+            <div className="rapport-cards">
+
+            
+                <RapportCard
+                    icon={<ShoppingCart />}
+                    title="Issa Distribution Ventes"
+                    value={formatMontant(
+                        statistiques.issaventes
+                    )}
+                />
+
+
+
+                <RapportCard
+                    icon={<Wrench />}
+                    title="Issa Distribution achats"
+                    value={formatMontant(
+                        statistiques.issaachats
+                    )}
+                />
+
+
+                <RapportCard
+                    icon={<Wallet />}
+                    title="Issa Distribution Encaissements"
+                    value={formatMontant(
+                        statistiques.issaencaissements
+                    )}
+                />
+
+            </div>
+
+            {/* RESULTAT Issa Distribution */}
+
+            <div className="rapport-finance">
+
+
+                <div>
+
+                    <span>
+                        Chiffre d'affaires Issa Distribution
+                    </span>
+
+                    <strong>
+                        {formatMontant(
+                            statistiques.issaChiffreAffaires
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Résultat Issa Distribution
+                    </span>
+
+                    <strong>
+                        {formatMontant(
+                            statistiques.issaResultat
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Issa Taux d'encaissement
+                    </span>
+
+                    <strong>
+                        {statistiques.issaTauxEncaissement.toFixed(2)}
+                        %
+                    </strong>
+
+                </div>
+
+            </div>
 
             {/* FILTRES */}
 
