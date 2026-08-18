@@ -212,6 +212,21 @@
     color: #166534;
 }
 
+.type-issa-achat {
+    background: #dcfce7;
+    color: #0e0e0d;
+}
+
+.type-issa-vente {
+    background: #dcfce7;
+    color: #9e1a51;
+}
+
+.type-issa-encaissement {
+    background: #dcfce7;
+    color: #07411d;
+}
+
 
 /* RESPONSIVE */
 

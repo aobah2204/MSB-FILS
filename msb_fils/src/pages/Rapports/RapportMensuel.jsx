@@ -161,7 +161,13 @@ function RapportMensuel() {
 
             encaissements: 0,
 
-            productions: 0
+            productions: 0,
+
+            issaachats: 0,
+
+            issaventes: 0,
+
+            issaencaissements: 0
 
         };
 
@@ -198,6 +204,18 @@ function RapportMensuel() {
                     stats.productions += montant;
                     break;
 
+                case "Issa Achat":
+                    stats.issaachats += montant;
+                    break;
+                
+                case "Issa Vente":
+                    stats.issaventes += montant;
+                    break;
+                
+                case "Issa Encaissement":
+                    stats.issaencaissements += montant;
+                    break;
+
                 default:
                     break;
 
@@ -225,6 +243,13 @@ function RapportMensuel() {
                 ) * 100
                 : 0;
 
+        stats.issaChiffreAffaires = stats.issaventes + stats.issaencaissements;
+
+        stats.issaResultat = stats.issaChiffreAffaires - stats.issaachats;
+
+        stats.issaTauxEncaissement = stats.issaChiffreAffaires > 0
+            ? (stats.issaencaissements / stats.issaChiffreAffaires) * 100
+            : 0;
 
         return stats;
 
@@ -428,6 +453,39 @@ function RapportMensuel() {
 
             </div>
 
+            <div className="rapport-cards">
+
+            
+                <RapportCard
+                    icon={<ShoppingCart />}
+                    title="Issa Distribution Ventes"
+                    value={formatMontant(
+                        statistiques.issaventes
+                    )}
+                />
+
+
+
+                <RapportCard
+                    icon={<Wrench />}
+                    title="Issa Distribution achats"
+                    value={formatMontant(
+                        statistiques.issaachats
+                    )}
+                />
+
+
+                <RapportCard
+                    icon={<Wallet />}
+                    title="Issa Distribution Encaissements"
+                    value={formatMontant(
+                        statistiques.issaencaissements
+                    )}
+                />
+
+            </div>
+
+
             {/* RESULTAT */}
 
             <div className="rapport-finance">
@@ -518,6 +576,18 @@ function RapportMensuel() {
                         Productions
                     </option>
 
+                    <option value="Issa Achat">
+                        Issa Distribution Achats
+                    </option>
+
+                    <option value="Issa vente">
+                        Issa Distribution Ventes
+                    </option>
+
+                    <option value="Issa Encaissement">
+                        Issa Distribution Encaissements
+                    </option>
+
                 </select>
 
             </div>
@@ -603,7 +673,7 @@ function RapportMensuel() {
                                             <span
                                                 className={`type type-${item.type_activite
                                                     .toLowerCase()
-                                                    .replace("é", "e")
+                                                    .replace("é", "e").replace(" ", "-")
                                                     }`}
                                             >
 
