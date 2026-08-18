@@ -514,6 +514,10 @@ function RapportMensuel() {
                         Encaissements
                     </option>
 
+                    <option value="Production">
+                        Productions
+                    </option>
+
                 </select>
 
             </div>
