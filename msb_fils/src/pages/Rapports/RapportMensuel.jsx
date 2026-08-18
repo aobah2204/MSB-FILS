@@ -337,6 +337,61 @@ function RapportMensuel() {
 
                 </div>
 
+                {/* FILTRES */}
+
+            <div className="rapport-filtres">
+
+                <select
+                    value={typeFilter}
+                    onChange={(e) =>
+                        setTypeFilter(e.target.value)
+                    }
+                >
+
+                    <option value="Tous">
+                        Toutes les activités
+                    </option>
+
+                    <option value="Vente">
+                        Ventes
+                    </option>
+
+                    <option value="Achat">
+                        Achats
+                    </option>
+
+                    <option value="Prestation">
+                        Prestations
+                    </option>
+
+                    <option value="Dépense">
+                        Dépenses
+                    </option>
+
+                    <option value="Encaissement">
+                        Encaissements
+                    </option>
+
+                    <option value="Production">
+                        Productions
+                    </option>
+
+                    <option value="Issa Achat">
+                        Issa Distribution Achats
+                    </option>
+
+                    <option value="Issa vente">
+                        Issa Distribution Ventes
+                    </option>
+
+                    <option value="Issa Encaissement">
+                        Issa Distribution Encaissements
+                    </option>
+
+                </select>
+
+            </div>
+
 
                 <div className="rapport-actions">
 
@@ -599,62 +654,7 @@ function RapportMensuel() {
 
                 </div>
 
-            </div>
-
-            {/* FILTRES */}
-
-            <div className="rapport-filtres">
-
-                <select
-                    value={typeFilter}
-                    onChange={(e) =>
-                        setTypeFilter(e.target.value)
-                    }
-                >
-
-                    <option value="Tous">
-                        Toutes les activités
-                    </option>
-
-                    <option value="Vente">
-                        Ventes
-                    </option>
-
-                    <option value="Achat">
-                        Achats
-                    </option>
-
-                    <option value="Prestation">
-                        Prestations
-                    </option>
-
-                    <option value="Dépense">
-                        Dépenses
-                    </option>
-
-                    <option value="Encaissement">
-                        Encaissements
-                    </option>
-
-                    <option value="Production">
-                        Productions
-                    </option>
-
-                    <option value="Issa Achat">
-                        Issa Distribution Achats
-                    </option>
-
-                    <option value="Issa vente">
-                        Issa Distribution Ventes
-                    </option>
-
-                    <option value="Issa Encaissement">
-                        Issa Distribution Encaissements
-                    </option>
-
-                </select>
-
-            </div>
+            </div>           
 
 
             {/* TABLE */}
