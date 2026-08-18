@@ -119,6 +119,9 @@ import RoleRoute from "./components/RoleRoute";
 // Notifications
 import { Toaster } from 'react-hot-toast';
 
+// Rapport
+import Rapports from './pages/Rapports/RapportMensuel';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -536,8 +539,8 @@ function App() {
 
 
         <Route 
-          path="ca"
-          element={<CA />}
+          path="rapports"
+          element={<Rapports />}
         />
 
       </Route>

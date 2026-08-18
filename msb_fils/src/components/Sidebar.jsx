@@ -106,6 +106,16 @@ const menu = [
       { label: "ISSA Encaissements", to: "/issaencaissements" },
       //{ label: "Plan et Réalisation", to: "/planbuilder" }
     ]
+  },
+
+  {
+    key: "rapports",
+    title: "  Rapports",
+    icon: <Factory />,
+    items: [
+      
+      { label: "Rapports mensuel", to: "/rapports" },      
+    ]
   }
 ];
 
