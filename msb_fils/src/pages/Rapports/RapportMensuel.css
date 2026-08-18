@@ -15,12 +15,12 @@
 .rapport-header h1 {
     margin: 0;
     font-size: 26px;
-    color: #b0c6e4;
+    color: #eff1f3;
 }
 
 .rapport-header p {
     margin-top: 6px;
-    color: #ced9ee;
+    color: #d7dae0;
 }
 
 .rapport-actions {
@@ -205,6 +205,11 @@
 .type-encaissement {
     background: #ede9fe;
     color: #6d28d9;
+}
+
+.type-production {
+    background: #dcfce7;
+    color: #166534;
 }
 
 
