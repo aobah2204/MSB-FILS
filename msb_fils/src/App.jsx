@@ -121,6 +121,7 @@ import { Toaster } from 'react-hot-toast';
 
 // Rapport
 import Rapports from './pages/Rapports/RapportMensuel';
+import RapportMensuelIssaDist from './pages/Rapports/RapportMensuelIssaDist';
 
 
 function App() {
@@ -540,7 +541,13 @@ function App() {
 
         <Route 
           path="rapports"
+          roles={["Administrateur", "Superviseur", "Coordinateur"]}
           element={<Rapports />}
+        />
+        <Route 
+          path="rapportsIssaDist"
+          roles={["Administrateur", "Superviseur", "Coordinateur"]}
+          element={<RapportMensuelIssaDist />} 
         />
 
       </Route>

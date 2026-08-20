@@ -12,13 +12,13 @@ import {
 } from "lucide-react";
 
 import {
-    getRapportActivites
+    getRapportActivitesIssaDist
 } from "../../services/rapportService";
 
 import "./RapportMensuel.css";
 
 
-function RapportMensuel() {
+function RapportMensuelIssaDist() {
 
     const [date, setDate] = useState(new Date());
 
@@ -95,7 +95,7 @@ function RapportMensuel() {
 
             setLoading(true);
 
-            const data = await getRapportActivites(
+            const data = await getRapportActivitesIssaDist(
                 formatDateISO(debutMois),
                 formatDateISO(debutMoisSuivant)
             );
@@ -138,19 +138,19 @@ function RapportMensuel() {
         
         if(typeFilter === "Vente"){
             return activites.filter(
-                item => item.type_activite === "Vente" 
+                item => item.type_activite === "Issa vente"
             );
         }
 
         if(typeFilter === "Achat"){
             return activites.filter(
-                item => item.type_activite === "Achat" 
+                item => item.type_activite === "Issa Achat"
             );
         }
 
         if(typeFilter === "Encaissement"){
             return activites.filter(
-                item => item.type_activite === "Encaissement"
+                item => item.type_activite === "Issa Encaissement"
             );
         }
 
@@ -171,17 +171,11 @@ function RapportMensuel() {
 
         const stats = {
 
-            ventes: 0,
+            issaachats: 0,
 
-            achats: 0,
+            issaventes: 0,
 
-            prestations: 0,
-
-            depenses: 0,
-
-            encaissements: 0,
-
-            productions: 0
+            issaencaissements: 0
 
         };
 
@@ -194,29 +188,17 @@ function RapportMensuel() {
 
             switch (item.type_activite) {
 
-                case "Vente":
-                    stats.ventes += montant;
+                case "Issa Achat":
+                    stats.issaachats += montant;
                     break;
-
-                case "Achat":
-                    stats.achats += montant;
+                
+                case "Issa vente":
+                    stats.issaventes += montant;
                     break;
-
-                case "Prestation":
-                    stats.prestations += montant;
+                
+                case "Issa Encaissement":
+                    stats.issaencaissements += montant;
                     break;
-
-                case "Dépense":
-                    stats.depenses += montant;
-                    break;
-
-                case "Encaissement":
-                    stats.encaissements += montant;
-                    break;
-
-                case "Production":
-                    stats.productions += montant;
-                    break;                
 
                 default:
                     break;
@@ -226,25 +208,13 @@ function RapportMensuel() {
         });
 
 
-        stats.chiffreAffaires =
-            stats.ventes +
-            stats.prestations + stats.encaissements;
+        stats.issaChiffreAffaires = stats.issaventes + stats.issaencaissements;
 
+        stats.issaResultat = stats.issaChiffreAffaires - stats.issaachats;
 
-        stats.resultat =
-            stats.chiffreAffaires -
-            stats.achats -
-            stats.depenses - stats.productions;
-
-
-        stats.tauxEncaissement =
-            stats.chiffreAffaires > 0
-                ? (
-                    stats.encaissements /
-                    stats.chiffreAffaires
-                ) * 100
-                : 0;
-        
+        stats.issaTauxEncaissement = stats.issaChiffreAffaires > 0
+            ? (stats.issaencaissements / stats.issaChiffreAffaires) * 100
+            : 0;
 
         return stats;
 
@@ -386,52 +356,18 @@ function RapportMensuel() {
             <div>
 
                 <h2>
-                    MSB &amp; FILS
+                    Issa Distribution
                 </h2>                    
 
             </div>
-
-            <div className="rapport-cards">               
-
-
-                <RapportCard
-                    icon={<ShoppingCart />}
-                    title="Productions"
-                    value={formatMontant(
-                        statistiques.productions
-                    )}
-                />
-
-
-                <RapportCard
-                    icon={<ShoppingBag />}
-                    title="Achats"
-                    value={formatMontant(
-                        statistiques.achats
-                    )}
-                />
-
-
-
-                <RapportCard
-                    icon={<Receipt />}
-                    title="Dépenses"
-                    value={formatMontant(
-                        statistiques.depenses
-                    )}
-                />
-
-
-            </div>
-
             <div className="rapport-cards">
 
             
                 <RapportCard
                     icon={<ShoppingCart />}
-                    title="Ventes"
+                    title="Issa Distribution Ventes"
                     value={formatMontant(
-                        statistiques.ventes
+                        statistiques.issaventes
                     )}
                 />
 
@@ -439,25 +375,24 @@ function RapportMensuel() {
 
                 <RapportCard
                     icon={<Wrench />}
-                    title="Prestations"
+                    title="Issa Distribution achats"
                     value={formatMontant(
-                        statistiques.prestations
+                        statistiques.issaachats
                     )}
                 />
 
 
                 <RapportCard
                     icon={<Wallet />}
-                    title="Encaissements"
+                    title="Issa Distribution Encaissements"
                     value={formatMontant(
-                        statistiques.encaissements
+                        statistiques.issaencaissements
                     )}
                 />
 
-            </div>          
+            </div>
 
-
-            {/* RESULTAT MSB */}
+            {/* RESULTAT Issa Distribution */}
 
             <div className="rapport-finance">
 
@@ -465,12 +400,12 @@ function RapportMensuel() {
                 <div>
 
                     <span>
-                        Chiffre d'affaires
+                        Chiffre d'affaires Issa Distribution
                     </span>
 
                     <strong>
                         {formatMontant(
-                            statistiques.chiffreAffaires
+                            statistiques.issaChiffreAffaires
                         )}
                     </strong>
 
@@ -480,12 +415,12 @@ function RapportMensuel() {
                 <div>
 
                     <span>
-                        Résultat
+                        Résultat Issa Distribution
                     </span>
 
                     <strong>
                         {formatMontant(
-                            statistiques.resultat
+                            statistiques.issaResultat
                         )}
                     </strong>
 
@@ -495,17 +430,17 @@ function RapportMensuel() {
                 <div>
 
                     <span>
-                        Taux d'encaissement
+                        Issa Taux d'encaissement
                     </span>
 
                     <strong>
-                        {statistiques.tauxEncaissement.toFixed(2)}
+                        {statistiques.issaTauxEncaissement.toFixed(2)}
                         %
                     </strong>
 
                 </div>
 
-            </div>      
+            </div>           
 
 
             {/* FILTRES */}
@@ -521,31 +456,19 @@ function RapportMensuel() {
 
                         <option value="Tous">
                             Toutes les activités
-                        </option>
-
-                        <option value="Vente">
-                            Ventes
-                        </option>
-
-                        <option value="Achat">
-                            Achats
-                        </option>
-
-                        <option value="Prestation">
-                            Prestations
-                        </option>
-
-                        <option value="Dépense">
-                            Dépenses
-                        </option>
-
-                        <option value="Encaissement">
-                            Encaissements
-                        </option>
-
-                        <option value="Production">
-                            Productions
                         </option>                        
+
+                        <option value="Issa Achat">
+                            Issa Distribution Achats
+                        </option>
+
+                        <option value="Issa vente">
+                            Issa Distribution Ventes
+                        </option>
+
+                        <option value="Issa Encaissement">
+                            Issa Distribution Encaissements
+                        </option>
 
                     </select>
 
@@ -719,4 +642,4 @@ function RapportCard({
 }
 
 
-export default RapportMensuel;
+export default RapportMensuelIssaDist;

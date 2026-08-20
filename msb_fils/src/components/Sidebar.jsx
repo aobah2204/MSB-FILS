@@ -114,7 +114,8 @@ const menu = [
     icon: <Factory />,
     items: [
       
-      { label: "Rapports mensuel", to: "/rapports" },      
+      { label: "MSB & FILS", to: "/rapports" },    
+      { label: "ISSA Distribution", to: "/rapportsIssaDist" },  
     ]
   }
 ];
