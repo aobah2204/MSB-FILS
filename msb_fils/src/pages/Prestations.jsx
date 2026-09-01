@@ -117,7 +117,7 @@ function Prestations() {
             <h1>Liste des Prestations</h1>
 
             {
-            ["Administrateur","Responsable de production"]
+            ["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]
             .includes(user?.role)
             &&
             <section>

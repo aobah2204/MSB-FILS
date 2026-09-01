@@ -396,7 +396,7 @@ function App() {
                 roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
                 element={<PrestationCreate />} />
           <Route path="modifier/:id"
-                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur"]}
+                roles={["Administrateur","Responsable de production", "Superviseur", "Coordinateur", "Commercial"]}
                 element={<PrestationEdit />} />
           <Route path="details/:id"
                 element={<PrestationDetails />} />
