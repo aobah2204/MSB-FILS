@@ -280,7 +280,7 @@ return (
                             Tonne
                         </option>
                         <option>
-                            Bidon
+                            Bidon 20l
                         </option>
                         <option>
                             Fût
