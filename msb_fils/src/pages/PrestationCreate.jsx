@@ -268,7 +268,13 @@ return (
                             Pièce
                         </option>
                         <option>
-                            Kg
+                            Kilogramme
+                        </option>
+                        <option>
+                            Mètre
+                        </option>
+                        <option>
+                            Mètre cube
                         </option>
                         <option>
                             Tonne
