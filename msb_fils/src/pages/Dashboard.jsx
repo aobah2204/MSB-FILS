@@ -833,6 +833,20 @@ async function loadFinanceKpi() {
     }
 }
 
+// Benefice
+const [beneficeStats, setBeneficeStats] = useState([]);
+
+async function loadBeneficeStats() {
+
+    const { data, error } = await supabase
+        .from("vw_rapport_mensuel")
+        .select("*");
+
+    if (!error) {
+        setBeneficeStats(data);
+    }
+}
+
 useEffect(()=>{
     getAllClients();  
     getAllProducts(); 
@@ -896,6 +910,7 @@ useEffect(()=>{
 
     // Finance evolution
     loadFinanceKpi();
+    loadBeneficeStats();
 
 },[]);
 
@@ -1051,19 +1066,19 @@ return (
 
                 //value={encaissements.length}
 
-                icon={ financeKpi.find(c => c.indicateur === "Bénéfice")?.courant > financeKpi.find(c => c.indicateur === "Bénéfice")?.precedent ? <TrendingUp size={42} style={{ color: 'green' }}/> : <TrendingDown size={42} style={{ color: 'red' }} /> }
+                icon={ ( (encaissementsStats?.mois_courant + venteStats?.mois_courant + PrestationsStats?.mois_courant + livraisonsStats?.mois_courant) - (productionStats?.mois_courant + depenseStats?.mois_courant + achatsStats?.mois_courant) ) > ( (encaissementsStats?.mois_precedent + venteStats?.mois_precedent + PrestationsStats?.mois_precedent + livraisonsStats?.mois_precedent) - (productionStats?.mois_precedent + depenseStats?.mois_precedent + achatsStats?.mois_precedent) ) ? <TrendingUp size={42} style={{ color: 'green' }}/> : <TrendingDown size={42} style={{ color: 'red' }} /> }
 
                 color="#f11a0a"
 
-                trend={financeKpi.find(c => c.indicateur === "Bénéfice")?.evolution || 0}
+                trend={( (encaissementsStats?.mois_precedent + venteStats?.mois_precedent + PrestationsStats?.mois_precedent + livraisonsStats?.mois_precedent) - (productionStats?.mois_precedent + depenseStats?.mois_precedent + achatsStats?.mois_precedent) )/ ( (encaissementsStats?.mois_courant + venteStats?.mois_courant + PrestationsStats?.mois_courant + livraisonsStats?.mois_courant) - (productionStats?.mois_courant + depenseStats?.mois_courant + achatsStats?.mois_courant) ) || 0}
 
                 subtitle="depuis le mois dernier"
 
-                link="/encaissements"
+                //link="/encaissements"
 
-                montantCourant={financeKpi.find(c => c.indicateur === "Bénéfice")?.courant || 0}
+                montantCourant={( (encaissementsStats?.mois_courant + venteStats?.mois_courant + PrestationsStats?.mois_courant + livraisonsStats?.mois_courant) - (productionStats?.mois_courant + depenseStats?.mois_courant + achatsStats?.mois_courant) ) || 0}
 
-                moisDernier={financeKpi.find(c => c.indicateur === "Bénéfice")?.precedent || 0}
+                moisDernier={ ( (encaissementsStats?.mois_precedent + venteStats?.mois_precedent + PrestationsStats?.mois_precedent + livraisonsStats?.mois_precedent) - (productionStats?.mois_precedent + depenseStats?.mois_precedent + achatsStats?.mois_precedent) ) || 0}
 
         />   
     </div>    
