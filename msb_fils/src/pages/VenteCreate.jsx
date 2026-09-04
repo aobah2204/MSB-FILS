@@ -299,10 +299,10 @@ function VenteCreate() {
       return;
     }
 
-    if (productLines.length === 0) {
-      alert("Veuillez ajouter au moins un produit");
-      return;
-    }
+    //if (productLines.length === 0) {
+    //  alert("Veuillez ajouter au moins un produit");
+    //  return;
+    //}
 
     
 
