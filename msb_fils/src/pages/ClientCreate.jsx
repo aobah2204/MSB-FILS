@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../CSS/ClientCreate.css";
 import { supabase } from "../supabase.js";
+import { useAuth } from "../context/AuthContext";
 import { notify } from "../utils/notifications.js";
 
 function ClientCreate(e) {
 
+const navigate = useNavigate();
+const { user } = useAuth();
 
 const [client,setClient] = useState({
 

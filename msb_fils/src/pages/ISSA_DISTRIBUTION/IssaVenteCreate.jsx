@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Trash2 } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Trash2, UserPlus } from "lucide-react";
 import { supabase } from "../../supabase";
 import { useAuth } from "../../context/AuthContext";
 import Select from "react-select";
@@ -326,27 +326,34 @@ function IssaVenteCreate() {
 
 
         <label>CLients</label>
-        <div>              
+    <div style={{ display: "flex", alignItems: "flex-end", gap: "10px" }}>              
 
-            <Select className="list_select"
-                options={clientsOptions}
+      <div style={{ flex: "1 1 520px", minWidth: 0 }}>
+        <Select className="list_select"
+          options={clientsOptions}
 
-                placeholder="Choisir un client..."
+          placeholder="Choisir un client..."
 
-                isSearchable
+          isSearchable
 
-                styles={selectStyle}
+          styles={selectStyle}
 
-                name="client_id"
+          name="client_id"
 
-                value={
-                    clientsOptions.find(
-                        option => option.value === form.client_id
-                    ) || null
-                }
+          value={
+            clientsOptions.find(
+              option => option.value === form.client_id
+            ) || null
+          }
 
-                onChange={handleFormChangeClient}
-            />
+          onChange={handleFormChangeClient}
+        />
+      </div>
+            <NavLink to="/clientCreate">
+              <button type="button" className="profile" title="Créer un client">
+                <UserPlus size={18} />
+              </button>
+            </NavLink>
 
         </div>
 
