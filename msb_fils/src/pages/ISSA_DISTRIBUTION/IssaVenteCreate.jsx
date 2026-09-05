@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Trash2, UserPlus } from "lucide-react";
 import { supabase } from "../../supabase";
 import { useAuth } from "../../context/AuthContext";
@@ -10,6 +10,7 @@ import { notify } from "../../utils/notifications.js";
 
 function IssaVenteCreate() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
 
   const [form, setForm] = useState({
@@ -44,6 +45,9 @@ function IssaVenteCreate() {
     ]);
 
     setClients(clientsData || []);
+    if (location.state?.createdClientId) {
+      setForm((prev) => ({ ...prev, client_id: location.state.createdClientId }));
+    }
     setFournisseurs(fournisseursData || []);
     setProducts(productsData || []);
     setSites(sitesData || []);
@@ -53,6 +57,15 @@ function IssaVenteCreate() {
 
   useEffect(() => {
     loadOptions();
+  }, []);
+
+  useEffect(() => {
+    const savedState = location.state?.saleState;
+    if (!savedState) return;
+
+    if (savedState.form) setForm((prev) => ({ ...prev, ...savedState.form }));
+    if (savedState.productLines) setProductLines(savedState.productLines);
+    if (savedState.marchandiseLines) setMarchandiseLines(savedState.marchandiseLines);
   }, []);
 
   useEffect(() => {
@@ -349,7 +362,13 @@ function IssaVenteCreate() {
           onChange={handleFormChangeClient}
         />
       </div>
-            <NavLink to="/clientCreate">
+            <NavLink
+              to="/clientCreate"
+              state={{
+                returnTo: "/issaventes/nouveau",
+                saleState: { form, productLines, marchandiseLines },
+              }}
+            >
               <button type="button" className="profile" title="Créer un client">
                 <UserPlus size={18} />
               </button>

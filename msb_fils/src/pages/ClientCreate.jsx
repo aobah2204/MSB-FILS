@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../CSS/ClientCreate.css";
 import { supabase } from "../supabase.js";
 import { useAuth } from "../context/AuthContext";
@@ -8,6 +8,7 @@ import { notify } from "../utils/notifications.js";
 function ClientCreate(e) {
 
 const navigate = useNavigate();
+const location = useLocation();
 const { user } = useAuth();
 
 const [client,setClient] = useState({
@@ -63,18 +64,29 @@ async function handleSubmit(e){
 
     const table = "clients";
 
-    const { error } = await supabase.from(table).insert(client);
+    const { data: createdClient, error } = await supabase
+        .from(table)
+        .insert(client)
+        .select("id")
+        .single();
 
-    if(!error){
+    if(!error && createdClient){
         alert("Client enregistré");
     }else{
         alert("Client non enregistré");
+        return;
     }
 
     createNotification("Nouveau client", `Le client ${client.nom} ${client.prenom} a été enregistré.`, "client", `/clients`, user);
     notify.success("Client enregistré avec succès !");
 
-    navigate("/clients");
+    const returnTo = location.state?.returnTo || "/clients";
+    navigate(returnTo, {
+        state: {
+            createdClientId: createdClient.id,
+            saleState: location.state?.saleState,
+        },
+    });
 
 }
 

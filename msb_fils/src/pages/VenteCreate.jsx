@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Trash2, UserPlus } from "lucide-react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
@@ -12,6 +12,7 @@ import { notify } from "../utils/notifications";
 
 function VenteCreate() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
 
   const [form, setForm] = useState({
@@ -53,6 +54,9 @@ function VenteCreate() {
     ]);
 
     setClients(clientsData || []);
+    if (location.state?.createdClientId) {
+      setForm((prev) => ({ ...prev, client_id: location.state.createdClientId }));
+    }
     setFournisseurs(fournisseursData || []);
     setProducts(productsData || []);
     setSites(sitesData || []);
@@ -96,6 +100,16 @@ function VenteCreate() {
 
   useEffect(() => {
     loadOptions();
+  }, []);
+
+  useEffect(() => {
+    const savedState = location.state?.saleState;
+    if (!savedState) return;
+
+    if (savedState.form) setForm((prev) => ({ ...prev, ...savedState.form }));
+    if (savedState.productLines) setProductLines(savedState.productLines);
+    if (savedState.marchandiseLines) setMarchandiseLines(savedState.marchandiseLines);
+    if (savedState.Livraison) setLivraison(savedState.Livraison);
   }, []);
 
   useEffect(() => {
@@ -481,6 +495,12 @@ function VenteCreate() {
   
   {/** Get all vehicules */}
     const [vehicule,setVehicule] = useState(null);
+
+    useEffect(() => {
+      const savedVehicule = location.state?.saleState?.vehicule;
+      if (savedVehicule) setVehicule(savedVehicule);
+    }, []);
+
     function onChangeVehicule(e){
 
         const selected = vehicules.find(
@@ -525,7 +545,13 @@ function VenteCreate() {
                     onChange={handleFormChangeClient}
                 />
                 </div>
-                <NavLink to="/clientCreate">
+                <NavLink
+                  to="/clientCreate"
+                  state={{
+                    returnTo: "/ventes/nouveau",
+                    saleState: { form, productLines, marchandiseLines, Livraison, vehicule },
+                  }}
+                >
                   <button type="button" className="profile" title="Créer un client">
                     <UserPlus size={18} />
                   </button>
