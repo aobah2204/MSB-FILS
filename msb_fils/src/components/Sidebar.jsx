@@ -62,6 +62,8 @@ const menu = [
       { label: "Achats", to: "/achats" },
       { label: "Ventes", to: "/ventes" },
       { label: "Marchandises", to: "/marchandises" },
+      { label: "Stock produits", to: "/stocks/produits" },
+      //{ label: "Stock marchandises", to: "/stocks/marchandises" },
       { label: "Encaissements", to: "/encaissements" }
     ]
   },
@@ -103,6 +105,8 @@ const menu = [
       
       { label: "ISSA Achats", to: "/issaachats" },
       { label: "ISSA Ventes", to: "/issaventes" },
+      { label: "Stock ISSA produits", to: "/issa-stocks/produits" },
+      { label: "Stock ISSA marchandises", to: "/issa-stocks/marchandises" },
       { label: "ISSA Encaissements", to: "/issaencaissements" },
       //{ label: "Plan et Réalisation", to: "/planbuilder" }
     ]

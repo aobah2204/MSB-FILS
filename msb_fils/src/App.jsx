@@ -20,6 +20,7 @@ import ClientDetails from "./pages/ClientDetails";
 import CA from "./pages/CA";
 import ProductCreate from "./pages/ProductCreate";
 import Products from "./pages/Products";
+import StockProduits from "./pages/StockProduits";
 import ProductEdit from './pages/ProductEdit';
 import ProductDetails from './pages/ProductDetails'
 import Login from "./pages/Login";
@@ -68,6 +69,9 @@ import DepenseCreate from './pages/DepenseCreate';
 import DepenseEdit from './pages/DepenseEdit';
 import DepenseDetails from './pages/DepenseDetails';
 import Marchandises from './pages/Marchandises';
+import StockMarchandises from './pages/StockMarchandises';
+import IssaStockProduits from './pages/ISSA_DISTRIBUTION/IssaStockProduits';
+import IssaStockMarchandises from './pages/ISSA_DISTRIBUTION/IssaStockMarchandises';
 import MarchandiseCreate from './pages/MarchandiseCreate';
 import MarchandiseEdit from './pages/MarchandiseEdit';
 import MarchandiseDetails from './pages/MarchandiseDetails';
@@ -254,6 +258,15 @@ function App() {
         />
 
         <Route
+          path="stocks/produits"
+          element={
+            <RoleRoute roles={["Administrateur", "Responsable de production", "Magasinier", "Superviseur", "Coordinateur", "Commercial"]}>
+              <StockProduits />
+            </RoleRoute>
+          }
+        />
+
+        <Route
             path="produits/nouveau"
             element=
             {
@@ -376,6 +389,15 @@ function App() {
                 element={<MarchandiseDetails />} />
         </Route>
 
+        <Route
+          path="stocks/marchandises"
+          element={
+            <RoleRoute roles={["Administrateur", "Responsable de production", "Magasinier", "Superviseur", "Coordinateur", "Commercial"]}>
+              <StockMarchandises />
+            </RoleRoute>
+          }
+        />
+
         {/** Livraisons routes */}
         <Route path="livraisons">
           <Route index element={<Livraisons />} />
@@ -414,6 +436,24 @@ function App() {
           <Route path="details/:id"
                 element={<IssaProduitDetails />} />
         </Route>
+
+        <Route
+          path="issa-stocks/produits"
+          element={
+            <RoleRoute roles={["Administrateur", "Responsable de production", "Magasinier", "Superviseur", "Coordinateur", "Commercial"]}>
+              <IssaStockProduits />
+            </RoleRoute>
+          }
+        />
+
+        <Route
+          path="issa-stocks/marchandises"
+          element={
+            <RoleRoute roles={["Administrateur", "Responsable de production", "Magasinier", "Superviseur", "Coordinateur", "Commercial"]}>
+              <IssaStockMarchandises />
+            </RoleRoute>
+          }
+        />
         {/** ISSA DISTRIBUTION Achats  */}
         <Route path="issaachats">
           <Route index element={<IssaAchats />} />
