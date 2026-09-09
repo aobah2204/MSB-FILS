@@ -1062,7 +1062,7 @@ return (
         {/*<FinanceCards data={financeKpi} />*/}
         <DashboardCard
 
-                title="Bénéfice"
+                title="Bénéfice MSB & Fils"
 
                 //value={encaissements.length}
 
@@ -1080,7 +1080,8 @@ return (
 
                 moisDernier={ ( (encaissementsStats?.mois_precedent + venteStats?.mois_precedent + PrestationsStats?.mois_precedent + livraisonsStats?.mois_precedent) - (productionStats?.mois_precedent + depenseStats?.mois_precedent + achatsStats?.mois_precedent) ) || 0}
 
-        />   
+        />            
+          
     </div>    
 
     <div className="cards">
@@ -1215,6 +1216,24 @@ return (
                 moisDernier={IssaVentessStats.mois_precedent}
 
         />
+
+        <DashboardCard
+
+                title="Bénéfice Issa Distribution"
+
+                icon={<BadgeSwissFranc size={42}/>} 
+
+                color="#db4b12"
+
+                trend={( (IssaVentessStats?.mois_precedent - IssaAchatsStats?.mois_precedent) / (IssaVentessStats?.mois_courant - IssaAchatsStats?.mois_courant) ) || 0}
+
+                subtitle="depuis le mois dernier"
+
+                montantCourant={(IssaVentessStats?.mois_courant - IssaAchatsStats?.mois_courant) || 0}
+
+                moisDernier={(IssaVentessStats?.mois_precedent - IssaAchatsStats?.mois_precedent) || 0}
+
+            />
     </div>
 
     <br/>
